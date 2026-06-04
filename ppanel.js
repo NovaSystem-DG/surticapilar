@@ -12,22 +12,37 @@ const tagNames = {
 };
 
 // ═══════════════════════════════════════════
-// AUTENTICACIÓN POR URL
+// AUTENTICACIÓN — BLOQUEO TOTAL SIN KEY
+// Si no tiene la key correcta: página en blanco, sin contenido visible
 // ═══════════════════════════════════════════
 (function checkAuth() {
   const params = new URLSearchParams(window.location.search);
+  const blocked = document.getElementById('blocked');
+
   if (params.get('key') !== ADMIN_KEY) {
-    document.getElementById('blocked').classList.add('show');
-    document.body.style.background = '#fff';
-  } else {
-    document.getElementById('mainNav').style.display = 'flex';
-    document.getElementById('mainPage').style.display = 'block';
-    init();
+    // Ocultar todo el contenido del admin
+    document.getElementById('mainNav').style.display = 'none';
+    document.getElementById('mainPage').style.display = 'none';
+    // Mostrar pantalla bloqueada con mensaje genérico
+    blocked.innerHTML = '<div style="text-align:center;color:#999;font-family:sans-serif;font-size:.9rem"><p>Página no encontrada</p></div>';
+    blocked.style.display = 'flex';
+    blocked.style.alignItems = 'center';
+    blocked.style.justifyContent = 'center';
+    blocked.style.position = 'fixed';
+    blocked.style.inset = '0';
+    blocked.style.background = '#fff';
+    // Detener toda ejecución posterior
+    return;
   }
+
+  // Key correcta: mostrar el panel
+  document.getElementById('mainNav').style.display = 'flex';
+  document.getElementById('mainPage').style.display = 'block';
+  init();
 })();
 
 // ═══════════════════════════════════════════
-// API KEY — guardada en localStorage del browser de tu mamá
+// API KEY — guardada en localStorage
 // Solo se usa para ESCRIBIR (el índex lee sin key)
 // ═══════════════════════════════════════════
 function getApiKey() { return localStorage.getItem('sc_api_key') || ''; }
@@ -38,7 +53,7 @@ function saveConfig() {
   const binId  = document.getElementById('cfgBinId').value.trim();
   if (!apiKey) { toast('Completa la Master Key', 'error'); return; }
   localStorage.setItem('sc_api_key', apiKey);
-  if (binId) localStorage.setItem('sc_bin_id', binId); // por si acaso
+  if (binId) localStorage.setItem('sc_bin_id', binId);
   toast('Configuración guardada ✓', 'success');
   document.getElementById('setupCard').style.display = 'none';
   init();
@@ -50,7 +65,6 @@ function saveConfig() {
 async function fetchProducts() {
   setStatus('saving', '⏳ Cargando...');
   try {
-    // Intenta leer con key si la tiene, sino sin key (público)
     const headers = { 'X-Bin-Meta': 'false' };
     const apiKey = getApiKey();
     if (apiKey) headers['X-Master-Key'] = apiKey;
@@ -100,6 +114,7 @@ let products = [];
 
 function setStatus(type, msg) {
   const el = document.getElementById('statusPill');
+  if (!el) return;
   el.className = 'status-pill ' + type;
   el.textContent = msg;
 }
@@ -332,7 +347,6 @@ function getDefaultProducts() {
 // INIT
 // ═══════════════════════════════════════════
 async function init() {
-  // Mostrar/ocultar setup card según si tiene API Key
   const apiKey = getApiKey();
   if (apiKey) {
     document.getElementById('cfgApiKey').value = apiKey;

@@ -1,9 +1,21 @@
 // ═══════════════════════════════════════════
-// CONFIGURACIÓN — BIN ID público para lectura
+// CONFIGURACIÓN
 // ═══════════════════════════════════════════
 const WA = '573226747868';
-const BIN_ID = '6a21c113da38895dfe88176d'; // Tu JSONBin ID
+const BIN_ID = '6a21c113da38895dfe88176d';
 const BASE = 'https://surticapilar.com/wp-content/uploads/';
+
+// ═══════════════════════════════════════════
+// PROTECCIÓN: si por alguna razón el cliente
+// llegó aquí desde panel.html, lo mandamos
+// de vuelta a la tienda
+// ═══════════════════════════════════════════
+(function guardStore() {
+  // Si la URL actual contiene "panel.html", redirigir a la tienda
+  if (window.location.pathname.includes('panel')) {
+    window.location.replace('./index.html');
+  }
+})();
 
 // Productos por defecto (fallback si JSONBin falla)
 const defaultProducts = [
@@ -62,7 +74,7 @@ const defaultProducts = [
 async function loadProducts() {
   try {
     const res = await fetch('https://api.jsonbin.io/v3/b/' + BIN_ID + '/latest', {
-      headers: { 'X-Bin-Meta': 'false' }  // sin key = lectura pública
+      headers: { 'X-Bin-Meta': 'false' }
     });
     if (!res.ok) throw new Error('fetch failed');
     const data = await res.json();
