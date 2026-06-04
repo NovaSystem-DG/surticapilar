@@ -2,7 +2,7 @@
 // CONFIGURACIÓN — BIN ID público para lectura
 // ═══════════════════════════════════════════
 const WA = '573226747868';
-const BIN_ID = '6a20ba99f5f4af5e29b52f84'; // Tu JSONBin ID
+const BIN_ID = '6a21c113da38895dfe88176d'; // Tu JSONBin ID
 const BASE = 'https://surticapilar.com/wp-content/uploads/';
 
 // Productos por defecto (fallback si JSONBin falla)
