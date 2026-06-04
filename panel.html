@@ -1112,27 +1112,39 @@
                 return getDefaultProducts();
             }
         }
-
         async function pushProducts() {
             if (!isConfigured()) {
                 localStorage.setItem('sc_products_local', JSON.stringify(products));
-                setStatus('offline', '💾 Solo local');
                 return true;
             }
-            setStatus('saving', '⏳ Guardando...');
+
             try {
                 const { binId, apiKey } = loadConfig();
+
+                console.log('Enviando a JSONBin:', {
+                    binId,
+                    products
+                });
+
                 const res = await fetch(`https://api.jsonbin.io/v3/b/${binId}`, {
                     method: 'PUT',
-                    headers: { 'Content-Type': 'application/json', 'X-Master-Key': apiKey },
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': apiKey
+                    },
                     body: JSON.stringify({ products })
                 });
-                if (!res.ok) throw new Error('push failed');
-                setStatus('ok', '✓ Guardado para todos');
+
+                console.log('Status:', res.status);
+
+                const data = await res.text();
+
+                console.log('Respuesta:', data);
+
                 return true;
-            } catch (e) {
-                setStatus('err', '✗ Error al guardar');
-                toast('No se pudo guardar. Intenta de nuevo.', 'error');
+
+            } catch (err) {
+                console.error(err);
                 return false;
             }
         }
