@@ -1612,8 +1612,7 @@
       msg += '%0A*Total estimado: ' + encodeURIComponent(fmt(total)) + '*%0A%0A%C2%BFComo coordino la compra?';
       window.open('https://wa.me/' + WA + '?text=' + msg, '_blank');
     }
-    function openDetail(id) {
-      const p = products.find(x => x.id == id); if (!p) return;
+   function quickAdd(id) { const p = products.find(x => +x.id === +id); if (!p || !p.instock) return;
       currentProduct = p; detailQty = 1; selectedSize = p.sizes ? p.sizes[0].label : null;
       document.getElementById('detailNavTitle').textContent = p.name;
       document.getElementById('dMainImg').src = p.img;
@@ -1637,7 +1636,7 @@
     }
     function closeDetail() { document.getElementById('detailPage').classList.remove('open'); }
     function renderSimilar(p) {
-      const sim = products.filter(x => x.id !== p.id && (x.cat === p.cat || x.brand === p.brand)).slice(0, 8);
+      const sim = products.filter(x => +x.id !== +p.id && (x.cat === p.cat || x.brand === p.brand)).slice(0, 8);
       document.getElementById('similarGrid').innerHTML = sim.length ? sim.map(s => renderCard(s)).join('') : '<p style="color:#aaa;font-size:.85rem">No hay productos similares.</p>';
     }
     function selectSize(btn, label, price) {
