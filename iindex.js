@@ -154,7 +154,7 @@ function renderCard(p) {
 function quickAdd(id) {
   const p = products.find(x => x.id === id);
   if (!p || !p.instock) return;
-  addToCart(p, 1, p.sizes ? p.sizes[0].label : null);
+  addToCart(p, 1, p.sizes && p.sizes.length > 0 ? p.sizes[0].label : null);
   showToast('Producto añadido al carrito');
 }
 
@@ -231,7 +231,7 @@ function sendCart() {
 function openDetail(id) {
   const p = products.find(x => x.id === id);
   if (!p) return;
-  currentProduct = p; detailQty = 1; selectedSize = p.sizes ? p.sizes[0].label : null;
+  currentProduct = p; detailQty = 1; selectedSize = p.sizes && p.sizes.length > 0 ? p.sizes[0].label : null;
   document.getElementById('detailNavTitle').textContent = p.name;
   document.getElementById('dMainImg').src = p.img;
   document.getElementById('mainImgBox').classList.remove('is-zoomed');
@@ -249,7 +249,7 @@ function openDetail(id) {
       + fmt(p.sizes ? p.sizes[0].price : p.price) + '</span>'
       + '<span style="text-decoration:line-through;color:#bbb;font-size:.95rem">' + fmt(p.wasPrice) + '</span></div>';
   } else {
-    pw.innerHTML = '<div class="d-price" id="dPriceLive">' + fmt(p.sizes ? p.sizes[0].price : p.price) + '</div>';
+    pw.innerHTML = '<div class="d-price" id="dPriceLive">' + fmt(p.sizes && p.sizes.length > 0 ? p.sizes[0].price : p.price) + '</div>';
   }
   const ds = document.getElementById('dSizes');
   if (p.sizes && p.sizes.length > 1) {
