@@ -1613,7 +1613,7 @@
         window.open('https://wa.me/' + WA + '?text=' + msg, '_blank');
       }
       function openDetail(id) {
-        const p = products.find(x => x.id === id); if (!p) return;
+        const p = products.find(x => x.id == id); if (!p) return;
         currentProduct = p; detailQty = 1; selectedSize = p.sizes ? p.sizes[0].label : null;
         document.getElementById('detailNavTitle').textContent = p.name;
         document.getElementById('dMainImg').src = p.img;
