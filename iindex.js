@@ -1,6 +1,3 @@
-// ═══════════════════════════════════════════
-// CONFIGURACIÓN
-// ═══════════════════════════════════════════
 const WA = '573226747868';
 const BIN_ID = '6a21c113da38895dfe88176d';
 const BASE = 'https://surticapilar.com/wp-content/uploads/';
