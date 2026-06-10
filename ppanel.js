@@ -344,7 +344,7 @@ function getDefaultProducts() {
 }
 
 // ═══════════════════════════════════════════
-// INIT
+
 // ═══════════════════════════════════════════
 async function init() {
   const apiKey = getApiKey();
