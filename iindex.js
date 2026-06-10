@@ -81,6 +81,17 @@ async function loadProducts() {
 let products = defaultProducts;
 let cart = [], activeCat = 'all', currentProduct = null, detailQty = 1, selectedSize = null;
 
+// ── PERSISTENCIA DEL CARRITO ─────────────────────────
+function saveCart() {
+  try { localStorage.setItem('sc_cart', JSON.stringify(cart)); } catch (e) { }
+}
+function loadCart() {
+  try {
+    const raw = localStorage.getItem('sc_cart');
+    if (raw) cart = JSON.parse(raw);
+  } catch (e) { cart = []; }
+}
+
 const tagClasses = { shampoo: 't-shampoo', acondicionador: 't-acondicionador', mascarilla: 't-mascarilla', tratamiento: 't-tratamiento', leavein: 't-leavein', oleo: 't-oleo', alisadora: 't-alisadora', accesorio: 't-accesorio', tinte: 't-tinte' };
 const tagNames = { shampoo: 'Shampoo', acondicionador: 'Acondicionador', mascarilla: 'Mascarilla', tratamiento: 'Tratamiento', leavein: 'Leave-In', oleo: 'Oleo', alisadora: 'Alisadora', accesorio: 'Accesorio', tinte: 'Tinte' };
 
@@ -152,6 +163,7 @@ function addToCart(p, qty, sizeLabel) {
   const ex = cart.find(x => x.key === key);
   if (ex) ex.qty += qty;
   else cart.push({ key, id: p.id, name: p.name, img: p.img, price, sizeLabel, qty });
+  saveCart();
   updateCartUI();
 }
 
@@ -189,9 +201,10 @@ function cqChange(key, d) {
   if (!i) return;
   i.qty += d;
   if (i.qty <= 0) cart = cart.filter(x => x.key !== key);
+  saveCart();
   updateCartUI();
 }
-function cRemove(key) { cart = cart.filter(x => x.key !== key); updateCartUI(); }
+function cRemove(key) { cart = cart.filter(x => x.key !== key); saveCart(); updateCartUI(); }
 function openCart() { document.getElementById('cartOverlay').classList.add('open'); document.getElementById('cartPanel').classList.add('open'); }
 function closeCart() { document.getElementById('cartOverlay').classList.remove('open'); document.getElementById('cartPanel').classList.remove('open'); }
 
@@ -462,6 +475,7 @@ function showToast(msg) {
 
 // ── INIT ──────────────────────────────────────────────
 (async () => {
+  loadCart();
   products = await loadProducts();
   buildBanner();
   renderProducts();
