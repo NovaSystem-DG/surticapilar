@@ -9,9 +9,6 @@ const ENVIO = {
   default: { label: 'Resto de Colombia', detalle: 'Envío nacional', costo: 15000 },
 };
 
-
-
-
 // ── PRODUCTOS POR DEFECTO ────────────────────────────
 const defaultProducts = [
   { id: 1, name: 'Flash Mask Mantenimiento de Color x300ml', price: 77800, cat: 'mascarilla', img: BASE + '2026/05/Copia-de-Copia-de-pagina-web-1-300x300.png', instock: true, brand: 'Hair Lab', desc: 'Mascarilla de mantenimiento de color para cabello tratado.' },
@@ -201,8 +198,6 @@ function closeCart() { document.getElementById('cartOverlay').classList.remove('
 // ── FORMULARIO DE PEDIDO ─────────────────────────────
 function openOrderForm() {
   if (!cart.length) return;
-
-  // Resumen de productos en el modal
   const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
   document.getElementById('omResumen').innerHTML = cart.map(i =>
     '<div class="om-item">'
@@ -210,8 +205,6 @@ function openOrderForm() {
     + '<span class="om-item-price">' + fmt(i.price * i.qty) + '</span>'
     + '</div>'
   ).join('') + '<div class="om-item om-subtotal"><span>Subtotal productos</span><span>' + fmt(subtotal) + '</span></div>';
-
-  // Limpiar campos
   ['omNombre', 'omCedula', 'omTelefono', 'omCorreo', 'omCiudad', 'omDireccion'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = '';
@@ -219,7 +212,6 @@ function openOrderForm() {
   document.getElementById('omDepartamento').value = '';
   document.getElementById('envioBox').style.display = 'none';
   document.getElementById('omTotalRow').style.display = 'none';
-
   closeCart();
   document.getElementById('orderOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -240,12 +232,10 @@ function onDeptChange() {
   const info = ENVIO[dept] || ENVIO.default;
   const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
   const total = subtotal + info.costo;
-
   document.getElementById('envioZona').textContent = info.label;
   document.getElementById('envioDetalle').textContent = info.detalle;
   document.getElementById('envioPrice').textContent = fmt(info.costo);
   document.getElementById('envioBox').style.display = 'flex';
-
   document.getElementById('omTotalDetail').textContent = fmt(subtotal) + ' productos + ' + fmt(info.costo) + ' envío';
   document.getElementById('omTotalVal').textContent = fmt(total);
   document.getElementById('omTotalRow').style.display = 'flex';
@@ -259,10 +249,7 @@ function submitOrder() {
   const dept = document.getElementById('omDepartamento').value;
   const ciudad = document.getElementById('omCiudad').value.trim();
   const direccion = document.getElementById('omDireccion').value.trim();
-
-  // Validación campos obligatorios
   if (!nombre || !cedula || !telefono || !dept || !ciudad || !direccion) {
-    // Resaltar vacíos
     [{ id: 'omNombre', v: nombre }, { id: 'omCedula', v: cedula }, { id: 'omTelefono', v: telefono },
     { id: 'omDepartamento', v: dept }, { id: 'omCiudad', v: ciudad }, { id: 'omDireccion', v: direccion }]
       .forEach(f => {
@@ -272,16 +259,11 @@ function submitOrder() {
     showToast('Completa los campos obligatorios *');
     return;
   }
-
-  // Reset bordes
   ['omNombre', 'omCedula', 'omTelefono', 'omDepartamento', 'omCiudad', 'omDireccion']
     .forEach(id => { const el = document.getElementById(id); if (el) el.style.borderColor = ''; });
-
   const envioInfo = ENVIO[dept] || ENVIO.default;
   const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
   const total = subtotal + envioInfo.costo;
-
-  // Construir mensaje WhatsApp
   let msg = '%C2%A1Hola! Tengo un nuevo pedido desde la tienda:%0A%0A';
   msg += '👤 *Datos del cliente*%0A';
   msg += 'Nombre: ' + encodeURIComponent(nombre) + '%0A';
@@ -300,7 +282,6 @@ function submitOrder() {
   msg += 'Ciudad: ' + encodeURIComponent(ciudad) + ' – ' + encodeURIComponent(dept) + '%0A';
   msg += '%0A💰 *Total a pagar: ' + encodeURIComponent(fmt(total)) + '*%0A';
   msg += '%0APor favor confirmar disponibilidad y método de pago.';
-
   window.open('https://wa.me/' + WA + '?text=' + msg, '_blank');
   closeOrderForm();
 }
@@ -309,39 +290,93 @@ function submitOrder() {
 function openDetail(id) {
   const p = products.find(x => x.id === id);
   if (!p) return;
-  currentProduct = p; detailQty = 1; selectedSize = p.sizes && p.sizes.length > 0 ? p.sizes[0].label : null;
+  currentProduct = p;
+  detailQty = 1;
+  // Seleccionar primer tamaño por defecto si hay sizes
+  selectedSize = p.sizes && p.sizes.length > 0 ? p.sizes[0].label : null;
+
   document.getElementById('detailNavTitle').textContent = p.name;
-  document.getElementById('dMainImg').src = p.img;
   document.getElementById('mainImgBox').classList.remove('is-zoomed');
-  document.getElementById('dThumbs').innerHTML =
-    '<div class="thumb active"><img src="' + p.img + '" alt="" onerror="this.parentElement.style.display=\'none\'"></div>';
   document.getElementById('dBrand').textContent = p.brand || '';
   document.getElementById('dName').textContent = p.name;
   document.getElementById('dDesc').textContent = p.desc || '';
+
   const cb = document.getElementById('dCatBadge');
   cb.textContent = tagNames[p.cat] || p.cat;
   cb.className = 'd-cat-badge ' + (tagClasses[p.cat] || 't-otro');
-  const pw = document.getElementById('dPriceWrap');
-  if (p.wasPrice) {
-    pw.innerHTML = '<div style="display:flex;align-items:baseline;gap:10px"><span class="d-price">'
-      + fmt(p.sizes ? p.sizes[0].price : p.price) + '</span>'
-      + '<span style="text-decoration:line-through;color:#bbb;font-size:.95rem">' + fmt(p.wasPrice) + '</span></div>';
-  } else {
-    pw.innerHTML = '<div class="d-price" id="dPriceLive">' + fmt(p.sizes && p.sizes.length > 0 ? p.sizes[0].price : p.price) + '</div>';
-  }
+
+  // Imagen inicial: la del primer tamaño si tiene img propia, si no la del producto
+  const firstImg = (p.sizes && p.sizes.length > 0 && p.sizes[0].img) ? p.sizes[0].img : p.img;
+  setDetailImage(firstImg);
+
+  // Precio inicial
+  const firstPrice = (p.sizes && p.sizes.length > 0) ? p.sizes[0].price : p.price;
+  renderDetailPrice(firstPrice, p.wasPrice);
+
+  // Selector de tamaños
   const ds = document.getElementById('dSizes');
   if (p.sizes && p.sizes.length > 1) {
-    ds.innerHTML = '<span class="d-label">Presentacion</span><div class="size-opts">'
-      + p.sizes.map((s, i) => '<button class="size-opt' + (i === 0 ? ' sel' : '') + '" onclick="selectSize(this,\'' + s.label + '\',' + s.price + ')">' + s.label + '</button>').join('') + '</div>';
+    ds.innerHTML = '<span class="d-label">Presentación</span><div class="size-opts">'
+      + p.sizes.map((s, i) =>
+        '<button class="size-opt' + (i === 0 ? ' sel' : '') + '" onclick="selectSize(this,' + i + ')">'
+        + s.label + '</button>'
+      ).join('') + '</div>';
     ds.style.display = 'block';
-  } else { ds.style.display = 'none'; ds.innerHTML = ''; }
+  } else {
+    ds.style.display = 'none';
+    ds.innerHTML = '';
+  }
+
   document.getElementById('dQty').textContent = '1';
   const ab = document.getElementById('detailAddBtn');
   ab.disabled = !p.instock;
   ab.textContent = p.instock ? 'Añadir al carrito' : 'Sin stock';
+
   renderSimilar(p);
   document.getElementById('detailPage').classList.add('open');
   window.scrollTo(0, 0);
+}
+
+// Cambia la imagen principal y el thumbnail activo
+function setDetailImage(src) {
+  const mainImg = document.getElementById('dMainImg');
+  mainImg.src = src;
+  // Reconstruir thumbnails: siempre el producto base + una por cada tamaño que tenga img propia
+  const p = currentProduct;
+  const thumbs = [];
+  // Imagen base del producto
+  thumbs.push({ src: p.img, label: '' });
+  // Imágenes de tamaños (solo las que tengan img distinta a la base)
+  if (p.sizes) {
+    p.sizes.forEach(s => {
+      if (s.img && s.img !== p.img) thumbs.push({ src: s.img, label: s.label });
+    });
+  }
+  document.getElementById('dThumbs').innerHTML = thumbs.map((t, i) =>
+    '<div class="thumb' + (t.src === src ? ' active' : '') + '" onclick="thumbClick(this,\'' + t.src + '\')">'
+    + '<img src="' + t.src + '" alt="' + t.label + '" onerror="this.parentElement.style.display=\'none\'">'
+    + '</div>'
+  ).join('');
+}
+
+function thumbClick(el, src) {
+  document.querySelectorAll('#dThumbs .thumb').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('dMainImg').src = src;
+  document.getElementById('mainImgBox').classList.remove('is-zoomed');
+  resetZoom();
+}
+
+function renderDetailPrice(price, wasPrice) {
+  const pw = document.getElementById('dPriceWrap');
+  if (wasPrice && wasPrice > price) {
+    pw.innerHTML = '<div style="display:flex;align-items:baseline;gap:10px">'
+      + '<span class="d-price">' + fmt(price) + '</span>'
+      + '<span style="text-decoration:line-through;color:#bbb;font-size:.95rem">' + fmt(wasPrice) + '</span>'
+      + '</div>';
+  } else {
+    pw.innerHTML = '<span class="d-price">' + fmt(price) + '</span>';
+  }
 }
 
 function closeDetail() { document.getElementById('detailPage').classList.remove('open'); }
@@ -353,19 +388,44 @@ function renderSimilar(p) {
     : '<p style="color:#aaa;font-size:.85rem">No hay productos similares.</p>';
 }
 
-function selectSize(btn, label, price) {
-  selectedSize = label;
+// ── SELECTOR DE TAMAÑO ────────────────────────────────
+// Ahora recibe el índice del size en vez de label+precio inline
+function selectSize(btn, idx) {
+  const p = currentProduct;
+  if (!p || !p.sizes || !p.sizes[idx]) return;
+  const s = p.sizes[idx];
+  selectedSize = s.label;
+
+  // Actualizar estado visual de los botones
   document.querySelectorAll('.size-opt').forEach(b => b.classList.remove('sel'));
   btn.classList.add('sel');
-  const pl = document.getElementById('dPriceLive');
-  if (pl) pl.textContent = fmt(price);
+
+  // Actualizar precio
+  renderDetailPrice(s.price, p.wasPrice);
+
+  // Actualizar imagen si el tamaño tiene imagen propia
+  if (s.img) {
+    setDetailImage(s.img);
+  }
 }
-function changeDetailQty(d) { detailQty = Math.max(1, detailQty + d); document.getElementById('dQty').textContent = detailQty; }
-function addFromDetail() { if (!currentProduct || !currentProduct.instock) return; addToCart(currentProduct, detailQty, selectedSize); showToast('Producto añadido al carrito'); }
+
+function changeDetailQty(d) {
+  detailQty = Math.max(1, detailQty + d);
+  document.getElementById('dQty').textContent = detailQty;
+}
+
+function addFromDetail() {
+  if (!currentProduct || !currentProduct.instock) return;
+  addToCart(currentProduct, detailQty, selectedSize);
+  showToast('Producto añadido al carrito');
+}
+
 function waFromDetail() {
   if (!currentProduct) return;
   const p = currentProduct;
-  const price = p.sizes && selectedSize ? (p.sizes.find(s => s.label === selectedSize)?.price || p.price) : p.price;
+  const price = p.sizes && selectedSize
+    ? (p.sizes.find(s => s.label === selectedSize)?.price || p.price)
+    : p.price;
   const total = price * detailQty;
   const msg = '%C2%A1Hola! Me interesa este producto:%0A%0A• *' + encodeURIComponent(p.name) + '*'
     + (selectedSize ? ' (' + encodeURIComponent(selectedSize) + ')' : '')
@@ -386,7 +446,12 @@ function handleZoom(e) {
   box.classList.add('is-zoomed');
 }
 function handleZoomTouch(e) { e.preventDefault(); const t = e.touches[0]; handleZoom({ clientX: t.clientX, clientY: t.clientY }); }
-function resetZoom() { document.getElementById('dMainImg').style.transform = 'scale(1)'; document.getElementById('mainImgBox').classList.remove('is-zoomed'); }
+function resetZoom() {
+  const img = document.getElementById('dMainImg');
+  if (img) img.style.transform = 'scale(1)';
+  const box = document.getElementById('mainImgBox');
+  if (box) box.classList.remove('is-zoomed');
+}
 
 // ── TOAST ─────────────────────────────────────────────
 function showToast(msg) {
