@@ -254,7 +254,9 @@ function onDeptChange() {
   document.getElementById('omTotalRow').style.display = 'flex';
 }
 
-function submitOrder() {
+// ── REEMPLAZA tu función submitOrder() en iindex.js por esta ──────────────
+
+async function submitOrder() {
   const nombre = document.getElementById('omNombre').value.trim();
   const cedula = document.getElementById('omCedula').value.trim();
   const telefono = document.getElementById('omTelefono').value.trim();
@@ -262,9 +264,12 @@ function submitOrder() {
   const dept = document.getElementById('omDepartamento').value;
   const ciudad = document.getElementById('omCiudad').value.trim();
   const direccion = document.getElementById('omDireccion').value.trim();
+
+  // Validación
   if (!nombre || !cedula || !telefono || !dept || !ciudad || !direccion) {
-    [{ id: 'omNombre', v: nombre }, { id: 'omCedula', v: cedula }, { id: 'omTelefono', v: telefono },
-    { id: 'omDepartamento', v: dept }, { id: 'omCiudad', v: ciudad }, { id: 'omDireccion', v: direccion }]
+    [{ id: 'omNombre', v: nombre }, { id: 'omCedula', v: cedula },
+    { id: 'omTelefono', v: telefono }, { id: 'omDepartamento', v: dept },
+    { id: 'omCiudad', v: ciudad }, { id: 'omDireccion', v: direccion }]
       .forEach(f => {
         const el = document.getElementById(f.id);
         if (el) el.style.borderColor = f.v ? '' : '#c0392b';
@@ -272,11 +277,47 @@ function submitOrder() {
     showToast('Completa los campos obligatorios *');
     return;
   }
+
   ['omNombre', 'omCedula', 'omTelefono', 'omDepartamento', 'omCiudad', 'omDireccion']
     .forEach(id => { const el = document.getElementById(id); if (el) el.style.borderColor = ''; });
+
   const envioInfo = ENVIO[dept] || ENVIO.default;
   const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
   const total = subtotal + envioInfo.costo;
+
+  // ── Mostrar loading ──
+  const btn = document.querySelector('.om-submit');
+  const originalText = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '⏳ Enviando pedido...';
+
+  // ── Enviar a EFFI via función serverless ──
+  let effiOk = false;
+  try {
+    const resp = await fetch('/api/pedido', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        nombre, cedula, telefono, correo,
+        departamento: dept, ciudad, direccion,
+        items: cart,
+        subtotal,
+        envio: envioInfo.costo,
+        total,
+      }),
+    });
+    const data = await resp.json();
+    effiOk = data.ok === true;
+    if (!effiOk) console.warn('EFFI respondió:', data);
+  } catch (e) {
+    console.error('Error enviando a EFFI:', e);
+  }
+
+  // ── Restaurar botón ──
+  btn.disabled = false;
+  btn.innerHTML = originalText;
+
+  // ── Siempre también enviar por WhatsApp (respaldo) ──
   let msg = '%C2%A1Hola! Tengo un nuevo pedido desde la tienda:%0A%0A';
   msg += '👤 *Datos del cliente*%0A';
   msg += 'Nombre: ' + encodeURIComponent(nombre) + '%0A';
@@ -294,9 +335,19 @@ function submitOrder() {
   msg += 'Dirección: ' + encodeURIComponent(direccion) + '%0A';
   msg += 'Ciudad: ' + encodeURIComponent(ciudad) + ' – ' + encodeURIComponent(dept) + '%0A';
   msg += '%0A💰 *Total a pagar: ' + encodeURIComponent(fmt(total)) + '*%0A';
-  msg += '%0APor favor confirmar disponibilidad y método de pago.';
+  msg += effiOk
+    ? '%0A✅ Pedido registrado en EFFI automáticamente.'
+    : '%0A⚠️ Por favor registrar en EFFI manualmente.';
+
   window.open('https://wa.me/' + WA + '?text=' + msg, '_blank');
+
+  if (effiOk) showToast('¡Pedido enviado a EFFI y WhatsApp! ✓');
+  else showToast('Pedido enviado por WhatsApp (revisar EFFI manualmente)');
+
   closeOrderForm();
+  cart = [];
+  saveCart();
+  updateCartUI();
 }
 
 // ── DETALLE ──────────────────────────────────────────
