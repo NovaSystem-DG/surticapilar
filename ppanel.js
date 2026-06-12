@@ -7,7 +7,7 @@ const BASE = 'https://surticapilar.com/wp-content/uploads/';
 
 const tagNames = {
   shampoo: 'Shampoo', acondicionador: 'Acondicionador', mascarilla: 'Mascarilla',
-  tratamiento: 'Tratamiento', leavein: 'Leave-In', oleo: 'Oleo',
+  Termoprotector: 'Termoprotector', leavein: 'Leave-In', oleo: 'Oleo',
   alisadora: 'Alisadora', accesorio: 'Accesorio', tinte: 'Tinte'
 };
 
@@ -354,7 +354,7 @@ function getDefaultProducts() {
     { id: 2, name: 'Acondicionador Glow x500ml', price: 64900, cat: 'acondicionador', img: BASE + '2026/05/Copia-de-Copia-de-pagina-web-2-300x300.png', instock: true, brand: 'Yellow', desc: 'Acondicionador con efecto brillo intenso.' },
     { id: 3, name: 'Shampoo Hidro-Nutritivo x500ml', price: 62900, cat: 'shampoo', img: BASE + '2026/05/Copia-de-Copia-de-pagina-web-4-300x300.png', instock: true, brand: 'Yellow', desc: 'Shampoo con nutricion profunda.' },
     { id: 4, name: 'Molecular Serum x150ml', price: 62900, cat: 'leavein', img: BASE + '2026/05/Copia-de-Copia-de-pagina-web-3-300x300.png', instock: true, brand: 'Organic Fiber', desc: 'Serum molecular de accion profunda.' },
-    { id: 5, name: 'Protector Thermal Yellow x250ml', price: 69000, cat: 'tratamiento', img: BASE + '2026/01/Copia-de-Copia-de-pagina-web-23-300x300.png', instock: true, brand: 'Yellow', desc: 'Termoprotector Yellow hasta 230C.' },
+    { id: 5, name: 'Protector Thermal Yellow x250ml', price: 69000, cat: 'Termoprotector', img: BASE + '2026/01/Copia-de-Copia-de-pagina-web-23-300x300.png', instock: true, brand: 'Yellow', desc: 'Termoprotector Yellow hasta 230C.' },
     { id: 6, name: 'Dark & Lovely Alisador Regular Sin Lejia', price: 69000, cat: 'alisadora', img: BASE + '2025/05/Dark-LovelyDark-Lovely-Alisador-300x300.png', instock: true, brand: 'Dark & Lovely', desc: 'Alisador Dark & Lovely Regular Sin Lejia.' },
   ];
 }
