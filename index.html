@@ -10,7 +10,6 @@
   <meta name="keywords"
     content="productos capilares Medellín, Dark and Lovely, shampoo profesional, mascarilla capilar, Termoprotector cabello, surticapilar, Yellow, Terra by Lendan, Lendan Plex Forte, SheaMoisture" />
   <meta name="robots" content="index, follow" />
-  <!-- FAVICON -->
   <link rel="icon" href="assets\img\logo-tienda .jpeg" type="image/jpeg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link
@@ -205,10 +204,10 @@
         <div class="om-row">
           <div class="fg">
             <label>Teléfono / WhatsApp *</label>
-            <input type="tel" id="omTelefono" placeholder="Ej: 3001234567" />
+            <input type="tel" id="omTelefono" placeholder="Ej: 3001234567" maxlength="10" />
           </div>
           <div class="fg">
-            <label>Correo electrónico</label>
+            <label>Correo electrónico *</label>
             <input type="email" id="omCorreo" placeholder="tu@correo.com" />
           </div>
         </div>
@@ -257,7 +256,9 @@
           </div>
           <div class="fg">
             <label>Ciudad / Municipio *</label>
-            <input type="text" id="omCiudad" placeholder="Tu ciudad" />
+            <select id="omCiudad">
+              <option value="">— Selecciona tu ciudad —</option>
+            </select>
           </div>
         </div>
 
@@ -296,11 +297,8 @@
               </div>
               <br>
               <div class="payment-note">
-                <p>💳 Tú decides cómo realizar tu compra:</p>
-                <ul class="payment-list">
-                  <li>Paga ahora y envíanos el comprobante por WhatsApp.</li>
-                  <li>Enviar primero el pedido y coordinar el pago con el vendedor.</li>
-                </ul>
+                <p>¿Tienes dudas sobre el pago o el envío? Contáctanos por WhatsApp y con gusto te ayudamos a coordinar
+                  todo.</p>
               </div>
             </div>
             <div class="om-total-label">Total a pagar</div>
