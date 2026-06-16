@@ -122,7 +122,7 @@ function renderTable() {
   });
   const tbody = document.getElementById('invTbody');
   if (!list.length) {
-    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:2rem;color:#aaa">No se encontraron productos</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:2rem;color:#aaa">No se encontraron productos</td></tr>';
     return;
   }
   tbody.innerHTML = list.map(p => `
@@ -138,7 +138,21 @@ function renderTable() {
         ${p.priceMax ? '<br><span style="font-size:.7rem;color:#6b3a46">hasta $' + Math.round(p.priceMax).toLocaleString('es-CO') + '</span>' : ''}
       </td>
       <td>${tagNames[p.cat] || p.cat}</td>
-      <td><span class="stock-badge ${p.instock ? 'in' : 'out'}">${p.instock ? '● En stock' : '● Agotado'}</span></td>
+      <td>
+        ${p.stockQty !== undefined && p.stockQty !== null && p.stockQty !== ''
+          ? `<input class="stock-qty-input" type="number" min="0" value="${p.stockQty}"
+               onchange="updateStockQty(${p.id}, this.value)"
+               title="Editar unidades disponibles" />`
+          : '<span style="font-size:.75rem;color:#aaa">Sin conteo</span>'}
+      </td>
+      <td>
+        <span class="stock-badge ${p.instock ? (p.stockQty !== undefined && p.stockQty !== null && parseInt(p.stockQty) <= 5 ? 'warn' : 'in') : 'out'}">
+          ${p.instock ? '● En stock' : '● Agotado'}
+        </span>
+        ${p.stockQty !== undefined && p.stockQty !== null && p.stockQty !== ''
+          ? '<br><span style="font-size:.72rem;color:#6b3a46">' + p.stockQty + ' uds.</span>'
+          : ''}
+      </td>
       <td><div class="act-row">
         <button class="act-btn toggle-stock" onclick="toggleStock(${p.id})">${p.instock ? 'Marcar agotado' : 'Marcar en stock'}</button>
         <button class="act-btn edit" onclick="openEdit(${p.id})">✏️ Editar</button>
@@ -148,11 +162,32 @@ function renderTable() {
   updateStats();
 }
 
+// ═══════════════════════════════════════════
+// ACTUALIZAR STOCK QTY DIRECTO DESDE LA TABLA
+// ═══════════════════════════════════════════
+async function updateStockQty(id, val) {
+  const p = products.find(x => x.id === id);
+  if (!p) return;
+  const parsed = val.trim() !== '' ? parseInt(val) : undefined;
+  p.stockQty = parsed;
+  // Si llega a 0, marcar agotado automáticamente
+  if (parsed !== undefined && parsed <= 0) {
+    p.instock = false;
+    p.stockQty = 0;
+    toast('Stock en 0 → marcado como agotado', 'success');
+  }
+  renderTable();
+  const ok = await pushProducts();
+  if (ok) toast('Unidades actualizadas ✓', 'success');
+}
+
 function updateStats() {
   const inStock = products.filter(p => p.instock).length;
+  const lowStock = products.filter(p => p.instock && p.stockQty !== undefined && p.stockQty !== null && parseInt(p.stockQty) <= 5).length;
   document.getElementById('statTotal').textContent = products.length;
   document.getElementById('statInStock').textContent = inStock;
   document.getElementById('statOutStock').textContent = products.length - inStock;
+  document.getElementById('statLow').textContent = lowStock;
   document.getElementById('statCats').textContent = new Set(products.map(p => p.cat)).size;
 }
 
@@ -207,6 +242,8 @@ function openEdit(id) {
   document.getElementById('editImg').value = p.img;
   document.getElementById('editDesc').value = p.desc || '';
   document.getElementById('editWasPrice').value = p.wasPrice || '';
+  // ── CAMBIO 1: cargar stockQty en el modal de edición ──
+  document.getElementById('editStockQty').value = (p.stockQty !== undefined && p.stockQty !== null) ? p.stockQty : '';
   previewImg('editImg', 'editImgPreview');
   loadSizesIntoForm('editSizesList', p.sizes);
   document.getElementById('editModal').classList.add('open');
@@ -224,6 +261,14 @@ async function saveEdit() {
   p.desc = document.getElementById('editDesc').value.trim();
   const wp = parseFloat(document.getElementById('editWasPrice').value);
   p.wasPrice = wp || undefined;
+  // ── CAMBIO 2: guardar stockQty al editar ──
+  const sq = document.getElementById('editStockQty').value.trim();
+  p.stockQty = sq !== '' ? parseInt(sq) : undefined;
+  // Si stock llega a 0, marcar agotado automáticamente
+  if (p.stockQty !== undefined && p.stockQty <= 0) {
+    p.instock = false;
+    p.stockQty = 0;
+  }
   const sizes = getSizes('editSizesList');
   p.sizes = sizes.length > 0 ? sizes : undefined;
   p.priceMax = sizes.length > 1 ? Math.max(...sizes.map(s => s.price)) : undefined;
@@ -242,6 +287,8 @@ async function saveNewProduct() {
   if (!name || !price) { toast('Escribe el nombre y el precio', 'error'); return; }
   const sizes = getSizes('addSizesList');
   const wp = parseFloat(document.getElementById('addWasPrice').value);
+  // ── CAMBIO 3: leer stockQty al agregar producto ──
+  const stockQtyVal = document.getElementById('addStockQty').value.trim();
   const newId = products.length ? Math.max(...products.map(x => x.id)) + 1 : 1;
   const img = document.getElementById('addImg').value.trim()
     || (BASE + '2026/05/Copia-de-Copia-de-pagina-web-1-300x300.png');
@@ -255,6 +302,7 @@ async function saveNewProduct() {
     brand: document.getElementById('addBrand').value.trim(),
     desc: document.getElementById('addDesc').value.trim(),
     wasPrice: wp || undefined,
+    stockQty: stockQtyVal !== '' ? parseInt(stockQtyVal) : undefined,
     sizes: sizes.length > 0 ? sizes : undefined,
     priceMax: sizes.length > 1 ? Math.max(...sizes.map(s => s.price)) : undefined,
   };
@@ -267,7 +315,7 @@ async function saveNewProduct() {
 }
 
 function clearAddForm() {
-  ['addName', 'addBrand', 'addPrice', 'addImg', 'addDesc', 'addWasPrice'].forEach(id => {
+  ['addName', 'addBrand', 'addPrice', 'addImg', 'addDesc', 'addWasPrice', 'addStockQty'].forEach(id => {
     document.getElementById(id).value = '';
   });
   document.getElementById('addSizesList').innerHTML = '';
@@ -276,7 +324,6 @@ function clearAddForm() {
 
 // ═══════════════════════════════════════════
 // SIZES — agregar fila, leer filas, cargar al editar
-// Cada fila tiene: etiqueta | precio | URL imagen (opcional)
 // ═══════════════════════════════════════════
 function addSizeRow(listId, sizeData) {
   const list = document.getElementById(listId);

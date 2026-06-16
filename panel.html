@@ -47,7 +47,6 @@
             min-height: 100vh
         }
 
-        /* PANTALLA BLOQUEADA */
         #blocked {
             display: none;
             position: fixed;
@@ -62,13 +61,6 @@
             display: flex
         }
 
-        .blocked-box {
-            text-align: center;
-            color: var(--txt2);
-            font-size: .9rem
-        }
-
-        /* NAV */
         nav {
             background: var(--vd);
             height: 60px;
@@ -143,7 +135,6 @@
             color: #666
         }
 
-        /* LAYOUT */
         .page {
             max-width: 1100px;
             margin: 0 auto;
@@ -167,10 +158,9 @@
             margin-top: .3rem
         }
 
-        /* STATS */
         .stats {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             gap: 1rem;
             margin-bottom: 2rem
         }
@@ -197,7 +187,10 @@
             font-weight: 500
         }
 
-        /* TABS */
+        .stat-card.warn .val {
+            color: var(--orange)
+        }
+
         .tabs {
             display: flex;
             gap: 4px;
@@ -239,7 +232,6 @@
             display: block
         }
 
-        /* TABLE */
         .tbl-wrap {
             border: 1px solid var(--border);
             border-radius: 12px;
@@ -363,6 +355,26 @@
             color: var(--red)
         }
 
+        .stock-badge.warn {
+            background: var(--orange-bg);
+            color: var(--orange)
+        }
+
+        .stock-qty-input {
+            width: 72px;
+            padding: 5px 8px;
+            border: 1.5px solid #d4b0ba;
+            border-radius: 7px;
+            font-size: .82rem;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            text-align: center
+        }
+
+        .stock-qty-input:focus {
+            border-color: var(--v)
+        }
+
         .act-row {
             display: flex;
             gap: 6px;
@@ -400,7 +412,6 @@
             color: var(--red)
         }
 
-        /* FORM PANEL */
         .form-card {
             background: var(--white);
             border: 1px solid var(--border);
@@ -420,10 +431,6 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 14px
-        }
-
-        .form-grid.full {
-            grid-template-columns: 1fr
         }
 
         .fg {
@@ -516,7 +523,6 @@
             background: #ffd4d4
         }
 
-        /* IMG PREVIEW */
         .img-preview {
             width: 80px;
             height: 80px;
@@ -531,7 +537,6 @@
             display: block
         }
 
-        /* SIZES MANAGER */
         .sizes-list {
             display: flex;
             flex-direction: column;
@@ -583,7 +588,6 @@
             margin-top: 6px
         }
 
-        /* MODAL */
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -618,7 +622,6 @@
             font-weight: 700
         }
 
-        /* JSONBIN SETUP */
         .setup-card {
             background: linear-gradient(135deg, var(--vd), var(--vm));
             color: var(--white);
@@ -715,7 +718,6 @@
             background: #d4a56a
         }
 
-        /* CONFIRM DIALOG */
         .confirm-overlay {
             position: fixed;
             inset: 0;
@@ -760,7 +762,6 @@
             justify-content: center
         }
 
-        /* TOAST */
         .toast {
             position: fixed;
             bottom: 1.5rem;
@@ -817,10 +818,8 @@
 
 <body>
 
-    <!-- PANTALLA SI NO TIENE EL KEY CORRECTO -->
     <div id="blocked"></div>
 
-    <!-- NAV -->
     <nav id="mainNav" style="display:none">
         <div class="logo">Surti<b>capilar</b> <small>Admin</small></div>
         <div class="nav-r">
@@ -829,21 +828,18 @@
         </div>
     </nav>
 
-    <!-- CONTENIDO ADMIN -->
     <div class="page" id="mainPage" style="display:none">
 
-        <!-- SETUP JSONBIN (se muestra si no está configurado) -->
         <div class="setup-card" id="setupCard">
             <h2>⚙️ Configurar JSONBin</h2>
-            <p>Configura JSONBin para que los cambios que hagas aquí sean visibles para todos los clientes. Solo se hace
-                una vez.</p>
+            <p>Configura JSONBin para que los cambios sean visibles para todos los clientes. Solo se hace una vez.</p>
             <div class="setup-steps">
                 <div class="setup-step"><span class="step-num">1</span><span>Ve a <strong>jsonbin.io</strong> y crea una
                         cuenta gratuita</span></div>
-                <div class="setup-step"><span class="step-num">2</span><span>Haz clic en <strong>+ Create Bin</strong>,
-                        pega <code>{"products":[]}</code> y guarda</span></div>
-                <div class="setup-step"><span class="step-num">3</span><span>Copia el <strong>BIN ID</strong> (está en
-                        la URL) y la <strong>Master Key</strong> (en Account → API Keys)</span></div>
+                <div class="setup-step"><span class="step-num">2</span><span>Clic en <strong>+ Create Bin</strong>, pega
+                        <code>{"products":[]}</code> y guarda</span></div>
+                <div class="setup-step"><span class="step-num">3</span><span>Copia el <strong>BIN ID</strong> (URL) y la
+                        <strong>Master Key</strong> (Account → API Keys)</span></div>
                 <div class="setup-step"><span class="step-num">4</span><span>Pégalos abajo y haz clic en Guardar
                         configuración</span></div>
             </div>
@@ -854,11 +850,11 @@
             <button class="setup-save-btn" onclick="saveConfig()">Guardar configuración</button>
         </div>
 
-        <!-- STATS -->
         <div class="page-header">
             <h1>Panel de Inventario</h1>
             <p>Gestiona los productos de la tienda. Los cambios se ven al instante para todos los clientes.</p>
         </div>
+
         <div class="stats">
             <div class="stat-card">
                 <div class="val" id="statTotal">0</div>
@@ -872,13 +868,16 @@
                 <div class="val" id="statOutStock">0</div>
                 <div class="lbl">Agotados</div>
             </div>
+            <div class="stat-card warn">
+                <div class="val" id="statLow">0</div>
+                <div class="lbl">Stock bajo (≤5)</div>
+            </div>
             <div class="stat-card">
                 <div class="val" id="statCats">0</div>
                 <div class="lbl">Categorías</div>
             </div>
         </div>
 
-        <!-- TABS -->
         <div class="tabs">
             <button class="tab on" onclick="showTab('inv',this)">📦 Inventario</button>
             <button class="tab" onclick="showTab('add',this)">➕ Agregar producto</button>
@@ -915,7 +914,8 @@
                             <th>Producto</th>
                             <th>Precio</th>
                             <th>Categoría</th>
-                            <th>Stock</th>
+                            <th>Uds. disponibles</th>
+                            <th>Estado</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -949,6 +949,16 @@
                             <option value="tinte">Tinte</option>
                         </select>
                     </div>
+                    <div class="fg">
+                        <label>Unidades disponibles</label>
+                        <input type="number" min="0" id="addStockQty" placeholder="Vacío = sin conteo" />
+                        <span class="hint">Si ingresas un número, se descuenta automáticamente y avisa cuando queden
+                            ≤5</span>
+                    </div>
+                    <div class="fg">
+                        <label>Precio anterior (si está en oferta)</label>
+                        <input type="number" id="addWasPrice" placeholder="Ej: 68000 — vacío si no hay oferta" />
+                    </div>
                     <div class="fg span2">
                         <label>URL de la imagen</label>
                         <div style="display:flex;gap:10px;align-items:flex-start">
@@ -956,7 +966,7 @@
                                 <input type="text" id="addImg"
                                     placeholder="https://surticapilar.com/wp-content/uploads/..."
                                     oninput="previewImg('addImg','addImgPreview')" />
-                                <p class="hint">Copia la URL de la imagen desde la página actual de la tienda</p>
+                                <p class="hint">Copia la URL de la imagen desde la página de la tienda</p>
                             </div>
                             <img id="addImgPreview" class="img-preview" src="" alt="" />
                         </div>
@@ -967,13 +977,9 @@
                             placeholder="Describe el producto, para qué sirve, sus beneficios..."></textarea>
                     </div>
                     <div class="fg span2">
-                        <label>Precio anterior (si está en oferta)</label>
-                        <input type="number" id="addWasPrice" placeholder="Ej: 68000 — dejar vacío si no hay oferta" />
-                    </div>
-                    <div class="fg span2">
                         <label>Presentaciones / Tamaños (opcional)</label>
                         <p class="hint">Si el producto viene en varios tamaños con precios distintos, agrégalos aquí.
-                        </p>
+                            Puedes poner URL de imagen por tamaño.</p>
                         <div class="sizes-list" id="addSizesList"></div>
                         <button class="add-size-btn" onclick="addSizeRow('addSizesList')">+ Agregar tamaño</button>
                     </div>
@@ -1008,6 +1014,13 @@
                         <option value="tinte">Tinte</option>
                     </select>
                 </div>
+                <div class="fg">
+                    <label>Unidades disponibles</label>
+                    <input type="number" min="0" id="editStockQty" placeholder="Vacío = sin conteo" />
+                    <span class="hint">Deja vacío si no quieres llevar conteo de este producto</span>
+                </div>
+                <div class="fg"><label>Precio anterior (oferta)</label><input type="number" id="editWasPrice"
+                        placeholder="Vacío si no hay oferta" /></div>
                 <div class="fg span2">
                     <label>URL imagen</label>
                     <div style="display:flex;gap:10px;align-items:flex-start">
@@ -1017,10 +1030,9 @@
                     </div>
                 </div>
                 <div class="fg span2"><label>Descripción</label><textarea id="editDesc" rows="3"></textarea></div>
-                <div class="fg"><label>Precio anterior (oferta)</label><input type="number" id="editWasPrice"
-                        placeholder="Dejar vacío si no hay oferta" /></div>
                 <div class="fg span2">
                     <label>Presentaciones / Tamaños</label>
+                    <p class="hint">Etiqueta · Precio · URL imagen (opcional por tamaño)</p>
                     <div class="sizes-list" id="editSizesList"></div>
                     <button class="add-size-btn" onclick="addSizeRow('editSizesList')">+ Agregar tamaño</button>
                 </div>
@@ -1045,7 +1057,6 @@
     </div>
 
     <div class="toast" id="toast"></div>
-
     <script src="ppanel.js"></script>
 </body>
 
