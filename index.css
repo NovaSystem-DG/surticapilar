@@ -1588,53 +1588,53 @@ footer small {
   }
 }
 
-.payment-note{
-  margin-top:20px;
+.payment-note {
+  margin-top: 20px;
 }
 
-.payment-note p{
-  margin:0 0 16px;
-  line-height:1.5;
+.payment-note p {
+  margin: 0 0 16px;
+  line-height: 1.5;
 }
 
-.payment-warning{
-  margin:12px 0;
-  padding:12px 14px;
-  border-radius:12px;
-  background:#fff4e5;
-  font-weight:600;
-  line-height:1.4;
+.payment-warning {
+  margin: 12px 0;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: #fff4e5;
+  font-weight: 600;
+  line-height: 1.4;
 }
 
-.payment-info{
-  margin-top:12px;
-  padding:12px 14px;
-  border-radius:12px;
-  background:#f7f1ee;
-  line-height:1.5;
+.payment-info {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: #f7f1ee;
+  line-height: 1.5;
 }
 
-.payment-list{
-  margin:12px 0;
-  padding-left:20px;
-  line-height:1.6;
+.payment-list {
+  margin: 12px 0;
+  padding-left: 20px;
+  line-height: 1.6;
 }
 
-.payment-warning{
-  margin-top:15px;
-  padding:12px;
-  border-radius:12px;
-  background:#fff4e5;
-  line-height:1.5;
-  font-weight:600;
+.payment-warning {
+  margin-top: 15px;
+  padding: 12px;
+  border-radius: 12px;
+  background: #fff4e5;
+  line-height: 1.5;
+  font-weight: 600;
 }
 
-.payment-info{
-  margin-top:10px;
-  padding:12px;
-  border-radius:12px;
-  background:#f7f1ee;
-  line-height:1.5;
+.payment-info {
+  margin-top: 10px;
+  padding: 12px;
+  border-radius: 12px;
+  background: #f7f1ee;
+  line-height: 1.5;
 }
 
 /* ── TALLAS CON STOCK INDEPENDIENTE ── */
@@ -1646,7 +1646,7 @@ footer small {
   position: relative;
 }
 .size-opt.size-out::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 50%;
   left: 8%;
@@ -1710,7 +1710,7 @@ tbody td:last-child {
 }
 
 .size-stock-label {
-  font-size: .72rem;
+  font-size: 0.72rem;
   font-weight: 700;
   color: #5c0a1f;
   min-width: 46px;
@@ -1726,8 +1726,8 @@ tbody td:last-child {
   padding: 4px 7px;
   border: 1.5px solid #d4b0ba;
   border-radius: 6px;
-  font-size: .8rem;
-  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  font-family: "Inter", sans-serif;
   outline: none;
   text-align: center;
   background: #fff;
@@ -1741,20 +1741,20 @@ tbody td:last-child {
   padding: 5px 11px;
   border-radius: 20px;
   cursor: pointer;
-  font-size: .72rem;
+  font-size: 0.72rem;
   font-weight: 600;
-  font-family: 'Inter', sans-serif;
-  transition: all .18s;
+  font-family: "Inter", sans-serif;
+  transition: all 0.18s;
   white-space: nowrap;
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  letter-spacing: .01em;
+  letter-spacing: 0.01em;
 }
 
 .size-toggle-btn::before {
-  content: '';
+  content: "";
   width: 6px;
   height: 6px;
   border-radius: 50%;
@@ -1763,7 +1763,7 @@ tbody td:last-child {
 
 .size-toggle-btn:hover {
   transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(0,0,0,.12);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
 
 .size-toggle-btn.in {
@@ -1774,7 +1774,7 @@ tbody td:last-child {
 
 .size-toggle-btn.in::before {
   background: #22c55e;
-  box-shadow: 0 0 0 2px rgba(34,197,94,.25);
+  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.25);
 }
 
 .size-toggle-btn.out {
@@ -1785,7 +1785,7 @@ tbody td:last-child {
 
 .size-toggle-btn.out::before {
   background: #ef4444;
-  box-shadow: 0 0 0 2px rgba(239,68,68,.2);
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
 }
 
 /* Filas del formulario de tallas — campo uds. visible */
