@@ -1588,51 +1588,172 @@ footer small {
   }
 }
 
-.payment-note{
-  margin-top:20px;
+.payment-note {
+  margin-top: 20px;
 }
 
-.payment-note p{
-  margin:0 0 16px;
-  line-height:1.5;
+.payment-note p {
+  margin: 0 0 16px;
+  line-height: 1.5;
 }
 
-.payment-warning{
-  margin:12px 0;
-  padding:12px 14px;
-  border-radius:12px;
-  background:#fff4e5;
-  font-weight:600;
-  line-height:1.4;
+.payment-warning {
+  margin: 12px 0;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: #fff4e5;
+  font-weight: 600;
+  line-height: 1.4;
 }
 
-.payment-info{
-  margin-top:12px;
-  padding:12px 14px;
-  border-radius:12px;
-  background:#f7f1ee;
-  line-height:1.5;
+.payment-info {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: #f7f1ee;
+  line-height: 1.5;
 }
 
-.payment-list{
-  margin:12px 0;
-  padding-left:20px;
-  line-height:1.6;
+.payment-list {
+  margin: 12px 0;
+  padding-left: 20px;
+  line-height: 1.6;
 }
 
-.payment-warning{
-  margin-top:15px;
-  padding:12px;
-  border-radius:12px;
-  background:#fff4e5;
-  line-height:1.5;
-  font-weight:600;
+.payment-warning {
+  margin-top: 15px;
+  padding: 12px;
+  border-radius: 12px;
+  background: #fff4e5;
+  line-height: 1.5;
+  font-weight: 600;
 }
 
-.payment-info{
-  margin-top:10px;
-  padding:12px;
-  border-radius:12px;
-  background:#f7f1ee;
-  line-height:1.5;
+.payment-info {
+  margin-top: 10px;
+  padding: 12px;
+  border-radius: 12px;
+  background: #f7f1ee;
+  line-height: 1.5;
+}
+
+/* ════════════════════════════════════════
+   PATCH para panel.html — pegar dentro del <style> existente
+   o en un archivo .css aparte enlazado después del existente
+   ════════════════════════════════════════ */
+
+/* 1. Panel más ancho */
+.page {
+  max-width: 1400px; /* antes era 1100px */
+}
+
+/* 2. Tabla con scroll horizontal más cómodo */
+.tbl-wrap {
+  min-width: 0;
+}
+
+/* 3. Botones de acción en columna, con espacio */
+.act-row {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 130px;
+}
+
+.act-btn {
+  width: 100%;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* 4. Tabla multi-talla: filas de stock por presentación */
+.size-stock-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.size-stock-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: nowrap;
+}
+
+.size-stock-label {
+  font-size: 0.73rem;
+  font-weight: 600;
+  color: var(--txt2);
+  min-width: 42px;
+  flex-shrink: 0;
+}
+
+.size-toggle-btn {
+  padding: 4px 9px;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 0.7rem;
+  font-weight: 600;
+  font-family: "Inter", sans-serif;
+  transition: 0.15s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.size-toggle-btn:hover {
+  filter: brightness(0.9);
+}
+
+.size-toggle-btn.in {
+  background: var(--green-bg);
+  color: var(--green);
+}
+
+.size-toggle-btn.out {
+  background: var(--red-bg);
+  color: var(--red);
+}
+
+/* 5. Columna de acciones — ancho fijo para que no apriete */
+thead th:last-child,
+tbody td:last-child {
+  min-width: 145px;
+}
+
+/* 6. Formulario de tallas — campo de unidades visible */
+.size-row {
+  flex-wrap: wrap;
+}
+
+.size-row input[type="number"][style*="max-width:75px"] {
+  max-width: 75px;
+  min-width: 60px;
+}
+
+/* ── TALLAS CON STOCK INDEPENDIENTE ── */
+.size-opt.size-out {
+  opacity: 0.45;
+  cursor: not-allowed;
+  border-color: #e0c8ce;
+  color: #aaa;
+  position: relative;
+}
+.size-opt.size-out::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 8%;
+  width: 84%;
+  height: 1.5px;
+  background: #c0a0a8;
+  transform: rotate(-10deg);
+}
+.size-stock-hint {
+  display: block;
+  font-size: 0.58rem;
+  opacity: 0.75;
+  margin-top: 1px;
+  font-weight: 400;
+  letter-spacing: 0;
 }

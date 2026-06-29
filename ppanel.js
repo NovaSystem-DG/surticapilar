@@ -107,6 +107,20 @@ function setStatus(type, msg) {
 }
 
 // ═══════════════════════════════════════════
+// HELPERS DE STOCK POR TALLA
+// ═══════════════════════════════════════════
+function getSizeInstock(p, sizeLabel) {
+  if (p.sizes && p.sizes.length > 1 && sizeLabel) {
+    const s = p.sizes.find(x => x.label === sizeLabel);
+    if (!s) return false;
+    if (typeof s.instock === 'boolean') return s.instock;
+    if (s.stockQty !== undefined && s.stockQty !== null && parseInt(s.stockQty) <= 0) return false;
+    return p.instock;
+  }
+  return p.instock;
+}
+
+// ═══════════════════════════════════════════
 // TABLA INVENTARIO
 // ═══════════════════════════════════════════
 function renderTable() {
@@ -125,52 +139,86 @@ function renderTable() {
     tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:2rem;color:#aaa">No se encontraron productos</td></tr>';
     return;
   }
-  tbody.innerHTML = list.map(p => `
-    <tr>
+  tbody.innerHTML = list.map(p => {
+    const hasSizes = p.sizes && p.sizes.length > 1;
+
+    // Stock cell — per-size inputs if multi-size, single input otherwise
+    let stockCell = '';
+    if (hasSizes) {
+      stockCell = '<div class="size-stock-rows">'
+        + p.sizes.map((s, idx) => {
+          const sInstock = getSizeInstock(p, s.label);
+          return `<div class="size-stock-row">
+            <span class="size-stock-label">${s.label}</span>
+            <input class="stock-qty-input" type="number" min="0"
+              value="${s.stockQty !== undefined && s.stockQty !== null ? s.stockQty : ''}"
+              placeholder="∞"
+              onchange="updateSizeStockQty(${p.id}, ${idx}, this.value)"
+              title="Unidades de ${s.label}" />
+            <button class="size-toggle-btn ${sInstock ? 'in' : 'out'}"
+              onclick="toggleSizeStock(${p.id}, ${idx})">${sInstock ? 'Disponible' : 'Agotado'}</button>
+          </div>`;
+        }).join('')
+        + '</div>';
+    } else {
+      stockCell = p.stockQty !== undefined && p.stockQty !== null && p.stockQty !== ''
+        ? `<input class="stock-qty-input" type="number" min="0" value="${p.stockQty}"
+             onchange="updateStockQty(${p.id}, this.value)" title="Editar unidades" />`
+        : '<span style="font-size:.75rem;color:#aaa">Sin conteo</span>';
+    }
+
+    // Status cell
+    let statusCell = '';
+    if (hasSizes) {
+      statusCell = p.sizes.map(s => {
+        const si = getSizeInstock(p, s.label);
+        const lowWarn = si && s.stockQty !== undefined && s.stockQty !== null && parseInt(s.stockQty) <= 5;
+        return `<span class="stock-badge ${si ? (lowWarn ? 'warn' : 'in') : 'out'}" style="display:block;margin-bottom:3px">
+          ${s.label}: ${si ? '● Stock' : '● Agotado'}${s.stockQty !== undefined && s.stockQty !== null ? ' (' + s.stockQty + ')' : ''}
+        </span>`;
+      }).join('');
+    } else {
+      const lowWarn = p.instock && p.stockQty !== undefined && p.stockQty !== null && parseInt(p.stockQty) <= 5;
+      statusCell = `<span class="stock-badge ${p.instock ? (lowWarn ? 'warn' : 'in') : 'out'}">
+        ${p.instock ? '● En stock' : '● Agotado'}
+      </span>
+      ${p.stockQty !== undefined && p.stockQty !== null && p.stockQty !== ''
+          ? '<br><span style="font-size:.72rem;color:#6b3a46">' + p.stockQty + ' uds.</span>'
+          : ''}`;
+    }
+
+    return `<tr>
       <td><img class="t-img" src="${p.img}" onerror="this.style.background='#f0e0e5';this.src=''"></td>
       <td>
         <p class="t-name">${p.name}</p>
         ${p.brand ? '<p class="t-brand">' + p.brand + '</p>' : ''}
-        ${p.sizes && p.sizes.length > 1 ? '<p class="t-brand">' + p.sizes.map(s => s.label).join(' · ') + '</p>' : ''}
+        ${hasSizes ? '<p class="t-brand">' + p.sizes.map(s => s.label).join(' · ') + '</p>' : ''}
       </td>
       <td style="font-weight:600;color:#5c0a1f">
         $${Math.round(p.price).toLocaleString('es-CO')}
         ${p.priceMax ? '<br><span style="font-size:.7rem;color:#6b3a46">hasta $' + Math.round(p.priceMax).toLocaleString('es-CO') + '</span>' : ''}
       </td>
       <td>${tagNames[p.cat] || p.cat}</td>
+      <td>${stockCell}</td>
+      <td>${statusCell}</td>
       <td>
-        ${p.stockQty !== undefined && p.stockQty !== null && p.stockQty !== ''
-          ? `<input class="stock-qty-input" type="number" min="0" value="${p.stockQty}"
-               onchange="updateStockQty(${p.id}, this.value)"
-               title="Editar unidades disponibles" />`
-          : '<span style="font-size:.75rem;color:#aaa">Sin conteo</span>'}
+        <div class="act-row">
+          ${!hasSizes ? `<button class="act-btn toggle-stock" onclick="toggleStock(${p.id})">${p.instock ? 'Marcar agotado' : 'Marcar en stock'}</button>` : ''}
+          <button class="act-btn edit" onclick="openEdit(${p.id})">✏️ Editar</button>
+          <button class="act-btn del" onclick="confirmDelete(${p.id})">🗑️</button>
+        </div>
       </td>
-      <td>
-        <span class="stock-badge ${p.instock ? (p.stockQty !== undefined && p.stockQty !== null && parseInt(p.stockQty) <= 5 ? 'warn' : 'in') : 'out'}">
-          ${p.instock ? '● En stock' : '● Agotado'}
-        </span>
-        ${p.stockQty !== undefined && p.stockQty !== null && p.stockQty !== ''
-          ? '<br><span style="font-size:.72rem;color:#6b3a46">' + p.stockQty + ' uds.</span>'
-          : ''}
-      </td>
-      <td><div class="act-row">
-        <button class="act-btn toggle-stock" onclick="toggleStock(${p.id})">${p.instock ? 'Marcar agotado' : 'Marcar en stock'}</button>
-        <button class="act-btn edit" onclick="openEdit(${p.id})">✏️ Editar</button>
-        <button class="act-btn del" onclick="confirmDelete(${p.id})">🗑️</button>
-      </div></td>
-    </tr>`).join('');
+    </tr>`;
+  }).join('');
   updateStats();
 }
 
-// ═══════════════════════════════════════════
-// ACTUALIZAR STOCK QTY DIRECTO DESDE LA TABLA
-// ═══════════════════════════════════════════
+// ── ACTUALIZAR STOCK QTY PRODUCTO SIN TALLAS ──────────
 async function updateStockQty(id, val) {
   const p = products.find(x => x.id === id);
   if (!p) return;
   const parsed = val.trim() !== '' ? parseInt(val) : undefined;
   p.stockQty = parsed;
-  // Si llega a 0, marcar agotado automáticamente
   if (parsed !== undefined && parsed <= 0) {
     p.instock = false;
     p.stockQty = 0;
@@ -179,6 +227,44 @@ async function updateStockQty(id, val) {
   renderTable();
   const ok = await pushProducts();
   if (ok) toast('Unidades actualizadas ✓', 'success');
+}
+
+// ── ACTUALIZAR STOCK QTY DE UNA TALLA ESPECÍFICA ──────
+async function updateSizeStockQty(productId, sizeIdx, val) {
+  const p = products.find(x => x.id === productId);
+  if (!p || !p.sizes || !p.sizes[sizeIdx]) return;
+  const s = p.sizes[sizeIdx];
+  const parsed = val.trim() !== '' ? parseInt(val) : undefined;
+  s.stockQty = parsed;
+  // Si llega a 0, marcar esa talla como agotada
+  if (parsed !== undefined && parsed <= 0) {
+    s.instock = false;
+    s.stockQty = 0;
+    toast(s.label + ' llegó a 0 → marcado como agotado', 'success');
+  } else if (parsed > 0 && s.instock === false) {
+    // Si se agrega stock de nuevo, volver a disponible
+    s.instock = true;
+  }
+  renderTable();
+  const ok = await pushProducts();
+  if (ok) toast('Stock de ' + s.label + ' actualizado ✓', 'success');
+}
+
+// ── TOGGLE STOCK DE UNA TALLA ESPECÍFICA ──────────────
+async function toggleSizeStock(productId, sizeIdx) {
+  const p = products.find(x => x.id === productId);
+  if (!p || !p.sizes || !p.sizes[sizeIdx]) return;
+  const s = p.sizes[sizeIdx];
+  // Determinar estado actual
+  const currentInstock = getSizeInstock(p, s.label);
+  s.instock = !currentInstock;
+  if (!s.instock) {
+    // Si se marca agotado, poner stock a 0
+    if (s.stockQty !== undefined && s.stockQty !== null) s.stockQty = 0;
+  }
+  renderTable();
+  const ok = await pushProducts();
+  if (ok) toast(s.label + (s.instock ? ' → disponible ✓' : ' → agotado ✓'), 'success');
 }
 
 function updateStats() {
@@ -192,7 +278,7 @@ function updateStats() {
 }
 
 // ═══════════════════════════════════════════
-// TOGGLE STOCK
+// TOGGLE STOCK (producto sin tallas)
 // ═══════════════════════════════════════════
 async function toggleStock(id) {
   const p = products.find(x => x.id === id);
@@ -242,7 +328,6 @@ function openEdit(id) {
   document.getElementById('editImg').value = p.img;
   document.getElementById('editDesc').value = p.desc || '';
   document.getElementById('editWasPrice').value = p.wasPrice || '';
-  // ── CAMBIO 1: cargar stockQty en el modal de edición ──
   document.getElementById('editStockQty').value = (p.stockQty !== undefined && p.stockQty !== null) ? p.stockQty : '';
   previewImg('editImg', 'editImgPreview');
   loadSizesIntoForm('editSizesList', p.sizes);
@@ -261,10 +346,8 @@ async function saveEdit() {
   p.desc = document.getElementById('editDesc').value.trim();
   const wp = parseFloat(document.getElementById('editWasPrice').value);
   p.wasPrice = wp || undefined;
-  // ── CAMBIO 2: guardar stockQty al editar ──
   const sq = document.getElementById('editStockQty').value.trim();
   p.stockQty = sq !== '' ? parseInt(sq) : undefined;
-  // Si stock llega a 0, marcar agotado automáticamente
   if (p.stockQty !== undefined && p.stockQty <= 0) {
     p.instock = false;
     p.stockQty = 0;
@@ -287,7 +370,6 @@ async function saveNewProduct() {
   if (!name || !price) { toast('Escribe el nombre y el precio', 'error'); return; }
   const sizes = getSizes('addSizesList');
   const wp = parseFloat(document.getElementById('addWasPrice').value);
-  // ── CAMBIO 3: leer stockQty al agregar producto ──
   const stockQtyVal = document.getElementById('addStockQty').value.trim();
   const newId = products.length ? Math.max(...products.map(x => x.id)) + 1 : 1;
   const img = document.getElementById('addImg').value.trim()
@@ -329,10 +411,16 @@ function addSizeRow(listId, sizeData) {
   const list = document.getElementById(listId);
   const row = document.createElement('div');
   row.className = 'size-row';
+  const currentInstock = sizeData ? (typeof sizeData.instock === 'boolean' ? sizeData.instock : true) : true;
   row.innerHTML =
     '<input type="text"   placeholder="Etiqueta  (ej: 500ml, 1L)"   value="' + (sizeData ? (sizeData.label || '') : '') + '" />'
-    + '<input type="number" placeholder="Precio  (ej: 85000)"         value="' + (sizeData ? (sizeData.price || '') : '') + '" style="max-width:130px" />'
-    + '<input type="text"   placeholder="URL imagen (opcional)"        value="' + (sizeData ? (sizeData.img || '') : '') + '" style="flex:2" />'
+    + '<input type="number" placeholder="Precio  (ej: 85000)"         value="' + (sizeData ? (sizeData.price || '') : '') + '" style="max-width:110px" />'
+    + '<input type="number" placeholder="Uds." min="0"                value="' + (sizeData && sizeData.stockQty !== undefined && sizeData.stockQty !== null ? sizeData.stockQty : '') + '" style="max-width:75px" title="Unidades disponibles (vacío = sin conteo)" />'
+    + '<select class="size-instock-sel" title="Estado de esta presentación" style="max-width:110px;padding:5px 6px;border:1.5px solid #d4b0ba;border-radius:7px;font-size:.8rem;font-family:Inter,sans-serif">'
+    + '<option value="true"' + (currentInstock ? ' selected' : '') + '>En stock</option>'
+    + '<option value="false"' + (!currentInstock ? ' selected' : '') + '>Agotado</option>'
+    + '</select>'
+    + '<input type="text"   placeholder="URL imagen (opcional)"       value="' + (sizeData ? (sizeData.img || '') : '') + '" style="flex:2" />'
     + '<button class="rm-size" onclick="this.parentElement.remove()">✕</button>';
   list.appendChild(row);
 }
@@ -341,11 +429,15 @@ function getSizes(listId) {
   const sizes = [];
   document.querySelectorAll('#' + listId + ' .size-row').forEach(row => {
     const inputs = row.querySelectorAll('input');
+    const sel = row.querySelector('.size-instock-sel');
     const label = inputs[0].value.trim();
     const price = parseFloat(inputs[1].value);
-    const img = inputs[2].value.trim();
+    const stockQtyRaw = inputs[2].value.trim();
+    const img = inputs[3] ? inputs[3].value.trim() : '';
+    const instockVal = sel ? sel.value === 'true' : true;
     if (label && !isNaN(price)) {
-      const s = { label, price };
+      const s = { label, price, instock: instockVal };
+      if (stockQtyRaw !== '') s.stockQty = parseInt(stockQtyRaw);
       if (img) s.img = img;
       sizes.push(s);
     }

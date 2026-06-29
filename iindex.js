@@ -12,38 +12,38 @@ const ENVIO = {
 // ── CIUDADES POR DEPARTAMENTO ─────────────────────────
 const CIUDADES = {
   'Antioquia-Medellín': ['Medellín'],
-  'Antioquia-Otro': ['Abejorral','Abriaquí','Alejandría','Amagá','Amalfi','Andes','Angelópolis','Angostura','Anorí','Anzá','Apartadó','Arboletes','Argelia','Armenia','Barbosa','Bello','Betania','Betulia','Briceño','Buriticá','Cáceres','Caicedo','Caldas','Campamento','Cañasgordas','Caracolí','Caramanta','Carepa','Carolina del Príncipe','Caucasia','Chigorodó','Cisneros','Ciudad Bolívar','Cocorná','Concepción','Concordia','Copacabana','Dabeiba','Donmatías','Ebéjico','El Bagre','El Carmen de Viboral','El Santuario','Entrerríos','Envigado','Fredonia','Frontino','Giraldo','Girardota','Gómez Plata','Granada','Guadalupe','Guarne','Guatapé','Heliconia','Hispania','Itagüí','Ituango','Jardín','Jericó','La Ceja','La Estrella','La Pintada','La Unión','Liborina','Maceo','Marinilla','Montebello','Murindó','Mutatá','Nariño','Nechí','Necoclí','Olaya','Peñol','Peque','Pueblorrico','Puerto Berrío','Puerto Nare','Puerto Triunfo','Remedios','Retiro','Rionegro','Sabanalarga','Sabaneta','Salgar','San Andrés de Cuerquia','San Carlos','San Francisco','San Jerónimo','San José de la Montaña','San Juan de Urabá','San Luis','San Pedro de Antioquia','San Pedro de los Milagros','San Rafael','San Roque','San Vicente Ferrer','Santa Bárbara','Santa Fe de Antioquia','Santa Rosa de Osos','Santo Domingo','Segovia','Sonsón','Sopetrán','Tarazá','Tarso','Titiribí','Toledo','Turbo','Uramita','Urrao','Valdivia','Valparaíso','Vegachí','Venecia','Vigía del Fuerte','Yalí','Yarumal','Yolombó','Yondó','Zaragoza'],
-  'Amazonas': ['Leticia','Puerto Nariño'],
-  'Arauca': ['Arauca','Arauquita','Cravo Norte','Fortul','Puerto Rondón','Saravena','Tame'],
-  'Atlántico': ['Barranquilla','Baranoa','Campo de la Cruz','Candelaria','Galapa','Juan de Acosta','Luruaco','Malambo','Manatí','Palmar de Varela','Piojó','Polonuevo','Ponedera','Puerto Colombia','Repelón','Sabanagrande','Sabanalarga','Santa Lucía','Santo Tomás','Soledad','Suan','Tubará','Usiacurí'],
-  'Bolívar': ['Cartagena','Achí','Altos del Rosario','Arenal','Arjona','Arroyohondo','Barranco de Loba','Calamar','Cantagallo','Cicuco','Clemencia','Córdoba','El Carmen de Bolívar','El Guamo','El Peñón','Hatillo de Loba','Magangué','Mahates','Margarita','María La Baja','Mompós','Montecristo','Morales','Norosí','Pinillos','Regidor','Río Viejo','San Cristóbal','San Estanislao','San Fernando','San Jacinto','San Jacinto del Cauca','San Juan Nepomuceno','San Martín de Loba','San Pablo','Santa Catalina','Santa Rosa','Santa Rosa del Sur','Simití','Soplaviento','Talaigua Nuevo','Tiquisio','Turbaco','Turbaná','Villanueva','Zambrano'],
-  'Boyacá': ['Tunja','Duitama','Sogamoso','Chiquinquirá','Aquitania','Arcabuco','Belén','Berbeo','Betéitiva','Boavita','Boyacá','Briceño','Buenavista','Busbanzá','Caldas','Campohermoso','Cerinza','Chinavita','Chíquiza','Chiscas','Chita','Chitaraque','Chivatá','Ciénega','Cómbita','Coper','Corrales','Covarachía','Cubará','Cucaita','Cuítiva','El Cocuy','El Espino','Firavitoba','Floresta','Gachantivá','Gámeza','Garagoa','Guacamayas','Guateque','Guayatá','Güicán','Iza','Jenesano','Jericó','Labranzagrande','La Capilla','La Uvita','La Victoria','Macanal','Maripí','Miraflores','Mongua','Monguí','Moniquirá','Motavita','Muzo','Nobsa','Nuevo Colón','Oicatá','Otanche','Pachavita','Páez','Paipa','Pajarito','Panqueba','Pauna','Paya','Paz de Río','Pesca','Pisba','Puerto Boyacá','Quípama','Ramiriquí','Ráquira','Rondón','Saboyá','Sáchica','Samacá','San Eduardo','San José de Pare','San Luis de Gaceno','San Mateo','San Miguel de Sema','San Pablo de Borbur','Santana','Santa María','Santa Rosa de Viterbo','Santa Sofía','Sativanorte','Sativasur','Siachoque','Soatá','Socotá','Socha','Somondoco','Sora','Soracá','Sotaquirá','Susacón','Sutamarchán','Sutatenza','Tasco','Tenza','Tibaná','Tibasosa','Tinjacá','Tipacoque','Toca','Togüí','Tópaga','Tota','Turmequé','Tuta','Tutazá','Umbita','Ventaquemada','Viracachá','Zetaquira'],
-  'Caldas': ['Manizales','Aguadas','Anserma','Aranzazu','Belalcázar','Chinchiná','Filadelfia','La Dorada','La Merced','Manzanares','Marmato','Marquetalia','Marulanda','Neira','Norcasia','Pácora','Palestina','Pensilvania','Riosucio','Rionegro','Salamina','Samaná','San José','Supía','Victoria','Villamaría','Viterbo'],
-  'Caquetá': ['Florencia','Albania','Belén de los Andaquíes','Cartagena del Chairá','Curillo','El Doncello','El Paujil','La Montañita','Milán','Morelia','Puerto Rico','San José del Fragua','San Vicente del Caguán','Solano','Solita','Valparaíso'],
-  'Casanare': ['Yopal','Aguazul','Chámeza','Hato Corozal','La Salina','Maní','Monterrey','Nunchía','Orocué','Paz de Ariporo','Pore','Recetor','Sabanalarga','Sácama','San Luis de Palenque','Támara','Tauramena','Trinidad','Villanueva'],
-  'Cauca': ['Popayán','Almaguer','Argelia','Balboa','Bolívar','Buenos Aires','Cajibío','Caldono','Caloto','Coconuco','Corinto','El Tambo','Florencia','Guachené','Guapi','Inzá','Jambaló','La Sierra','La Vega','López de Micay','Mercaderes','Miranda','Morales','Padilla','Páez','Patía','Piamonte','Piendamó','Puerto Tejada','Puracé','Rosas','San Sebastián','Santa Rosa','Santander de Quilichao','Silvia','Sotara','Sucre','Suárez','Timbío','Timbiquí','Toribío','Totoró','Villa Rica'],
-  'Cesar': ['Valledupar','Aguachica','Agustín Codazzi','Astrea','Becerril','Bosconia','Chimichagua','Chiriguaná','Curumaní','El Copey','El Paso','Gamarra','González','La Gloria','La Jagua de Ibirico','La Paz','Manaure','Pailitas','Pelaya','Pueblo Bello','Río de Oro','San Alberto','San Diego','San Martín','Tamalameque'],
-  'Chocó': ['Quibdó','Acandí','Alto Baudo','Atrato','Bagadó','Bahía Solano','Bajo Baudó','Bojaya','Cantón de San Pablo','Carmen del Darién','Cértegui','Condoto','El Carmen de Atrato','El Litoral del San Juan','Istmina','Juradó','Lloró','Medio Atrato','Medio Baudó','Medio San Juan','Nóvita','Nuquí','Río Iró','Río Quito','Riosucio','San José del Palmar','Sipí','Tadó','Unguía','Unión Panamericana'],
-  'Córdoba': ['Montería','Ayapel','Buenavista','Canalete','Cereté','Chimá','Chinú','Ciénaga de Oro','Cotorra','La Apartada','Lorica','Los Córdobas','Momil','Montelíbano','Moñitos','Planeta Rica','Pueblo Nuevo','Puerto Escondido','Puerto Libertador','Purísima','Sahagún','San Andrés de Sotavento','San Antero','San Bernardo del Viento','San Carlos','San José de Uré','San Pelayo','Santa Cruz de Lorica','Tierralta','Tuchín','Valencia'],
-  'Cundinamarca': ['Bogotá D.C.','Agua de Dios','Albán','Anapoima','Anolaima','Apulo','Arbeláez','Beltrán','Bituima','Bojacá','Cabrera','Cachipay','Cajicá','Caparrapí','Cáqueza','Carmen de Carupa','Chaguaní','Chía','Chipaque','Choachí','Chocontá','Cogua','Cota','Cucunubá','El Colegio','El Peñón','El Rosal','Facatativá','Fómeque','Fosca','Funza','Fúquene','Fusagasugá','Gachalá','Gachancipá','Gachetá','Gama','Girardot','Granada','Guachetá','Guaduas','Guasca','Guataquí','Guatavita','Guayabal de Síquima','Guayabetal','Gutiérrez','Jerusalén','Junín','La Calera','La Mesa','La Palma','La Peña','La Vega','Lenguazaque','Macheta','Madrid','Manta','Medina','Mosquera','Nariño','Nemocón','Nilo','Nimaima','Nocaima','Pacho','Paime','Pandi','Paratebueno','Pasca','Puerto Salgar','Pulí','Quebradanegra','Quetame','Quipile','Ricaurte','San Antonio del Tequendama','San Bernardo','San Cayetano','San Francisco','San Juan de Río Seco','Sasaima','Sesquilé','Sibaté','Silvania','Simijaca','Soacha','Sopó','Subachoque','Suesca','Supatá','Susa','Sutatausa','Tabio','Tausa','Tena','Tenjo','Tibacuy','Tibirita','Tocaima','Tocancipá','Topaipí','Ubalá','Ubaque','Une','Útica','Vergara','Vianí','Villagómez','Villapinzón','Villeta','Viotá','Yacopí','Zipacón','Zipaquirá'],
-  'Guainía': ['Inírida','Barranco Minas','Cacahual','La Guadalupe','Mapiripana','Morichal','Pana Pana','Puerto Colombia','San Felipe'],
-  'Guaviare': ['San José del Guaviare','Calamar','El Retorno','Miraflores'],
-  'Huila': ['Neiva','Acevedo','Agrado','Aipe','Algeciras','Altamira','Baraya','Campoalegre','Colombia','Elías','Garzón','Gigante','Guadalupe','Hobo','Iquira','Isnos','La Argentina','La Plata','Nátaga','Oporapa','Paicol','Palermo','Palestina','Pital','Pitalito','Rivera','Saladoblanco','San Agustín','Santa María','Suaza','Tarqui','Tesalia','Tello','Teruel','Timaná','Villavieja','Yaguará'],
-  'La Guajira': ['Riohacha','Albania','Barrancas','Dibulla','Distracción','El Molino','Fonseca','Hatonuevo','La Jagua del Pilar','Maicao','Manaure','San Juan del Cesar','Uribia','Urumita','Villanueva'],
-  'Magdalena': ['Santa Marta','Algarrobo','Aracataca','Ariguaní','Cerro San Antonio','Chibolo','Ciénaga','Concordia','El Banco','El Piñón','El Retén','Fundación','Guamal','Nueva Granada','Pedraza','Pijiño del Carmen','Pivijay','Plato','Puebloviejo','Remolino','Sabanas de San Ángel','Salamina','San Sebastián de Buenavista','San Zenón','Santa Ana','Santa Bárbara de Pinto','Sitionuevo','Tenerife','Zapayán','Zona Bananera'],
-  'Meta': ['Villavicencio','Acacías','Barranca de Upía','Cabuyaro','Castilla la Nueva','Cubarral','Cumaral','El Calvario','El Castillo','El Dorado','Fuente de Oro','Granada','Guamal','La Macarena','Lejanías','Mapiripán','Mesetas','La Uribe','Puerto Concordia','Puerto Gaitán','Puerto Lleras','Puerto López','Puerto Rico','Restrepo','San Carlos de Guaroa','San Juan de Arama','San Juanito','San Martín','Vistahermosa'],
-  'Nariño': ['Pasto','Albán','Aldana','Ancuyá','Arboleda','Barbacoas','Belén','Buesaco','Colón','Consaca','Contadero','Córdoba','Cuaspud','Cumbal','Cumbitara','El Charco','El Peñón','El Rosario','El Tablón de Gómez','El Tambo','Francisco Pizarro','Funes','Guachucal','Guaitarilla','Gualmatán','Iles','Imués','Ipiales','La Cruz','La Florida','La Llanada','La Tola','La Unión','Leiva','Linares','Los Andes','Magüí','Mallama','Mosquera','Nariño','Olaya Herrera','Ospina','Policarpa','Potosí','Providencia','Puerres','Pupiales','Ricaurte','Roberto Payán','Samaniego','Sandoná','San Bernardo','San Lorenzo','San Pablo','Santa Bárbara','Santacruz','Sapuyes','Taminango','Tangua','Tumaco','Túquerres','Yacuanquer'],
-  'Norte de Santander': ['Cúcuta','Ábrego','Arboledas','Bochalema','Bucarasica','Cáchira','Cácota','Chinácota','Chitagá','Convención','Cucutilla','Durania','El Carmen','El Tarra','El Zulia','Gramalote','Hacarí','Herrán','La Esperanza','La Playa','Labateca','Los Patios','Lourdes','Mutiscua','Ocaña','Pamplona','Pamplonita','Puerto Santander','Ragonvalia','Salazar','San Calixto','San Cayetano','Santiago','Sardinata','Silos','Teorama','Tibú','Toledo','Villacaro','Villa del Rosario'],
-  'Putumayo': ['Mocoa','Colón','Leguízamo','Orito','Puerto Asís','Puerto Caicedo','Puerto Guzmán','San Francisco','San Miguel','Santiago','Sibundoy','Valle del Guamuez','Villagarzón'],
-  'Quindío': ['Armenia','Buenavista','Calarcá','Circasia','Córdoba','Filandia','Génova','La Tebaida','Montenegro','Pijao','Quimbaya','Salento'],
-  'Risaralda': ['Pereira','Apía','Balboa','Belén de Umbría','Dosquebradas','Guática','La Celia','La Virginia','Marsella','Mistrató','Pueblo Rico','Quinchía','Santa Rosa de Cabal','Santuario'],
-  'San Andrés y Providencia': ['San Andrés','Providencia'],
-  'Santander': ['Bucaramanga','Aguada','Albania','Aratoca','Barbosa','Barichara','Barrancabermeja','Betulia','Bolívar','Cabrera','California','Cepitá','Cerrito','Charalá','Charta','Chima','Chipatá','Cimitarra','Concepción','Confines','Contratación','Coromoro','Curití','El Carmen de Chucurí','El Guacamayo','El Peñón','El Playón','Encino','Enciso','Florián','Floridablanca','Galán','Gámbita','Girón','Guaca','Guadalupe','Guapotá','Guavatá','Güepsa','Hato','Jesús María','Jordán','La Belleza','Landázuri','La Paz','Lebríja','Los Santos','Macaravita','Málaga','Matanza','Mogotes','Molagavita','Ocamonte','Oiba','Onzaga','Palmar','Palmas del Socorro','Páramo','Piedecuesta','Pinchote','Puente Nacional','Puerto Parra','Puerto Wilches','Rionegro','Sabana de Torres','San Andrés','San Benito','San Gil','San Joaquín','San José de Miranda','San Miguel','San Vicente de Chucurí','Santa Bárbara','Santa Helena del Opón','Simacota','Socorro','Suaita','Sucre','Suratá','Tona','Valle de San José','Vélez','Vetas','Villanueva','Zapatoca'],
-  'Sucre': ['Sincelejo','Buenavista','Caimito','Chalán','Colosó','Corozal','Coveñas','El Roble','Galeras','Guaranda','La Unión','Los Palmitos','Majagual','Morroa','Ovejas','Palmito','Sampués','San Benito Abad','San Juan de Betulia','San Luis de Sincé','San Marcos','San Onofre','San Pedro','Sucre','Tolú','Tolú Viejo'],
-  'Tolima': ['Ibagué','Alpujarra','Alvarado','Ambalema','Anzoátegui','Armero-Guayabal','Ataco','Cajamarca','Carmen de Apicalá','Casabianca','Chaparral','Coello','Coyaima','Cunday','Dolores','Espinal','Falan','Flandes','Fresno','Guamo','Herveo','Honda','Icononzo','Lérida','Líbano','Mariquita','Melgar','Murillo','Natagaima','Ortega','Palocabildo','Piedras','Planadas','Prado','Purificación','Rioblanco','Roncesvalles','Rovira','Saldaña','San Antonio','San Luis','Santa Isabel','Suárez','Valle de San Juan','Venadillo','Villahermosa','Villarrica'],
-  'Valle del Cauca': ['Cali','Alcalá','Andalucía','Ansermanuevo','Argelia','Bolívar','Buenaventura','Buga','Bugalagrande','Caicedonia','Calima','Candelaria','Cartago','Dagua','El Águila','El Cairo','El Cerrito','El Dovio','Florida','Ginebra','Guacarí','Guadalajara de Buga','Jamundí','La Cumbre','La Unión','La Victoria','Obando','Palmira','Pradera','Restrepo','Riofrío','Roldanillo','San Pedro','Sevilla','Toro','Trujillo','Tuluá','Ulloa','Versalles','Vijes','Yotoco','Yumbo','Zarzal'],
-  'Vaupés': ['Mitú','Carurú','Pacoa','Papunaua','Taraira','Yavaraté'],
-  'Vichada': ['Puerto Carreño','Cumaribo','La Primavera','Santa Rosalía'],
+  'Antioquia-Otro': ['Abejorral', 'Abriaquí', 'Alejandría', 'Amagá', 'Amalfi', 'Andes', 'Angelópolis', 'Angostura', 'Anorí', 'Anzá', 'Apartadó', 'Arboletes', 'Argelia', 'Armenia', 'Barbosa', 'Bello', 'Betania', 'Betulia', 'Briceño', 'Buriticá', 'Cáceres', 'Caicedo', 'Caldas', 'Campamento', 'Cañasgordas', 'Caracolí', 'Caramanta', 'Carepa', 'Carolina del Príncipe', 'Caucasia', 'Chigorodó', 'Cisneros', 'Ciudad Bolívar', 'Cocorná', 'Concepción', 'Concordia', 'Copacabana', 'Dabeiba', 'Donmatías', 'Ebéjico', 'El Bagre', 'El Carmen de Viboral', 'El Santuario', 'Entrerríos', 'Envigado', 'Fredonia', 'Frontino', 'Giraldo', 'Girardota', 'Gómez Plata', 'Granada', 'Guadalupe', 'Guarne', 'Guatapé', 'Heliconia', 'Hispania', 'Itagüí', 'Ituango', 'Jardín', 'Jericó', 'La Ceja', 'La Estrella', 'La Pintada', 'La Unión', 'Liborina', 'Maceo', 'Marinilla', 'Montebello', 'Murindó', 'Mutatá', 'Nariño', 'Nechí', 'Necoclí', 'Olaya', 'Peñol', 'Peque', 'Pueblorrico', 'Puerto Berrío', 'Puerto Nare', 'Puerto Triunfo', 'Remedios', 'Retiro', 'Rionegro', 'Sabanalarga', 'Sabaneta', 'Salgar', 'San Andrés de Cuerquia', 'San Carlos', 'San Francisco', 'San Jerónimo', 'San José de la Montaña', 'San Juan de Urabá', 'San Luis', 'San Pedro de Antioquia', 'San Pedro de los Milagros', 'San Rafael', 'San Roque', 'San Vicente Ferrer', 'Santa Bárbara', 'Santa Fe de Antioquia', 'Santa Rosa de Osos', 'Santo Domingo', 'Segovia', 'Sonsón', 'Sopetrán', 'Tarazá', 'Tarso', 'Titiribí', 'Toledo', 'Turbo', 'Uramita', 'Urrao', 'Valdivia', 'Valparaíso', 'Vegachí', 'Venecia', 'Vigía del Fuerte', 'Yalí', 'Yarumal', 'Yolombó', 'Yondó', 'Zaragoza'],
+  'Amazonas': ['Leticia', 'Puerto Nariño'],
+  'Arauca': ['Arauca', 'Arauquita', 'Cravo Norte', 'Fortul', 'Puerto Rondón', 'Saravena', 'Tame'],
+  'Atlántico': ['Barranquilla', 'Baranoa', 'Campo de la Cruz', 'Candelaria', 'Galapa', 'Juan de Acosta', 'Luruaco', 'Malambo', 'Manatí', 'Palmar de Varela', 'Piojó', 'Polonuevo', 'Ponedera', 'Puerto Colombia', 'Repelón', 'Sabanagrande', 'Sabanalarga', 'Santa Lucía', 'Santo Tomás', 'Soledad', 'Suan', 'Tubará', 'Usiacurí'],
+  'Bolívar': ['Cartagena', 'Achí', 'Altos del Rosario', 'Arenal', 'Arjona', 'Arroyohondo', 'Barranco de Loba', 'Calamar', 'Cantagallo', 'Cicuco', 'Clemencia', 'Córdoba', 'El Carmen de Bolívar', 'El Guamo', 'El Peñón', 'Hatillo de Loba', 'Magangué', 'Mahates', 'Margarita', 'María La Baja', 'Mompós', 'Montecristo', 'Morales', 'Norosí', 'Pinillos', 'Regidor', 'Río Viejo', 'San Cristóbal', 'San Estanislao', 'San Fernando', 'San Jacinto', 'San Jacinto del Cauca', 'San Juan Nepomuceno', 'San Martín de Loba', 'San Pablo', 'Santa Catalina', 'Santa Rosa', 'Santa Rosa del Sur', 'Simití', 'Soplaviento', 'Talaigua Nuevo', 'Tiquisio', 'Turbaco', 'Turbaná', 'Villanueva', 'Zambrano'],
+  'Boyacá': ['Tunja', 'Duitama', 'Sogamoso', 'Chiquinquirá', 'Aquitania', 'Arcabuco', 'Belén', 'Berbeo', 'Betéitiva', 'Boavita', 'Boyacá', 'Briceño', 'Buenavista', 'Busbanzá', 'Caldas', 'Campohermoso', 'Cerinza', 'Chinavita', 'Chíquiza', 'Chiscas', 'Chita', 'Chitaraque', 'Chivatá', 'Ciénega', 'Cómbita', 'Coper', 'Corrales', 'Covarachía', 'Cubará', 'Cucaita', 'Cuítiva', 'El Cocuy', 'El Espino', 'Firavitoba', 'Floresta', 'Gachantivá', 'Gámeza', 'Garagoa', 'Guacamayas', 'Guateque', 'Guayatá', 'Güicán', 'Iza', 'Jenesano', 'Jericó', 'Labranzagrande', 'La Capilla', 'La Uvita', 'La Victoria', 'Macanal', 'Maripí', 'Miraflores', 'Mongua', 'Monguí', 'Moniquirá', 'Motavita', 'Muzo', 'Nobsa', 'Nuevo Colón', 'Oicatá', 'Otanche', 'Pachavita', 'Páez', 'Paipa', 'Pajarito', 'Panqueba', 'Pauna', 'Paya', 'Paz de Río', 'Pesca', 'Pisba', 'Puerto Boyacá', 'Quípama', 'Ramiriquí', 'Ráquira', 'Rondón', 'Saboyá', 'Sáchica', 'Samacá', 'San Eduardo', 'San José de Pare', 'San Luis de Gaceno', 'San Mateo', 'San Miguel de Sema', 'San Pablo de Borbur', 'Santana', 'Santa María', 'Santa Rosa de Viterbo', 'Santa Sofía', 'Sativanorte', 'Sativasur', 'Siachoque', 'Soatá', 'Socotá', 'Socha', 'Somondoco', 'Sora', 'Soracá', 'Sotaquirá', 'Susacón', 'Sutamarchán', 'Sutatenza', 'Tasco', 'Tenza', 'Tibaná', 'Tibasosa', 'Tinjacá', 'Tipacoque', 'Toca', 'Togüí', 'Tópaga', 'Tota', 'Turmequé', 'Tuta', 'Tutazá', 'Umbita', 'Ventaquemada', 'Viracachá', 'Zetaquira'],
+  'Caldas': ['Manizales', 'Aguadas', 'Anserma', 'Aranzazu', 'Belalcázar', 'Chinchiná', 'Filadelfia', 'La Dorada', 'La Merced', 'Manzanares', 'Marmato', 'Marquetalia', 'Marulanda', 'Neira', 'Norcasia', 'Pácora', 'Palestina', 'Pensilvania', 'Riosucio', 'Rionegro', 'Salamina', 'Samaná', 'San José', 'Supía', 'Victoria', 'Villamaría', 'Viterbo'],
+  'Caquetá': ['Florencia', 'Albania', 'Belén de los Andaquíes', 'Cartagena del Chairá', 'Curillo', 'El Doncello', 'El Paujil', 'La Montañita', 'Milán', 'Morelia', 'Puerto Rico', 'San José del Fragua', 'San Vicente del Caguán', 'Solano', 'Solita', 'Valparaíso'],
+  'Casanare': ['Yopal', 'Aguazul', 'Chámeza', 'Hato Corozal', 'La Salina', 'Maní', 'Monterrey', 'Nunchía', 'Orocué', 'Paz de Ariporo', 'Pore', 'Recetor', 'Sabanalarga', 'Sácama', 'San Luis de Palenque', 'Támara', 'Tauramena', 'Trinidad', 'Villanueva'],
+  'Cauca': ['Popayán', 'Almaguer', 'Argelia', 'Balboa', 'Bolívar', 'Buenos Aires', 'Cajibío', 'Caldono', 'Caloto', 'Coconuco', 'Corinto', 'El Tambo', 'Florencia', 'Guachené', 'Guapi', 'Inzá', 'Jambaló', 'La Sierra', 'La Vega', 'López de Micay', 'Mercaderes', 'Miranda', 'Morales', 'Padilla', 'Páez', 'Patía', 'Piamonte', 'Piendamó', 'Puerto Tejada', 'Puracé', 'Rosas', 'San Sebastián', 'Santa Rosa', 'Santander de Quilichao', 'Silvia', 'Sotara', 'Sucre', 'Suárez', 'Timbío', 'Timbiquí', 'Toribío', 'Totoró', 'Villa Rica'],
+  'Cesar': ['Valledupar', 'Aguachica', 'Agustín Codazzi', 'Astrea', 'Becerril', 'Bosconia', 'Chimichagua', 'Chiriguaná', 'Curumaní', 'El Copey', 'El Paso', 'Gamarra', 'González', 'La Gloria', 'La Jagua de Ibirico', 'La Paz', 'Manaure', 'Pailitas', 'Pelaya', 'Pueblo Bello', 'Río de Oro', 'San Alberto', 'San Diego', 'San Martín', 'Tamalameque'],
+  'Chocó': ['Quibdó', 'Acandí', 'Alto Baudo', 'Atrato', 'Bagadó', 'Bahía Solano', 'Bajo Baudó', 'Bojaya', 'Cantón de San Pablo', 'Carmen del Darién', 'Cértegui', 'Condoto', 'El Carmen de Atrato', 'El Litoral del San Juan', 'Istmina', 'Juradó', 'Lloró', 'Medio Atrato', 'Medio Baudó', 'Medio San Juan', 'Nóvita', 'Nuquí', 'Río Iró', 'Río Quito', 'Riosucio', 'San José del Palmar', 'Sipí', 'Tadó', 'Unguía', 'Unión Panamericana'],
+  'Córdoba': ['Montería', 'Ayapel', 'Buenavista', 'Canalete', 'Cereté', 'Chimá', 'Chinú', 'Ciénaga de Oro', 'Cotorra', 'La Apartada', 'Lorica', 'Los Córdobas', 'Momil', 'Montelíbano', 'Moñitos', 'Planeta Rica', 'Pueblo Nuevo', 'Puerto Escondido', 'Puerto Libertador', 'Purísima', 'Sahagún', 'San Andrés de Sotavento', 'San Antero', 'San Bernardo del Viento', 'San Carlos', 'San José de Uré', 'San Pelayo', 'Santa Cruz de Lorica', 'Tierralta', 'Tuchín', 'Valencia'],
+  'Cundinamarca': ['Bogotá D.C.', 'Agua de Dios', 'Albán', 'Anapoima', 'Anolaima', 'Apulo', 'Arbeláez', 'Beltrán', 'Bituima', 'Bojacá', 'Cabrera', 'Cachipay', 'Cajicá', 'Caparrapí', 'Cáqueza', 'Carmen de Carupa', 'Chaguaní', 'Chía', 'Chipaque', 'Choachí', 'Chocontá', 'Cogua', 'Cota', 'Cucunubá', 'El Colegio', 'El Peñón', 'El Rosal', 'Facatativá', 'Fómeque', 'Fosca', 'Funza', 'Fúquene', 'Fusagasugá', 'Gachalá', 'Gachancipá', 'Gachetá', 'Gama', 'Girardot', 'Granada', 'Guachetá', 'Guaduas', 'Guasca', 'Guataquí', 'Guatavita', 'Guayabal de Síquima', 'Guayabetal', 'Gutiérrez', 'Jerusalén', 'Junín', 'La Calera', 'La Mesa', 'La Palma', 'La Peña', 'La Vega', 'Lenguazaque', 'Macheta', 'Madrid', 'Manta', 'Medina', 'Mosquera', 'Nariño', 'Nemocón', 'Nilo', 'Nimaima', 'Nocaima', 'Pacho', 'Paime', 'Pandi', 'Paratebueno', 'Pasca', 'Puerto Salgar', 'Pulí', 'Quebradanegra', 'Quetame', 'Quipile', 'Ricaurte', 'San Antonio del Tequendama', 'San Bernardo', 'San Cayetano', 'San Francisco', 'San Juan de Río Seco', 'Sasaima', 'Sesquilé', 'Sibaté', 'Silvania', 'Simijaca', 'Soacha', 'Sopó', 'Subachoque', 'Suesca', 'Supatá', 'Susa', 'Sutatausa', 'Tabio', 'Tausa', 'Tena', 'Tenjo', 'Tibacuy', 'Tibirita', 'Tocaima', 'Tocancipá', 'Topaipí', 'Ubalá', 'Ubaque', 'Une', 'Útica', 'Vergara', 'Vianí', 'Villagómez', 'Villapinzón', 'Villeta', 'Viotá', 'Yacopí', 'Zipacón', 'Zipaquirá'],
+  'Guainía': ['Inírida', 'Barranco Minas', 'Cacahual', 'La Guadalupe', 'Mapiripana', 'Morichal', 'Pana Pana', 'Puerto Colombia', 'San Felipe'],
+  'Guaviare': ['San José del Guaviare', 'Calamar', 'El Retorno', 'Miraflores'],
+  'Huila': ['Neiva', 'Acevedo', 'Agrado', 'Aipe', 'Algeciras', 'Altamira', 'Baraya', 'Campoalegre', 'Colombia', 'Elías', 'Garzón', 'Gigante', 'Guadalupe', 'Hobo', 'Iquira', 'Isnos', 'La Argentina', 'La Plata', 'Nátaga', 'Oporapa', 'Paicol', 'Palermo', 'Palestina', 'Pital', 'Pitalito', 'Rivera', 'Saladoblanco', 'San Agustín', 'Santa María', 'Suaza', 'Tarqui', 'Tesalia', 'Tello', 'Teruel', 'Timaná', 'Villavieja', 'Yaguará'],
+  'La Guajira': ['Riohacha', 'Albania', 'Barrancas', 'Dibulla', 'Distracción', 'El Molino', 'Fonseca', 'Hatonuevo', 'La Jagua del Pilar', 'Maicao', 'Manaure', 'San Juan del Cesar', 'Uribia', 'Urumita', 'Villanueva'],
+  'Magdalena': ['Santa Marta', 'Algarrobo', 'Aracataca', 'Ariguaní', 'Cerro San Antonio', 'Chibolo', 'Ciénaga', 'Concordia', 'El Banco', 'El Piñón', 'El Retén', 'Fundación', 'Guamal', 'Nueva Granada', 'Pedraza', 'Pijiño del Carmen', 'Pivijay', 'Plato', 'Puebloviejo', 'Remolino', 'Sabanas de San Ángel', 'Salamina', 'San Sebastián de Buenavista', 'San Zenón', 'Santa Ana', 'Santa Bárbara de Pinto', 'Sitionuevo', 'Tenerife', 'Zapayán', 'Zona Bananera'],
+  'Meta': ['Villavicencio', 'Acacías', 'Barranca de Upía', 'Cabuyaro', 'Castilla la Nueva', 'Cubarral', 'Cumaral', 'El Calvario', 'El Castillo', 'El Dorado', 'Fuente de Oro', 'Granada', 'Guamal', 'La Macarena', 'Lejanías', 'Mapiripán', 'Mesetas', 'La Uribe', 'Puerto Concordia', 'Puerto Gaitán', 'Puerto Lleras', 'Puerto López', 'Puerto Rico', 'Restrepo', 'San Carlos de Guaroa', 'San Juan de Arama', 'San Juanito', 'San Martín', 'Vistahermosa'],
+  'Nariño': ['Pasto', 'Albán', 'Aldana', 'Ancuyá', 'Arboleda', 'Barbacoas', 'Belén', 'Buesaco', 'Colón', 'Consaca', 'Contadero', 'Córdoba', 'Cuaspud', 'Cumbal', 'Cumbitara', 'El Charco', 'El Peñón', 'El Rosario', 'El Tablón de Gómez', 'El Tambo', 'Francisco Pizarro', 'Funes', 'Guachucal', 'Guaitarilla', 'Gualmatán', 'Iles', 'Imués', 'Ipiales', 'La Cruz', 'La Florida', 'La Llanada', 'La Tola', 'La Unión', 'Leiva', 'Linares', 'Los Andes', 'Magüí', 'Mallama', 'Mosquera', 'Nariño', 'Olaya Herrera', 'Ospina', 'Policarpa', 'Potosí', 'Providencia', 'Puerres', 'Pupiales', 'Ricaurte', 'Roberto Payán', 'Samaniego', 'Sandoná', 'San Bernardo', 'San Lorenzo', 'San Pablo', 'Santa Bárbara', 'Santacruz', 'Sapuyes', 'Taminango', 'Tangua', 'Tumaco', 'Túquerres', 'Yacuanquer'],
+  'Norte de Santander': ['Cúcuta', 'Ábrego', 'Arboledas', 'Bochalema', 'Bucarasica', 'Cáchira', 'Cácota', 'Chinácota', 'Chitagá', 'Convención', 'Cucutilla', 'Durania', 'El Carmen', 'El Tarra', 'El Zulia', 'Gramalote', 'Hacarí', 'Herrán', 'La Esperanza', 'La Playa', 'Labateca', 'Los Patios', 'Lourdes', 'Mutiscua', 'Ocaña', 'Pamplona', 'Pamplonita', 'Puerto Santander', 'Ragonvalia', 'Salazar', 'San Calixto', 'San Cayetano', 'Santiago', 'Sardinata', 'Silos', 'Teorama', 'Tibú', 'Toledo', 'Villacaro', 'Villa del Rosario'],
+  'Putumayo': ['Mocoa', 'Colón', 'Leguízamo', 'Orito', 'Puerto Asís', 'Puerto Caicedo', 'Puerto Guzmán', 'San Francisco', 'San Miguel', 'Santiago', 'Sibundoy', 'Valle del Guamuez', 'Villagarzón'],
+  'Quindío': ['Armenia', 'Buenavista', 'Calarcá', 'Circasia', 'Córdoba', 'Filandia', 'Génova', 'La Tebaida', 'Montenegro', 'Pijao', 'Quimbaya', 'Salento'],
+  'Risaralda': ['Pereira', 'Apía', 'Balboa', 'Belén de Umbría', 'Dosquebradas', 'Guática', 'La Celia', 'La Virginia', 'Marsella', 'Mistrató', 'Pueblo Rico', 'Quinchía', 'Santa Rosa de Cabal', 'Santuario'],
+  'San Andrés y Providencia': ['San Andrés', 'Providencia'],
+  'Santander': ['Bucaramanga', 'Aguada', 'Albania', 'Aratoca', 'Barbosa', 'Barichara', 'Barrancabermeja', 'Betulia', 'Bolívar', 'Cabrera', 'California', 'Cepitá', 'Cerrito', 'Charalá', 'Charta', 'Chima', 'Chipatá', 'Cimitarra', 'Concepción', 'Confines', 'Contratación', 'Coromoro', 'Curití', 'El Carmen de Chucurí', 'El Guacamayo', 'El Peñón', 'El Playón', 'Encino', 'Enciso', 'Florián', 'Floridablanca', 'Galán', 'Gámbita', 'Girón', 'Guaca', 'Guadalupe', 'Guapotá', 'Guavatá', 'Güepsa', 'Hato', 'Jesús María', 'Jordán', 'La Belleza', 'Landázuri', 'La Paz', 'Lebríja', 'Los Santos', 'Macaravita', 'Málaga', 'Matanza', 'Mogotes', 'Molagavita', 'Ocamonte', 'Oiba', 'Onzaga', 'Palmar', 'Palmas del Socorro', 'Páramo', 'Piedecuesta', 'Pinchote', 'Puente Nacional', 'Puerto Parra', 'Puerto Wilches', 'Rionegro', 'Sabana de Torres', 'San Andrés', 'San Benito', 'San Gil', 'San Joaquín', 'San José de Miranda', 'San Miguel', 'San Vicente de Chucurí', 'Santa Bárbara', 'Santa Helena del Opón', 'Simacota', 'Socorro', 'Suaita', 'Sucre', 'Suratá', 'Tona', 'Valle de San José', 'Vélez', 'Vetas', 'Villanueva', 'Zapatoca'],
+  'Sucre': ['Sincelejo', 'Buenavista', 'Caimito', 'Chalán', 'Colosó', 'Corozal', 'Coveñas', 'El Roble', 'Galeras', 'Guaranda', 'La Unión', 'Los Palmitos', 'Majagual', 'Morroa', 'Ovejas', 'Palmito', 'Sampués', 'San Benito Abad', 'San Juan de Betulia', 'San Luis de Sincé', 'San Marcos', 'San Onofre', 'San Pedro', 'Sucre', 'Tolú', 'Tolú Viejo'],
+  'Tolima': ['Ibagué', 'Alpujarra', 'Alvarado', 'Ambalema', 'Anzoátegui', 'Armero-Guayabal', 'Ataco', 'Cajamarca', 'Carmen de Apicalá', 'Casabianca', 'Chaparral', 'Coello', 'Coyaima', 'Cunday', 'Dolores', 'Espinal', 'Falan', 'Flandes', 'Fresno', 'Guamo', 'Herveo', 'Honda', 'Icononzo', 'Lérida', 'Líbano', 'Mariquita', 'Melgar', 'Murillo', 'Natagaima', 'Ortega', 'Palocabildo', 'Piedras', 'Planadas', 'Prado', 'Purificación', 'Rioblanco', 'Roncesvalles', 'Rovira', 'Saldaña', 'San Antonio', 'San Luis', 'Santa Isabel', 'Suárez', 'Valle de San Juan', 'Venadillo', 'Villahermosa', 'Villarrica'],
+  'Valle del Cauca': ['Cali', 'Alcalá', 'Andalucía', 'Ansermanuevo', 'Argelia', 'Bolívar', 'Buenaventura', 'Buga', 'Bugalagrande', 'Caicedonia', 'Calima', 'Candelaria', 'Cartago', 'Dagua', 'El Águila', 'El Cairo', 'El Cerrito', 'El Dovio', 'Florida', 'Ginebra', 'Guacarí', 'Guadalajara de Buga', 'Jamundí', 'La Cumbre', 'La Unión', 'La Victoria', 'Obando', 'Palmira', 'Pradera', 'Restrepo', 'Riofrío', 'Roldanillo', 'San Pedro', 'Sevilla', 'Toro', 'Trujillo', 'Tuluá', 'Ulloa', 'Versalles', 'Vijes', 'Yotoco', 'Yumbo', 'Zarzal'],
+  'Vaupés': ['Mitú', 'Carurú', 'Pacoa', 'Papunaua', 'Taraira', 'Yavaraté'],
+  'Vichada': ['Puerto Carreño', 'Cumaribo', 'La Primavera', 'Santa Rosalía'],
 };
 
 // ── PRODUCTOS POR DEFECTO ────────────────────────────
@@ -170,6 +170,10 @@ function renderProducts() {
 
 function renderCard(p) {
   const b = p.badge ? '<span class="card-badge' + (p.badge === 'Oferta' ? ' sale' : '') + '">' + p.badge + '</span>' : '';
+  // For cards with sizes, check if at least one size is in stock
+  const effectiveInstock = p.sizes && p.sizes.length > 1
+    ? p.sizes.some(s => getSizeInstock(p, s.label))
+    : p.instock;
   return '<div class="card" onclick="openDetail(' + p.id + ')">'
     + '<div class="card-img-wrap">'
     + '<img class="card-img" src="' + p.img + '" alt="' + p.name + '" loading="lazy" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">'
@@ -180,15 +184,50 @@ function renderCard(p) {
     + '<p class="card-name">' + p.name + (p.wasPrice ? '<span class="on-sale-badge">Oferta</span>' : '') + '</p>'
     + (p.wasPrice ? '<span class="card-offer">' + fmt(p.wasPrice) + '</span>' : '')
     + (p.priceMax ? '<p class="card-price-range">' + fmt(p.price) + ' – ' + fmt(p.priceMax) + '</p>' : '<p class="card-price">' + fmt(p.price) + '</p>')
-    + '<button class="add-btn" onclick="event.stopPropagation();quickAdd(' + p.id + ')" ' + (p.instock ? '' : 'disabled') + '>'
-    + (p.instock ? 'Añadir al carrito' : 'Sin stock') + '</button>'
-    + (!p.instock ? '<p class="outofstock-lbl">Producto agotado</p>' : '')
+    + '<button class="add-btn" onclick="event.stopPropagation();quickAdd(' + p.id + ')" ' + (effectiveInstock ? '' : 'disabled') + '>'
+    + (effectiveInstock ? 'Añadir al carrito' : 'Sin stock') + '</button>'
+    + (!effectiveInstock ? '<p class="outofstock-lbl">Producto agotado</p>' : '')
     + '</div></div>';
 }
 
-// ── STOCK HELPERS ─────────────────────────────────────
+// ── HELPERS DE STOCK POR TALLA ────────────────────────
+
+/**
+ * Obtiene el stock disponible de una talla específica o del producto (si no tiene tallas).
+ * Retorna Infinity si no hay conteo configurado.
+ */
+function getSizeAvailableStock(p, sizeLabel) {
+  if (p.sizes && p.sizes.length > 1 && sizeLabel) {
+    // Producto con múltiples tallas: leer stockQty de la talla
+    const sizeObj = p.sizes.find(s => s.label === sizeLabel);
+    if (!sizeObj) return Infinity;
+    if (sizeObj.stockQty === null || sizeObj.stockQty === undefined || sizeObj.stockQty === '') return Infinity;
+    return parseInt(sizeObj.stockQty) || 0;
+  }
+  // Producto sin tallas (o con una sola): usar stockQty del producto
+  if (p.stockQty === null || p.stockQty === undefined || p.stockQty === '') return Infinity;
+  return parseInt(p.stockQty) || 0;
+}
+
+/**
+ * Determina si una talla (o el producto entero) está en stock.
+ */
+function getSizeInstock(p, sizeLabel) {
+  if (p.sizes && p.sizes.length > 1 && sizeLabel) {
+    const sizeObj = p.sizes.find(s => s.label === sizeLabel);
+    if (!sizeObj) return false;
+    // Si la talla tiene instock explícito, usarlo
+    if (typeof sizeObj.instock === 'boolean') return sizeObj.instock;
+    // Si tiene stockQty = 0, está agotada
+    if (sizeObj.stockQty !== undefined && sizeObj.stockQty !== null && parseInt(sizeObj.stockQty) <= 0) return false;
+    // Heredar del producto
+    return p.instock;
+  }
+  return p.instock;
+}
+
 function getAvailableStock(p) {
-  // null / undefined = ilimitado
+  // Compatibilidad hacia atrás para productos sin tallas
   if (p.stockQty === null || p.stockQty === undefined || p.stockQty === '') return Infinity;
   return parseInt(p.stockQty) || 0;
 }
@@ -201,31 +240,32 @@ function getCartQtyForProduct(key) {
 // ── CARRITO ──────────────────────────────────────────
 function quickAdd(id) {
   const p = products.find(x => x.id === id);
-  if (!p || !p.instock) return;
-  const sizeLabel = p.sizes && p.sizes.length > 0 ? p.sizes[0].label : null;
-  const key = p.id + (sizeLabel || '');
-  const available = getAvailableStock(p);
+  if (!p) return;
+  // For multi-size products, open detail so user picks a size
+  if (p.sizes && p.sizes.length > 1) {
+    openDetail(id);
+    return;
+  }
+  if (!p.instock) return;
+  const key = String(p.id);
+  const available = getSizeAvailableStock(p, null);
   const inCart = getCartQtyForProduct(key);
-
   if (available !== Infinity && inCart >= available) {
     showToast(available === 1 ? 'Solo queda 1 unidad disponible' : 'Solo quedan ' + available + ' unidades disponibles');
     return;
   }
-  addToCart(p, 1, sizeLabel);
+  addToCart(p, 1, null);
   showToast('Producto añadido al carrito');
 }
 
 function addToCart(p, qty, sizeLabel) {
   const key = p.id + (sizeLabel || '');
   const price = p.sizes && sizeLabel ? (p.sizes.find(s => s.label === sizeLabel)?.price || p.price) : p.price;
-  const available = getAvailableStock(p);
+  const available = getSizeAvailableStock(p, sizeLabel);
   const ex = cart.find(x => x.key === key);
   const currentQty = ex ? ex.qty : 0;
-
-  // Clamp quantity to available stock
   const allowed = available !== Infinity ? Math.min(qty, available - currentQty) : qty;
   if (allowed <= 0) return;
-
   if (ex) ex.qty += allowed;
   else cart.push({ key, id: p.id, name: p.name, img: p.img, price, sizeLabel, qty: allowed });
   saveCart();
@@ -233,15 +273,14 @@ function addToCart(p, qty, sizeLabel) {
 }
 
 function clampCartToStock() {
-  // Called after products load to adjust cart quantities to current stock
   let changed = false;
   cart = cart.map(item => {
     const p = products.find(x => x.id === item.id);
     if (!p) return item;
-    const available = getAvailableStock(p);
+    const available = getSizeAvailableStock(p, item.sizeLabel);
     if (available !== Infinity && item.qty > available) {
       changed = true;
-      if (available <= 0) return null; // remove
+      if (available <= 0) return null;
       return { ...item, qty: available };
     }
     return item;
@@ -285,9 +324,8 @@ function cqChange(key, d) {
   const i = cart.find(x => x.key === key);
   if (!i) return;
   if (d > 0) {
-    // Check stock limit before increasing
     const p = products.find(x => x.id === i.id);
-    const available = p ? getAvailableStock(p) : Infinity;
+    const available = p ? getSizeAvailableStock(p, i.sizeLabel) : Infinity;
     if (available !== Infinity && i.qty >= available) {
       showToast(available === 1 ? 'Solo queda 1 unidad disponible' : 'Solo quedan ' + available + ' unidades disponibles');
       return;
@@ -306,17 +344,12 @@ function closeCart() { document.getElementById('cartOverlay').classList.remove('
 function onDeptChange() {
   const dept = document.getElementById('omDepartamento').value;
   const ciudadSel = document.getElementById('omCiudad');
-
-  // Limpiar select de ciudad
   ciudadSel.innerHTML = '<option value="">— Selecciona tu ciudad —</option>';
-
   if (!dept) {
     document.getElementById('envioBox').style.display = 'none';
     document.getElementById('omTotalRow').style.display = 'none';
     return;
   }
-
-  // Poblar ciudades
   const ciudades = CIUDADES[dept] || [];
   ciudades.forEach(c => {
     const opt = document.createElement('option');
@@ -324,13 +357,7 @@ function onDeptChange() {
     opt.textContent = c;
     ciudadSel.appendChild(opt);
   });
-
-  // Si solo hay una ciudad (ej: Medellín), seleccionarla automáticamente
-  if (ciudades.length === 1) {
-    ciudadSel.value = ciudades[0];
-  }
-
-  // Calcular envío
+  if (ciudades.length === 1) ciudadSel.value = ciudades[0];
   const info = ENVIO[dept] || ENVIO.default;
   const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
   const total = subtotal + info.costo;
@@ -358,7 +385,6 @@ function openOrderForm() {
     if (el) el.value = '';
   });
   document.getElementById('omDepartamento').value = '';
-  // Resetear select de ciudad
   const ciudadSel = document.getElementById('omCiudad');
   ciudadSel.innerHTML = '<option value="">— Selecciona tu ciudad —</option>';
   document.getElementById('omDireccion').value = '';
@@ -376,7 +402,6 @@ function closeOrderForm() {
 
 // ── VALIDACIONES ──────────────────────────────────────
 function validarTelefono(tel) {
-  // Colombia: 10 dígitos, empieza en 3
   const limpio = tel.replace(/\s/g, '');
   return /^3\d{9}$/.test(limpio);
 }
@@ -395,8 +420,6 @@ function submitOrder() {
   const direccion = document.getElementById('omDireccion').value.trim();
 
   let hasError = false;
-
-  // Validar campos obligatorios básicos
   const obligatorios = [
     { id: 'omNombre', v: nombre },
     { id: 'omCedula', v: cedula },
@@ -410,7 +433,6 @@ function submitOrder() {
     if (!f.v) hasError = true;
   });
 
-  // Validar teléfono colombiano
   const telEl = document.getElementById('omTelefono');
   if (!telefono) {
     telEl.style.borderColor = '#c0392b';
@@ -423,7 +445,6 @@ function submitOrder() {
     telEl.style.borderColor = '';
   }
 
-  // Validar correo si fue ingresado
   if (correo) {
     const correoEl = document.getElementById('omCorreo');
     if (!validarCorreo(correo)) {
@@ -492,10 +513,19 @@ function openDetail(id) {
   const ds = document.getElementById('dSizes');
   if (p.sizes && p.sizes.length > 1) {
     ds.innerHTML = '<span class="d-label">Presentación</span><div class="size-opts">'
-      + p.sizes.map((s, i) =>
-        '<button class="size-opt' + (i === 0 ? ' sel' : '') + '" onclick="selectSize(this,' + i + ')">'
-        + s.label + '</button>'
-      ).join('') + '</div>';
+      + p.sizes.map((s, i) => {
+        const sInstock = getSizeInstock(p, s.label);
+        const sStock = getSizeAvailableStock(p, s.label);
+        const stockInfo = sStock !== Infinity ? ' (' + sStock + ' uds.)' : '';
+        return '<button class="size-opt' + (i === 0 ? ' sel' : '') + (sInstock ? '' : ' size-out') + '" '
+          + 'onclick="selectSize(this,' + i + ')" '
+          + (sInstock ? '' : 'disabled ')
+          + 'title="' + s.label + (sInstock ? stockInfo : ' – Agotado') + '">'
+          + s.label
+          + (sInstock ? (sStock !== Infinity ? '<small class="size-stock-hint">' + sStock + ' uds.</small>' : '') : '<small class="size-stock-hint">Agotado</small>')
+          + '</button>';
+      }).join('')
+      + '</div>';
     ds.style.display = 'block';
   } else {
     ds.style.display = 'none';
@@ -504,8 +534,9 @@ function openDetail(id) {
 
   document.getElementById('dQty').textContent = '1';
   const ab = document.getElementById('detailAddBtn');
-  ab.disabled = !p.instock;
-  ab.textContent = p.instock ? 'Añadir al carrito' : 'Sin stock';
+  const firstSizeInstock = selectedSize ? getSizeInstock(p, selectedSize) : p.instock;
+  ab.disabled = !firstSizeInstock;
+  ab.textContent = firstSizeInstock ? 'Añadir al carrito' : 'Sin stock';
 
   renderSimilar(p);
   document.getElementById('detailPage').classList.add('open');
@@ -568,11 +599,19 @@ function selectSize(btn, idx) {
   btn.classList.add('sel');
   renderDetailPrice(s.price, p.wasPrice);
   if (s.img) setDetailImage(s.img);
+
+  // Update add button based on this size's stock
+  const sInstock = getSizeInstock(p, s.label);
+  const ab = document.getElementById('detailAddBtn');
+  ab.disabled = !sInstock;
+  ab.textContent = sInstock ? 'Añadir al carrito' : 'Sin stock';
+  detailQty = 1;
+  document.getElementById('dQty').textContent = '1';
 }
 
 function changeDetailQty(d) {
   const p = currentProduct;
-  const available = p ? getAvailableStock(p) : Infinity;
+  const available = p ? getSizeAvailableStock(p, selectedSize) : Infinity;
   const newQty = detailQty + d;
   if (newQty < 1) return;
   if (available !== Infinity && newQty > available) {
@@ -584,10 +623,13 @@ function changeDetailQty(d) {
 }
 
 function addFromDetail() {
-  if (!currentProduct || !currentProduct.instock) return;
+  if (!currentProduct) return;
   const p = currentProduct;
+  const sInstock = selectedSize ? getSizeInstock(p, selectedSize) : p.instock;
+  if (!sInstock) return;
+
   const key = p.id + (selectedSize || '');
-  const available = getAvailableStock(p);
+  const available = getSizeAvailableStock(p, selectedSize);
   const inCart = getCartQtyForProduct(key);
 
   if (available !== Infinity && inCart + detailQty > available) {
@@ -648,7 +690,7 @@ function showToast(msg) {
 (async () => {
   loadCart();
   products = await loadProducts();
-  clampCartToStock(); // adjust cart if stock changed since last visit
+  clampCartToStock();
   buildBanner();
   renderProducts();
   updateCartUI();
