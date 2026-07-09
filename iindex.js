@@ -6,6 +6,7 @@ const BASE = 'https://surticapilar.com/wp-content/uploads/';
 const ENVIO = {
   'Antioquia-Medellín': { label: 'Medellín', detalle: 'Entrega en Medellín', costo: 10000 },
   'Antioquia-Otro': { label: 'Otro municipio de Antioquia', detalle: 'Envío a municipios de Antioquia', costo: 13000 },
+  'La Guajira': { label: 'La Guajira', detalle: 'Envío a La Guajira', costo: 18000 },
   default: { label: 'Flete nacional', detalle: 'Envío a todo el país', costo: 15000 },
 };
 
