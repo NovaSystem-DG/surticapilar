@@ -12,6 +12,17 @@
 const DEFAULT_BIN_ID = '6a21c113da38895dfe88176d';
 const MIN_COMPRA = 150000;
 
+// Normaliza un nombre para comparar sin importar mayúsculas, tildes o espacios extra
+function normalizeName(str) {
+  return (str || '')
+    .toString()
+    .trim()
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '') // quita tildes
+    .replace(/\s+/g, ' ');
+}
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -25,7 +36,7 @@ export default async function handler(req, res) {
   const BIN_ID = process.env.JSONBIN_ID || DEFAULT_BIN_ID;
   if (!KEY) return res.status(500).json({ ok: false, error: 'server_not_configured' });
 
-  const { action, code, subtotal, cliente } = req.body || {};
+  const { action, code, subtotal, cliente, nombreCliente } = req.body || {};
   if (!code || typeof code !== 'string') {
     return res.status(400).json({ ok: false, error: 'missing_code' });
   }
@@ -49,6 +60,12 @@ export default async function handler(req, res) {
 
     const promo = promoCodes[idx];
     if (promo.usado) return res.status(200).json({ ok: false, error: 'used' });
+
+    // El nombre que escribe la clienta debe coincidir con el nombre registrado
+    // para ese código (sin importar mayúsculas, tildes o espacios extra)
+    if (promo.nombre && normalizeName(nombreCliente) !== normalizeName(promo.nombre)) {
+      return res.status(200).json({ ok: false, error: 'name_mismatch' });
+    }
 
     const sub = Number(subtotal) || 0;
     if (sub < MIN_COMPRA) return res.status(200).json({ ok: false, error: 'min_purchase', minCompra: MIN_COMPRA });

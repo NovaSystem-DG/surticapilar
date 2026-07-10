@@ -1156,13 +1156,16 @@
                 <h2>Generar código promocional</h2>
                 <p class="hint" style="margin-bottom:1rem">
                     Cada código es de <strong>un solo uso</strong>, válido solo para compras superiores a
-                    <strong>$150.000</strong> y otorga <strong>envío gratis</strong>. Una vez usado, no puede
-                    volver a utilizarse (a menos que lo restablezcas).
+                    <strong>$150.000</strong> y otorga <strong>envío gratis</strong>. Solo funciona si la clienta
+                    escribe el <strong>mismo nombre</strong> que registres aquí en el campo "Nombre completo" del
+                    pedido (no importa si usa mayúsculas, minúsculas o tildes distintas). Si comparte el código con
+                    otra persona que no escriba ese nombre, el código no funcionará.
                 </p>
                 <div class="promo-form-row">
                     <div class="fg">
-                        <label>Nombre de la clienta *</label>
+                        <label>Nombre y apellido de la clienta *</label>
                         <input type="text" id="promoNombre" placeholder="Ej: María Pérez" />
+                        <span class="hint">Escríbelo tal como la clienta lo pondría en el campo "Nombre completo" al comprar</span>
                     </div>
                     <button class="btn btn-primary" onclick="crearPromo()">✓ Generar código</button>
                 </div>

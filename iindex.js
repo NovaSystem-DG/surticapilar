@@ -394,11 +394,19 @@ async function checkPromoCode() {
   const input = document.getElementById('omPromoCode');
   const hint = document.getElementById('omPromoHint');
   const code = input.value.trim().toUpperCase();
+  const nombreCliente = document.getElementById('omNombre').value.trim();
   appliedPromo = null;
   hint.style.color = '';
 
   if (!code) {
     hint.textContent = '';
+    recalcularTotales();
+    return;
+  }
+
+  if (!nombreCliente) {
+    hint.textContent = 'Escribe primero tu nombre completo arriba para validar el código';
+    hint.style.color = '#c0392b';
     recalcularTotales();
     return;
   }
@@ -410,7 +418,7 @@ async function checkPromoCode() {
     const res = await fetch(PROMO_API, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'check', code, subtotal })
+      body: JSON.stringify({ action: 'check', code, subtotal, nombreCliente })
     });
     const data = await res.json();
     if (data.ok) {
@@ -422,6 +430,7 @@ async function checkPromoCode() {
       if (data.error === 'used') hint.textContent = 'Este código ya fue utilizado';
       else if (data.error === 'min_purchase') hint.textContent = 'Este código aplica solo para compras superiores a ' + fmt(PROMO_MIN_COMPRA);
       else if (data.error === 'not_found') hint.textContent = 'Código no válido';
+      else if (data.error === 'name_mismatch') hint.textContent = 'Este código no corresponde al nombre ingresado';
       else hint.textContent = 'No se pudo verificar el código, intenta de nuevo';
       hint.style.color = '#c0392b';
     }
@@ -432,6 +441,15 @@ async function checkPromoCode() {
   }
   recalcularTotales();
 }
+
+// Si la clienta cambia su nombre después de haber validado un código, se vuelve a validar
+function recheckPromoOnNameChange() {
+  const promoInput = document.getElementById('omPromoCode');
+  if (promoInput && promoInput.value.trim()) {
+    checkPromoCode();
+  }
+}
+
 
 // ── FORMULARIO DE PEDIDO ─────────────────────────────
 function openOrderForm() {
@@ -539,14 +557,17 @@ async function submitOrder() {
       const res = await fetch(PROMO_API, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'redeem', code: appliedPromo.code, subtotal, cliente: nombre + ' (' + telefono + ')' })
+        body: JSON.stringify({ action: 'redeem', code: appliedPromo.code, subtotal, cliente: nombre + ' (' + telefono + ')', nombreCliente: nombre })
       });
       const data = await res.json();
       if (submitBtn) submitBtn.disabled = false;
       if (!data.ok) {
         appliedPromo = null;
         recalcularTotales();
-        showToast('El código promocional ya no es válido (puede que ya se haya usado). Revisa el total e intenta de nuevo.');
+        const msg = data.error === 'name_mismatch'
+          ? 'El código promocional no corresponde al nombre ingresado.'
+          : 'El código promocional ya no es válido (puede que ya se haya usado). Revisa el total e intenta de nuevo.';
+        showToast(msg);
         return;
       }
     } catch (e) {
