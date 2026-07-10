@@ -1135,6 +1135,19 @@
                             placeholder="Describe el producto, para qué sirve, sus beneficios..."></textarea>
                     </div>
                     <div class="fg span2">
+                        <label>Precio por volumen (opcional)</label>
+                        <p class="hint">Si quieres que el precio cambie automáticamente al comprar varias unidades
+                            (ej: para mayoristas), actívalo aquí. No se muestra ningún aviso en la tienda: el precio
+                            simplemente se recalcula solo, sin ningún letrero, cuando la clienta llega a la cantidad
+                            mínima.</p>
+                        <div style="display:flex;gap:10px;flex-wrap:wrap">
+                            <input type="number" min="2" id="addBulkMinQty" placeholder="Cantidad mínima (ej: 12)"
+                                style="max-width:220px" />
+                            <input type="number" min="0" id="addBulkPrice" placeholder="Precio por unidad (ej: 56500)"
+                                style="max-width:220px" />
+                        </div>
+                    </div>
+                    <div class="fg span2">
                         <label>Presentaciones / Tamaños (opcional)</label>
                         <p class="hint">Si el producto viene en varios tamaños con precios distintos, agrégalos aquí.
                             Puedes poner URL de imagen por tamaño.</p>
@@ -1188,6 +1201,17 @@
                     </div>
                 </div>
                 <div class="fg span2"><label>Descripción</label><textarea id="editDesc" rows="3"></textarea></div>
+                <div class="fg span2">
+                    <label>Precio por volumen (opcional)</label>
+                    <p class="hint">Cantidad mínima y precio por unidad al alcanzarla. Deja ambos campos vacíos para
+                        desactivarlo. No se muestra ningún aviso en la tienda.</p>
+                    <div style="display:flex;gap:10px;flex-wrap:wrap">
+                        <input type="number" min="2" id="editBulkMinQty" placeholder="Cantidad mínima (ej: 12)"
+                            style="max-width:220px" />
+                        <input type="number" min="0" id="editBulkPrice" placeholder="Precio por unidad (ej: 56500)"
+                            style="max-width:220px" />
+                    </div>
+                </div>
                 <div class="fg span2">
                     <label>Presentaciones / Tamaños</label>
                     <p class="hint">Etiqueta · Precio · URL imagen (opcional por tamaño)</p>

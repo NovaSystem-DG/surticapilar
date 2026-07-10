@@ -82,8 +82,8 @@ const defaultProducts = [
   { id: 31, name: 'Acondicionador Color Hair Lab 300ml', price: 45000, cat: 'acondicionador', img: BASE + '2025/05/ACONDICIONADOR-HIDRATANTE-PROTECTOR-COLOR-HAIRLAB-300x300.png', instock: true, brand: 'Hair Lab', desc: 'Acondicionador Hair Lab para cabello con color.' },
   { id: 32, name: 'Termoprotector Moisture Kick Bonacure 200ml', price: 82000, cat: 'Termoprotector', img: BASE + '2025/05/Termoprotector-MOISTURE-KICK-BONACURE-300x300.png', instock: true, brand: 'Bonacure', desc: 'Termoprotector Schwarzkopf Bonacure Moisture Kick.' },
   { id: 33, name: 'Termoprotector Repair Rescue Bonacure 200ml', price: 82000, cat: 'Termoprotector', img: BASE + '2025/05/REPAIR-RESCUE-BONACURE-300x300.png', instock: false, brand: 'Bonacure', desc: 'Termoprotector Bonacure Repair Rescue.' },
-  { id: 34, name: 'Dark & Lovely Alisador Regular Sin Lejia', price: 69000, cat: 'alisadora', img: BASE + '2025/05/Dark-LovelyDark-Lovely-Alisador-300x300.png', instock: true, brand: 'Dark & Lovely', desc: 'Alisador Dark & Lovely Regular Sin Lejia.' },
-  { id: 35, name: 'Dark & Lovely Super Alisador Sin Lejia', price: 64800, cat: 'alisadora', img: BASE + '2025/05/Aliser-DarkLovely-Super-Sin-Lejia-1-Aplicacion-300x300.png', instock: false, wasPrice: 69400, brand: 'Dark & Lovely', badge: 'Oferta', desc: 'Alisador Dark & Lovely Super Sin Lejia.' },
+  { id: 34, name: 'Dark & Lovely Alisador Regular Sin Lejia', price: 69000, cat: 'alisadora', img: BASE + '2025/05/Dark-LovelyDark-Lovely-Alisador-300x300.png', instock: true, brand: 'Dark & Lovely', desc: 'Alisador Dark & Lovely Regular Sin Lejia.', bulkPrice: { minQty: 12, price: 56500 } },
+  { id: 35, name: 'Dark & Lovely Super Alisador Sin Lejia', price: 64800, cat: 'alisadora', img: BASE + '2025/05/Aliser-DarkLovely-Super-Sin-Lejia-1-Aplicacion-300x300.png', instock: false, wasPrice: 69400, brand: 'Dark & Lovely', badge: 'Oferta', desc: 'Alisador Dark & Lovely Super Sin Lejia.', bulkPrice: { minQty: 12, price: 56500 } },
   { id: 36, name: 'Just For Me Relajante Sin Lejia', price: 55700, cat: 'alisadora', img: BASE + '2025/05/Just-For-Me-Relajante-sin-Lejia-1-Aplicacion-300x300.png', instock: false, wasPrice: 59900, brand: 'Just For Me', badge: 'Oferta', desc: 'Relajante Just For Me Sin Lejia.' },
   { id: 37, name: 'Ultra Sheen Supreme Kit Relajante x2', price: 78300, cat: 'alisadora', img: BASE + '2025/05/Ultra-Sheen-Supreme-Regular-Kit-Relajante-sin-lejia-2-aplicaciones-300x300.png', instock: false, brand: 'Ultra Sheen', desc: 'Kit relajante Ultra Sheen Supreme.' },
   { id: 38, name: 'SheaMoisture Mascarilla Miel de Manuka 326gr', price: 88000, cat: 'mascarilla', img: BASE + '2025/05/SHEAMOISTURE-MASCARILLA-MIEL-MANUKA-300x300.png', instock: true, brand: 'SheaMoisture', desc: 'Mascarilla SheaMoisture con miel de manuka.' },
@@ -238,6 +238,21 @@ function getCartQtyForProduct(key) {
   return item ? item.qty : 0;
 }
 
+/**
+ * Calcula el precio unitario de un producto según la cantidad.
+ * Si el producto tiene bulkPrice configurado y la cantidad alcanza el mínimo,
+ * el precio cambia automáticamente. No se muestra ningún aviso: es silencioso.
+ */
+function getUnitPrice(p, sizeLabel, qty) {
+  let price = (p.sizes && sizeLabel)
+    ? (p.sizes.find(s => s.label === sizeLabel)?.price ?? p.price)
+    : p.price;
+  if (p.bulkPrice && p.bulkPrice.minQty && qty >= p.bulkPrice.minQty) {
+    price = p.bulkPrice.price;
+  }
+  return price;
+}
+
 // ── CARRITO ──────────────────────────────────────────
 function quickAdd(id) {
   const p = products.find(x => x.id === id);
@@ -261,33 +276,37 @@ function quickAdd(id) {
 
 function addToCart(p, qty, sizeLabel) {
   const key = p.id + (sizeLabel || '');
-  const price = p.sizes && sizeLabel ? (p.sizes.find(s => s.label === sizeLabel)?.price || p.price) : p.price;
   const available = getSizeAvailableStock(p, sizeLabel);
   const ex = cart.find(x => x.key === key);
   const currentQty = ex ? ex.qty : 0;
   const allowed = available !== Infinity ? Math.min(qty, available - currentQty) : qty;
   if (allowed <= 0) return;
-  if (ex) ex.qty += allowed;
+  const newQty = currentQty + allowed;
+  const price = getUnitPrice(p, sizeLabel, newQty);
+  if (ex) { ex.qty = newQty; ex.price = price; }
   else cart.push({ key, id: p.id, name: p.name, img: p.img, price, sizeLabel, qty: allowed });
   saveCart();
   updateCartUI();
 }
 
 function clampCartToStock() {
-  let changed = false;
+  let stockChanged = false;
   cart = cart.map(item => {
     const p = products.find(x => x.id === item.id);
     if (!p) return item;
     const available = getSizeAvailableStock(p, item.sizeLabel);
+    let newItem = item;
     if (available !== Infinity && item.qty > available) {
-      changed = true;
+      stockChanged = true;
       if (available <= 0) return null;
-      return { ...item, qty: available };
+      newItem = { ...item, qty: available };
     }
-    return item;
+    const recomputedPrice = getUnitPrice(p, newItem.sizeLabel, newItem.qty);
+    if (recomputedPrice !== newItem.price) newItem = { ...newItem, price: recomputedPrice };
+    return newItem;
   }).filter(Boolean);
-  if (changed) {
-    saveCart();
+  saveCart();
+  if (stockChanged) {
     showToast('Algunas cantidades se ajustaron por disponibilidad de stock');
   }
 }
@@ -324,8 +343,8 @@ function updateCartUI() {
 function cqChange(key, d) {
   const i = cart.find(x => x.key === key);
   if (!i) return;
+  const p = products.find(x => x.id === i.id);
   if (d > 0) {
-    const p = products.find(x => x.id === i.id);
     const available = p ? getSizeAvailableStock(p, i.sizeLabel) : Infinity;
     if (available !== Infinity && i.qty >= available) {
       showToast(available === 1 ? 'Solo queda 1 unidad disponible' : 'Solo quedan ' + available + ' unidades disponibles');
@@ -333,7 +352,11 @@ function cqChange(key, d) {
     }
   }
   i.qty += d;
-  if (i.qty <= 0) cart = cart.filter(x => x.key !== key);
+  if (i.qty <= 0) {
+    cart = cart.filter(x => x.key !== key);
+  } else if (p) {
+    i.price = getUnitPrice(p, i.sizeLabel, i.qty);
+  }
   saveCart();
   updateCartUI();
 }
@@ -508,7 +531,7 @@ function openDetail(id) {
   const firstImg = (p.sizes && p.sizes.length > 0 && p.sizes[0].img) ? p.sizes[0].img : p.img;
   setDetailImage(firstImg);
 
-  const firstPrice = (p.sizes && p.sizes.length > 0) ? p.sizes[0].price : p.price;
+  const firstPrice = getUnitPrice(p, selectedSize, detailQty);
   renderDetailPrice(firstPrice, p.wasPrice);
 
   const ds = document.getElementById('dSizes');
@@ -621,6 +644,9 @@ function changeDetailQty(d) {
   }
   detailQty = newQty;
   document.getElementById('dQty').textContent = detailQty;
+  if (p) {
+    renderDetailPrice(getUnitPrice(p, selectedSize, detailQty), p.wasPrice);
+  }
 }
 
 function addFromDetail() {
@@ -650,9 +676,7 @@ function addFromDetail() {
 function waFromDetail() {
   if (!currentProduct) return;
   const p = currentProduct;
-  const price = p.sizes && selectedSize
-    ? (p.sizes.find(s => s.label === selectedSize)?.price || p.price)
-    : p.price;
+  const price = getUnitPrice(p, selectedSize, detailQty);
   const total = price * detailQty;
   const msg = '%C2%A1Hola! Me interesa este producto:%0A%0A• *' + encodeURIComponent(p.name) + '*'
     + (selectedSize ? ' (' + encodeURIComponent(selectedSize) + ')' : '')

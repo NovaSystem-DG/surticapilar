@@ -197,6 +197,9 @@ function renderTable() {
       <td style="font-weight:600;color:#5c0a1f">
         $${Math.round(p.price).toLocaleString('es-CO')}
         ${p.priceMax ? '<br><span style="font-size:.7rem;color:#6b3a46">hasta $' + Math.round(p.priceMax).toLocaleString('es-CO') + '</span>' : ''}
+        ${p.bulkPrice && p.bulkPrice.minQty && p.bulkPrice.price
+        ? '<br><span style="font-size:.7rem;color:#804a10">Desde ' + p.bulkPrice.minQty + 'u: $' + Math.round(p.bulkPrice.price).toLocaleString('es-CO') + '</span>'
+        : ''}
       </td>
       <td>${tagNames[p.cat] || p.cat}</td>
       <td>${stockCell}</td>
@@ -329,6 +332,8 @@ function openEdit(id) {
   document.getElementById('editDesc').value = p.desc || '';
   document.getElementById('editWasPrice').value = p.wasPrice || '';
   document.getElementById('editStockQty').value = (p.stockQty !== undefined && p.stockQty !== null) ? p.stockQty : '';
+  document.getElementById('editBulkMinQty').value = (p.bulkPrice && p.bulkPrice.minQty) ? p.bulkPrice.minQty : '';
+  document.getElementById('editBulkPrice').value = (p.bulkPrice && p.bulkPrice.price) ? p.bulkPrice.price : '';
   previewImg('editImg', 'editImgPreview');
   loadSizesIntoForm('editSizesList', p.sizes);
   document.getElementById('editModal').classList.add('open');
@@ -352,6 +357,9 @@ async function saveEdit() {
     p.instock = false;
     p.stockQty = 0;
   }
+  const bulkMinQty = parseInt(document.getElementById('editBulkMinQty').value);
+  const bulkPriceVal = parseFloat(document.getElementById('editBulkPrice').value);
+  p.bulkPrice = (bulkMinQty > 0 && bulkPriceVal > 0) ? { minQty: bulkMinQty, price: bulkPriceVal } : undefined;
   const sizes = getSizes('editSizesList');
   p.sizes = sizes.length > 0 ? sizes : undefined;
   p.priceMax = sizes.length > 1 ? Math.max(...sizes.map(s => s.price)) : undefined;
@@ -371,6 +379,8 @@ async function saveNewProduct() {
   const sizes = getSizes('addSizesList');
   const wp = parseFloat(document.getElementById('addWasPrice').value);
   const stockQtyVal = document.getElementById('addStockQty').value.trim();
+  const bulkMinQty = parseInt(document.getElementById('addBulkMinQty').value);
+  const bulkPriceVal = parseFloat(document.getElementById('addBulkPrice').value);
   const newId = products.length ? Math.max(...products.map(x => x.id)) + 1 : 1;
   const img = document.getElementById('addImg').value.trim()
     || (BASE + '2026/05/Copia-de-Copia-de-pagina-web-1-300x300.png');
@@ -385,6 +395,7 @@ async function saveNewProduct() {
     desc: document.getElementById('addDesc').value.trim(),
     wasPrice: wp || undefined,
     stockQty: stockQtyVal !== '' ? parseInt(stockQtyVal) : undefined,
+    bulkPrice: (bulkMinQty > 0 && bulkPriceVal > 0) ? { minQty: bulkMinQty, price: bulkPriceVal } : undefined,
     sizes: sizes.length > 0 ? sizes : undefined,
     priceMax: sizes.length > 1 ? Math.max(...sizes.map(s => s.price)) : undefined,
   };
@@ -397,7 +408,7 @@ async function saveNewProduct() {
 }
 
 function clearAddForm() {
-  ['addName', 'addBrand', 'addPrice', 'addImg', 'addDesc', 'addWasPrice', 'addStockQty'].forEach(id => {
+  ['addName', 'addBrand', 'addPrice', 'addImg', 'addDesc', 'addWasPrice', 'addStockQty', 'addBulkMinQty', 'addBulkPrice'].forEach(id => {
     document.getElementById(id).value = '';
   });
   document.getElementById('addSizesList').innerHTML = '';
