@@ -3,12 +3,13 @@
 // Valida y canjea códigos promocionales sin exponer la
 // Master Key de JSONBin al navegador del cliente.
 //
-// CONFIGURACIÓN REQUERIDA EN VERCEL:
-//   Settings → Environment Variables →
-//   JSONBIN_MASTER_KEY = tu Master Key de jsonbin.io
+// Usa las variables de entorno que ya tienes en Vercel:
+//   JSONBIN_API_KEY → tu Master Key
+//   JSONBIN_ID      → el ID de tu bin
+// No necesitas crear ninguna variable nueva.
 // ═══════════════════════════════════════════════════════
 
-const BIN_ID = '6a21c113da38895dfe88176d';
+const DEFAULT_BIN_ID = '6a21c113da38895dfe88176d';
 const MIN_COMPRA = 150000;
 
 export default async function handler(req, res) {
@@ -18,7 +19,10 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ ok: false, error: 'method_not_allowed' });
 
-  const KEY = process.env.JSONBIN_MASTER_KEY;
+  // Acepta cualquiera de estos nombres de variable de entorno (usa la que ya
+  // tengas configurada en Vercel; no hace falta crear una nueva si ya existe).
+  const KEY = process.env.JSONBIN_API_KEY || process.env.JSONBIN_MASTER_KEY;
+  const BIN_ID = process.env.JSONBIN_ID || DEFAULT_BIN_ID;
   if (!KEY) return res.status(500).json({ ok: false, error: 'server_not_configured' });
 
   const { action, code, subtotal, cliente } = req.body || {};
