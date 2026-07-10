@@ -1,6 +1,8 @@
 const WA = '573226747868';
 const BIN_ID = '6a21c113da38895dfe88176d';
 const BASE = 'https://surticapilar.com/wp-content/uploads/';
+const PROMO_API = '/api/promo';
+const PROMO_MIN_COMPRA = 150000;
 
 // ── COSTOS DE ENVÍO ──────────────────────────────────
 const ENVIO = {
@@ -119,6 +121,9 @@ async function loadProducts() {
 let products = defaultProducts;
 let cart = [], activeCat = 'all', currentProduct = null, detailQty = 1, selectedSize = null;
 
+// Código promocional aplicado en el pedido actual (null si no hay ninguno válido)
+let appliedPromo = null; // { code: 'ABC123' }
+
 // ── PERSISTENCIA DEL CARRITO ─────────────────────────
 function saveCart() {
   try { localStorage.setItem('sc_cart', JSON.stringify(cart)); } catch (e) { }
@@ -171,7 +176,6 @@ function renderProducts() {
 
 function renderCard(p) {
   const b = p.badge ? '<span class="card-badge' + (p.badge === 'Oferta' ? ' sale' : '') + '">' + p.badge + '</span>' : '';
-  // For cards with sizes, check if at least one size is in stock
   const effectiveInstock = p.sizes && p.sizes.length > 1
     ? p.sizes.some(s => getSizeInstock(p, s.label))
     : p.instock;
@@ -192,43 +196,29 @@ function renderCard(p) {
 }
 
 // ── HELPERS DE STOCK POR TALLA ────────────────────────
-
-/**
- * Obtiene el stock disponible de una talla específica o del producto (si no tiene tallas).
- * Retorna Infinity si no hay conteo configurado.
- */
 function getSizeAvailableStock(p, sizeLabel) {
   if (p.sizes && p.sizes.length > 1 && sizeLabel) {
-    // Producto con múltiples tallas: leer stockQty de la talla
     const sizeObj = p.sizes.find(s => s.label === sizeLabel);
     if (!sizeObj) return Infinity;
     if (sizeObj.stockQty === null || sizeObj.stockQty === undefined || sizeObj.stockQty === '') return Infinity;
     return parseInt(sizeObj.stockQty) || 0;
   }
-  // Producto sin tallas (o con una sola): usar stockQty del producto
   if (p.stockQty === null || p.stockQty === undefined || p.stockQty === '') return Infinity;
   return parseInt(p.stockQty) || 0;
 }
 
-/**
- * Determina si una talla (o el producto entero) está en stock.
- */
 function getSizeInstock(p, sizeLabel) {
   if (p.sizes && p.sizes.length > 1 && sizeLabel) {
     const sizeObj = p.sizes.find(s => s.label === sizeLabel);
     if (!sizeObj) return false;
-    // Si la talla tiene instock explícito, usarlo
     if (typeof sizeObj.instock === 'boolean') return sizeObj.instock;
-    // Si tiene stockQty = 0, está agotada
     if (sizeObj.stockQty !== undefined && sizeObj.stockQty !== null && parseInt(sizeObj.stockQty) <= 0) return false;
-    // Heredar del producto
     return p.instock;
   }
   return p.instock;
 }
 
 function getAvailableStock(p) {
-  // Compatibilidad hacia atrás para productos sin tallas
   if (p.stockQty === null || p.stockQty === undefined || p.stockQty === '') return Infinity;
   return parseInt(p.stockQty) || 0;
 }
@@ -238,11 +228,6 @@ function getCartQtyForProduct(key) {
   return item ? item.qty : 0;
 }
 
-/**
- * Calcula el precio unitario de un producto según la cantidad.
- * Si el producto tiene bulkPrice configurado y la cantidad alcanza el mínimo,
- * el precio cambia automáticamente. No se muestra ningún aviso: es silencioso.
- */
 function getUnitPrice(p, sizeLabel, qty) {
   let price = (p.sizes && sizeLabel)
     ? (p.sizes.find(s => s.label === sizeLabel)?.price ?? p.price)
@@ -257,7 +242,6 @@ function getUnitPrice(p, sizeLabel, qty) {
 function quickAdd(id) {
   const p = products.find(x => x.id === id);
   if (!p) return;
-  // For multi-size products, open detail so user picks a size
   if (p.sizes && p.sizes.length > 1) {
     openDetail(id);
     return;
@@ -382,16 +366,71 @@ function onDeptChange() {
     ciudadSel.appendChild(opt);
   });
   if (ciudades.length === 1) ciudadSel.value = ciudades[0];
+  recalcularTotales();
+}
+
+// Recalcula envío + total teniendo en cuenta el código promocional aplicado
+function recalcularTotales() {
+  const dept = document.getElementById('omDepartamento').value;
+  if (!dept) return;
   const info = ENVIO[dept] || ENVIO.default;
   const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
-  const total = subtotal + info.costo;
+  const costoEnvio = appliedPromo ? 0 : info.costo;
+  const total = subtotal + costoEnvio;
+
   document.getElementById('envioZona').textContent = info.label;
-  document.getElementById('envioDetalle').textContent = info.detalle;
-  document.getElementById('envioPrice').textContent = fmt(info.costo);
+  document.getElementById('envioDetalle').textContent = appliedPromo ? info.detalle + ' — envío gratis por código promocional' : info.detalle;
+  document.getElementById('envioPrice').textContent = appliedPromo ? 'Gratis' : fmt(info.costo);
   document.getElementById('envioBox').style.display = 'flex';
-  document.getElementById('omTotalDetail').textContent = fmt(subtotal) + ' productos + ' + fmt(info.costo) + ' envío';
+  document.getElementById('omTotalDetail').textContent = appliedPromo
+    ? fmt(subtotal) + ' productos + envío gratis (código aplicado)'
+    : fmt(subtotal) + ' productos + ' + fmt(info.costo) + ' envío';
   document.getElementById('omTotalVal').textContent = fmt(total);
   document.getElementById('omTotalRow').style.display = 'flex';
+}
+
+// ── CÓDIGO PROMOCIONAL ────────────────────────────────
+async function checkPromoCode() {
+  const input = document.getElementById('omPromoCode');
+  const hint = document.getElementById('omPromoHint');
+  const code = input.value.trim().toUpperCase();
+  appliedPromo = null;
+  hint.style.color = '';
+
+  if (!code) {
+    hint.textContent = '';
+    recalcularTotales();
+    return;
+  }
+
+  const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  hint.textContent = 'Verificando código...';
+
+  try {
+    const res = await fetch(PROMO_API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'check', code, subtotal })
+    });
+    const data = await res.json();
+    if (data.ok) {
+      appliedPromo = { code };
+      hint.textContent = '✓ Código válido — envío gratis aplicado';
+      hint.style.color = '#155a2a';
+    } else {
+      appliedPromo = null;
+      if (data.error === 'used') hint.textContent = 'Este código ya fue utilizado';
+      else if (data.error === 'min_purchase') hint.textContent = 'Este código aplica solo para compras superiores a ' + fmt(PROMO_MIN_COMPRA);
+      else if (data.error === 'not_found') hint.textContent = 'Código no válido';
+      else hint.textContent = 'No se pudo verificar el código, intenta de nuevo';
+      hint.style.color = '#c0392b';
+    }
+  } catch (e) {
+    appliedPromo = null;
+    hint.textContent = 'No se pudo verificar el código, intenta de nuevo';
+    hint.style.color = '#c0392b';
+  }
+  recalcularTotales();
 }
 
 // ── FORMULARIO DE PEDIDO ─────────────────────────────
@@ -412,6 +451,11 @@ function openOrderForm() {
   const ciudadSel = document.getElementById('omCiudad');
   ciudadSel.innerHTML = '<option value="">— Selecciona tu ciudad —</option>';
   document.getElementById('omDireccion').value = '';
+  const promoInput = document.getElementById('omPromoCode');
+  if (promoInput) promoInput.value = '';
+  const promoHint = document.getElementById('omPromoHint');
+  if (promoHint) promoHint.textContent = '';
+  appliedPromo = null;
   document.getElementById('envioBox').style.display = 'none';
   document.getElementById('omTotalRow').style.display = 'none';
   closeCart();
@@ -434,7 +478,7 @@ function validarCorreo(correo) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo);
 }
 
-function submitOrder() {
+async function submitOrder() {
   const nombre = document.getElementById('omNombre').value.trim();
   const cedula = document.getElementById('omCedula').value.trim();
   const telefono = document.getElementById('omTelefono').value.trim();
@@ -485,9 +529,36 @@ function submitOrder() {
     return;
   }
 
-  const envioInfo = ENVIO[dept] || ENVIO.default;
   const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
-  const total = subtotal + envioInfo.costo;
+
+  // Si hay un código promocional aplicado, intentar canjearlo justo antes de enviar
+  if (appliedPromo) {
+    const submitBtn = document.querySelector('.om-submit');
+    if (submitBtn) submitBtn.disabled = true;
+    try {
+      const res = await fetch(PROMO_API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'redeem', code: appliedPromo.code, subtotal, cliente: nombre + ' (' + telefono + ')' })
+      });
+      const data = await res.json();
+      if (submitBtn) submitBtn.disabled = false;
+      if (!data.ok) {
+        appliedPromo = null;
+        recalcularTotales();
+        showToast('El código promocional ya no es válido (puede que ya se haya usado). Revisa el total e intenta de nuevo.');
+        return;
+      }
+    } catch (e) {
+      if (submitBtn) submitBtn.disabled = false;
+      showToast('No se pudo validar el código promocional, intenta de nuevo');
+      return;
+    }
+  }
+
+  const envioInfo = ENVIO[dept] || ENVIO.default;
+  const costoEnvio = appliedPromo ? 0 : envioInfo.costo;
+  const total = subtotal + costoEnvio;
   let msg = '%C2%A1Hola! Tengo un nuevo pedido desde la tienda:%0A%0A';
   msg += '👤 *Datos del cliente*%0A';
   msg += 'Nombre: ' + encodeURIComponent(nombre) + '%0A';
@@ -501,13 +572,20 @@ function submitOrder() {
       + ' ×' + i.qty + ' = ' + encodeURIComponent(fmt(i.price * i.qty)) + '%0A';
   });
   msg += '%0A🚚 *Envío*%0A';
-  msg += encodeURIComponent(envioInfo.label) + ': ' + encodeURIComponent(fmt(envioInfo.costo)) + '%0A';
+  if (appliedPromo) {
+    msg += 'Envío gratis (código promocional ' + encodeURIComponent(appliedPromo.code) + ')%0A';
+  } else {
+    msg += encodeURIComponent(envioInfo.label) + ': ' + encodeURIComponent(fmt(envioInfo.costo)) + '%0A';
+  }
   msg += 'Dirección: ' + encodeURIComponent(direccion) + '%0A';
   msg += 'Ciudad: ' + encodeURIComponent(ciudad) + ' – ' + encodeURIComponent(dept) + '%0A';
   msg += '%0A💰 *Total a pagar: ' + encodeURIComponent(fmt(total)) + '*%0A';
   msg += '%0APor favor confirmar disponibilidad y método de pago.';
   window.open('https://wa.me/' + WA + '?text=' + msg, '_blank');
   closeOrderForm();
+  cart = [];
+  saveCart();
+  updateCartUI();
 }
 
 // ── DETALLE ──────────────────────────────────────────
@@ -624,7 +702,6 @@ function selectSize(btn, idx) {
   renderDetailPrice(s.price, p.wasPrice);
   if (s.img) setDetailImage(s.img);
 
-  // Update add button based on this size's stock
   const sInstock = getSizeInstock(p, s.label);
   const ab = document.getElementById('detailAddBtn');
   ab.disabled = !sInstock;

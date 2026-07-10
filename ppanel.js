@@ -4,6 +4,7 @@
 const ADMIN_KEY = 'surticapilar2025';
 const BIN_ID = '6a21c113da38895dfe88176d';
 const BASE = 'https://surticapilar.com/wp-content/uploads/';
+const PROMO_MIN_COMPRA = 150000;
 
 const tagNames = {
   shampoo: 'Shampoo', acondicionador: 'Acondicionador', mascarilla: 'Mascarilla',
@@ -47,8 +48,18 @@ function saveConfig() {
 }
 
 // ═══════════════════════════════════════════
-// JSONBIN — LEER y ESCRIBIR
+// JSONBIN — LEER y ESCRIBIR (productos + códigos)
 // ═══════════════════════════════════════════
+let products = [];
+let promoCodes = [];
+
+function setStatus(type, msg) {
+  const el = document.getElementById('statusPill');
+  if (!el) return;
+  el.className = 'status-pill ' + type;
+  el.textContent = msg;
+}
+
 async function fetchProducts() {
   setStatus('saving', '⏳ Cargando...');
   try {
@@ -58,8 +69,10 @@ async function fetchProducts() {
     const res = await fetch('https://api.jsonbin.io/v3/b/' + BIN_ID + '/latest', { headers });
     if (!res.ok) throw new Error('fetch failed ' + res.status);
     const data = await res.json();
-    const prods = data.record ? data.record.products : data.products;
+    const d = data.record ? data.record : data;
+    promoCodes = d.promoCodes || [];
     setStatus('ok', '✓ Conectado');
+    const prods = d.products;
     return (prods && prods.length > 0) ? prods : getDefaultProducts();
   } catch (e) {
     setStatus('err', '✗ Error de conexión');
@@ -82,7 +95,7 @@ async function pushProducts() {
         'Content-Type': 'application/json',
         'X-Master-Key': getApiKey()
       },
-      body: JSON.stringify({ products })
+      body: JSON.stringify({ products, promoCodes })
     });
     if (!res.ok) throw new Error('push failed ' + res.status);
     setStatus('ok', '✓ Guardado para todos');
@@ -92,18 +105,6 @@ async function pushProducts() {
     toast('No se pudo guardar. Revisa tu conexión o la API Key.', 'error');
     return false;
   }
-}
-
-// ═══════════════════════════════════════════
-// ESTADO GLOBAL
-// ═══════════════════════════════════════════
-let products = [];
-
-function setStatus(type, msg) {
-  const el = document.getElementById('statusPill');
-  if (!el) return;
-  el.className = 'status-pill ' + type;
-  el.textContent = msg;
 }
 
 // ═══════════════════════════════════════════
@@ -142,7 +143,6 @@ function renderTable() {
   tbody.innerHTML = list.map(p => {
     const hasSizes = p.sizes && p.sizes.length > 1;
 
-    // Stock cell — per-size inputs if multi-size, single input otherwise
     let stockCell = '';
     if (hasSizes) {
       stockCell = '<div class="size-stock-rows">'
@@ -167,7 +167,6 @@ function renderTable() {
         : '<span style="font-size:.75rem;color:#aaa">Sin conteo</span>';
     }
 
-    // Status cell
     let statusCell = '';
     if (hasSizes) {
       statusCell = p.sizes.map(s => {
@@ -216,7 +215,6 @@ function renderTable() {
   updateStats();
 }
 
-// ── ACTUALIZAR STOCK QTY PRODUCTO SIN TALLAS ──────────
 async function updateStockQty(id, val) {
   const p = products.find(x => x.id === id);
   if (!p) return;
@@ -232,20 +230,17 @@ async function updateStockQty(id, val) {
   if (ok) toast('Unidades actualizadas ✓', 'success');
 }
 
-// ── ACTUALIZAR STOCK QTY DE UNA TALLA ESPECÍFICA ──────
 async function updateSizeStockQty(productId, sizeIdx, val) {
   const p = products.find(x => x.id === productId);
   if (!p || !p.sizes || !p.sizes[sizeIdx]) return;
   const s = p.sizes[sizeIdx];
   const parsed = val.trim() !== '' ? parseInt(val) : undefined;
   s.stockQty = parsed;
-  // Si llega a 0, marcar esa talla como agotada
   if (parsed !== undefined && parsed <= 0) {
     s.instock = false;
     s.stockQty = 0;
     toast(s.label + ' llegó a 0 → marcado como agotado', 'success');
   } else if (parsed > 0 && s.instock === false) {
-    // Si se agrega stock de nuevo, volver a disponible
     s.instock = true;
   }
   renderTable();
@@ -253,16 +248,13 @@ async function updateSizeStockQty(productId, sizeIdx, val) {
   if (ok) toast('Stock de ' + s.label + ' actualizado ✓', 'success');
 }
 
-// ── TOGGLE STOCK DE UNA TALLA ESPECÍFICA ──────────────
 async function toggleSizeStock(productId, sizeIdx) {
   const p = products.find(x => x.id === productId);
   if (!p || !p.sizes || !p.sizes[sizeIdx]) return;
   const s = p.sizes[sizeIdx];
-  // Determinar estado actual
   const currentInstock = getSizeInstock(p, s.label);
   s.instock = !currentInstock;
   if (!s.instock) {
-    // Si se marca agotado, poner stock a 0
     if (s.stockQty !== undefined && s.stockQty !== null) s.stockQty = 0;
   }
   renderTable();
@@ -280,9 +272,6 @@ function updateStats() {
   document.getElementById('statCats').textContent = new Set(products.map(p => p.cat)).size;
 }
 
-// ═══════════════════════════════════════════
-// TOGGLE STOCK (producto sin tallas)
-// ═══════════════════════════════════════════
 async function toggleStock(id) {
   const p = products.find(x => x.id === id);
   if (!p) return;
@@ -292,9 +281,6 @@ async function toggleStock(id) {
   if (ok) toast(p.instock ? 'Marcado en stock ✓' : 'Marcado como agotado ✓', 'success');
 }
 
-// ═══════════════════════════════════════════
-// ELIMINAR
-// ═══════════════════════════════════════════
 let pendingDeleteId = null;
 
 function confirmDelete(id) {
@@ -317,9 +303,6 @@ async function doDelete() {
 
 function closeConfirm() { document.getElementById('confirmOverlay').classList.remove('open'); }
 
-// ═══════════════════════════════════════════
-// EDITAR PRODUCTO
-// ═══════════════════════════════════════════
 function openEdit(id) {
   const p = products.find(x => x.id === id);
   if (!p) return;
@@ -369,9 +352,6 @@ async function saveEdit() {
   if (ok) toast('Producto actualizado ✓', 'success');
 }
 
-// ═══════════════════════════════════════════
-// AGREGAR PRODUCTO
-// ═══════════════════════════════════════════
 async function saveNewProduct() {
   const name = document.getElementById('addName').value.trim();
   const price = parseFloat(document.getElementById('addPrice').value);
@@ -415,9 +395,6 @@ function clearAddForm() {
   document.getElementById('addImgPreview').className = 'img-preview';
 }
 
-// ═══════════════════════════════════════════
-// SIZES — agregar fila, leer filas, cargar al editar
-// ═══════════════════════════════════════════
 function addSizeRow(listId, sizeData) {
   const list = document.getElementById(listId);
   const row = document.createElement('div');
@@ -465,6 +442,91 @@ function loadSizesIntoForm(listId, sizes) {
 }
 
 // ═══════════════════════════════════════════
+// CÓDIGOS PROMOCIONALES (envío gratis, un solo uso)
+// ═══════════════════════════════════════════
+function renderPromos() {
+  const tbody = document.getElementById('promoTbody');
+  if (!tbody) return;
+  if (!promoCodes.length) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:2rem;color:#aaa">No hay códigos creados todavía</td></tr>';
+    return;
+  }
+  tbody.innerHTML = promoCodes.map((c, idx) => `
+    <tr>
+      <td>
+        <code style="font-size:.95rem;color:#5c0a1f;font-weight:700;background:#f4e8ec;padding:5px 12px;border-radius:7px;letter-spacing:.1em;display:inline-block">${c.code}</code>
+      </td>
+      <td>${c.nombre || '—'}</td>
+      <td style="font-weight:600;font-size:.8rem;color:#155a2a">
+        Envío gratis<br><span style="font-weight:400;color:#6b3a46;font-size:.72rem">Compras &gt; $150.000</span>
+      </td>
+      <td>
+        <span class="stock-badge ${c.usado ? 'out' : 'in'}">
+          ${c.usado ? '● Usado' : '● Disponible'}
+        </span>
+        ${c.usado && c.usadoPor ? '<br><small style="color:#6b3a46;font-size:.72rem">' + c.usadoPor + (c.usadoFecha ? ' · ' + c.usadoFecha : '') + '</small>' : ''}
+      </td>
+      <td>
+        <div class="act-row">
+          ${!c.usado ? `<button class="act-btn toggle-stock" onclick="resetPromo(${idx})">↺ Restablecer</button>` : `<button class="act-btn toggle-stock" onclick="resetPromo(${idx})">↺ Restablecer</button>`}
+          <button class="act-btn del" onclick="deletePromo(${idx})">🗑️</button>
+        </div>
+      </td>
+    </tr>`).join('');
+}
+
+function generarCodigoAleatorio() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let code = '';
+  for (let i = 0; i < 8; i++) code += chars[Math.floor(Math.random() * chars.length)];
+  return code;
+}
+
+async function crearPromo() {
+  const nombre = document.getElementById('promoNombre').value.trim();
+  if (!nombre) { toast('Ingresa el nombre de la clienta', 'error'); return; }
+
+  const code = generarCodigoAleatorio();
+  promoCodes.push({
+    code, nombre,
+    usado: false,
+    creadoFecha: new Date().toISOString().slice(0, 10)
+  });
+  document.getElementById('promoNombre').value = '';
+
+  renderPromos();
+  const ok = await pushProducts();
+  if (ok) {
+    const box = document.getElementById('promoCreado');
+    box.innerHTML =
+      '✓ Código creado para <strong>' + nombre + '</strong>:<br>'
+      + '<span style="font-family:monospace;font-size:1.4rem;font-weight:800;background:#5c0a1f;color:#fff;padding:6px 18px;border-radius:8px;letter-spacing:.15em;display:inline-block;margin-top:6px">'
+      + code + '</span><br>'
+      + '<small style="color:#6b3a46;font-size:.8rem;margin-top:4px;display:block">Cópialo y compártelo con la clienta — otorga envío gratis en compras superiores a $' + PROMO_MIN_COMPRA.toLocaleString('es-CO') + '. Solo puede usarse una vez.</small>';
+    box.style.display = 'block';
+    setTimeout(() => { box.style.display = 'none'; }, 20000);
+    toast('Código creado ✓', 'success');
+  }
+}
+
+async function deletePromo(idx) {
+  if (!confirm('¿Eliminar este código?')) return;
+  promoCodes.splice(idx, 1);
+  renderPromos();
+  const ok = await pushProducts();
+  if (ok) toast('Código eliminado', 'success');
+}
+
+async function resetPromo(idx) {
+  promoCodes[idx].usado = false;
+  delete promoCodes[idx].usadoPor;
+  delete promoCodes[idx].usadoFecha;
+  renderPromos();
+  const ok = await pushProducts();
+  if (ok) toast('Código restablecido — puede usarse de nuevo ✓', 'success');
+}
+
+// ═══════════════════════════════════════════
 // UI HELPERS
 // ═══════════════════════════════════════════
 function showTab(tab, btn) {
@@ -502,9 +564,6 @@ function getDefaultProducts() {
   return [
     { id: 1, name: 'Flash Mask Mantenimiento de Color x300ml', price: 77800, cat: 'mascarilla', img: BASE + '2026/05/Copia-de-Copia-de-pagina-web-1-300x300.png', instock: true, brand: 'Hair Lab', desc: 'Mascarilla de mantenimiento de color.' },
     { id: 2, name: 'Acondicionador Glow x500ml', price: 64900, cat: 'acondicionador', img: BASE + '2026/05/Copia-de-Copia-de-pagina-web-2-300x300.png', instock: true, brand: 'Yellow', desc: 'Acondicionador con efecto brillo intenso.' },
-    { id: 3, name: 'Shampoo Hidro-Nutritivo x500ml', price: 62900, cat: 'shampoo', img: BASE + '2026/05/Copia-de-Copia-de-pagina-web-4-300x300.png', instock: true, brand: 'Yellow', desc: 'Shampoo con nutricion profunda.' },
-    { id: 4, name: 'Molecular Serum x150ml', price: 62900, cat: 'leavein', img: BASE + '2026/05/Copia-de-Copia-de-pagina-web-3-300x300.png', instock: true, brand: 'Organic Fiber', desc: 'Serum molecular de accion profunda.' },
-    { id: 5, name: 'Protector Thermal Yellow x250ml', price: 69000, cat: 'Termoprotector', img: BASE + '2026/01/Copia-de-Copia-de-pagina-web-23-300x300.png', instock: true, brand: 'Yellow', desc: 'Termoprotector Yellow hasta 230C.' },
     { id: 6, name: 'Dark & Lovely Alisador Regular Sin Lejia', price: 69000, cat: 'alisadora', img: BASE + '2025/05/Dark-LovelyDark-Lovely-Alisador-300x300.png', instock: true, brand: 'Dark & Lovely', desc: 'Alisador Dark & Lovely Regular Sin Lejia.' },
   ];
 }
@@ -520,4 +579,5 @@ async function init() {
   }
   products = await fetchProducts();
   renderTable();
+  renderPromos();
 }
