@@ -1283,9 +1283,6 @@ footer small {
   }
 }
 
-/* ═══════════════════════════════════════
-       MODAL FORMULARIO DE PEDIDO
-    ═══════════════════════════════════════ */
 .order-overlay {
   position: fixed;
   inset: 0;
@@ -1636,4 +1633,3 @@ footer small {
   background: #f7f1ee;
   line-height: 1.5;
 }
-

@@ -269,6 +269,16 @@
           </div>
         </div>
 
+        <!-- CÓDIGO PROMOCIONAL -->
+        <div class="om-row full">
+          <div class="fg">
+            <label>Código promocional (si aplica)</label>
+            <input type="text" id="omPromoCode" placeholder="Ej: AB12CD34" style="text-transform:uppercase"
+              oninput="this.value=this.value.toUpperCase()" onblur="checkPromoCode()" />
+            <p class="hint" id="omPromoHint"></p>
+          </div>
+        </div>
+
         <!-- COSTO DE ENVÍO -->
         <div class="envio-box" id="envioBox" style="display:none">
           <div class="envio-label">
