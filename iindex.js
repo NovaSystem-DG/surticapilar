@@ -43,7 +43,7 @@ const CIUDADES = {
   'San Andrés y Providencia': ['San Andrés', 'Providencia'],
   'Santander': ['Bucaramanga', 'Aguada', 'Albania', 'Aratoca', 'Barbosa', 'Barichara', 'Barrancabermeja', 'Betulia', 'Bolívar', 'Cabrera', 'California', 'Cepitá', 'Cerrito', 'Charalá', 'Charta', 'Chima', 'Chipatá', 'Cimitarra', 'Concepción', 'Confines', 'Contratación', 'Coromoro', 'Curití', 'El Carmen de Chucurí', 'El Guacamayo', 'El Peñón', 'El Playón', 'Encino', 'Enciso', 'Florián', 'Floridablanca', 'Galán', 'Gámbita', 'Girón', 'Guaca', 'Guadalupe', 'Guapotá', 'Guavatá', 'Güepsa', 'Hato', 'Jesús María', 'Jordán', 'La Belleza', 'Landázuri', 'La Paz', 'Lebríja', 'Los Santos', 'Macaravita', 'Málaga', 'Matanza', 'Mogotes', 'Molagavita', 'Ocamonte', 'Oiba', 'Onzaga', 'Palmar', 'Palmas del Socorro', 'Páramo', 'Piedecuesta', 'Pinchote', 'Puente Nacional', 'Puerto Parra', 'Puerto Wilches', 'Rionegro', 'Sabana de Torres', 'San Andrés', 'San Benito', 'San Gil', 'San Joaquín', 'San José de Miranda', 'San Miguel', 'San Vicente de Chucurí', 'Santa Bárbara', 'Santa Helena del Opón', 'Simacota', 'Socorro', 'Suaita', 'Sucre', 'Suratá', 'Tona', 'Valle de San José', 'Vélez', 'Vetas', 'Villanueva', 'Zapatoca'],
   'Sucre': ['Sincelejo', 'Buenavista', 'Caimito', 'Chalán', 'Colosó', 'Corozal', 'Coveñas', 'El Roble', 'Galeras', 'Guaranda', 'La Unión', 'Los Palmitos', 'Majagual', 'Morroa', 'Ovejas', 'Palmito', 'Sampués', 'San Benito Abad', 'San Juan de Betulia', 'San Luis de Sincé', 'San Marcos', 'San Onofre', 'San Pedro', 'Sucre', 'Tolú', 'Tolú Viejo'],
-  'Tolima': ['Ibagué', 'Alpujarra', 'Alvarado', 'Ambalema', 'Anzoátegui', 'Armero-Guayabal', 'Ataco', 'Cajamarca', 'Carmen de Apicalá', 'Casabianca', 'Chaparral', 'Coello', 'Coyaima', 'Cunday', 'Dolores', 'Espinal', 'Falan', 'Flandes', 'Fresno', 'Guamo', 'Herveo', 'Honda', 'Icononzo', 'Lérida', 'Líbano', 'Mariquita', 'Melgar', 'Murillo', 'Natagaima', 'Ortega', 'Palocabildo', 'Piedras', 'Planadas', 'Prado', 'Purificación', 'Rioblanco', 'Roncesvalles', 'Rovira', 'Saldaña', 'San Antonio', 'San Luis', 'Santa Isabel', 'Suárez', 'Valle de San Juan', 'Venadillo', 'Villahermosa', 'Villarrica'],
+  'Tolima': ['Ibagué', 'Alpujarra', 'Alvarado', 'Ambalema', 'Anzoátegui', 'Armero-Guayabal', 'Ataco', 'Cajamarca', 'Carmen de Apicalá', 'Casabianca', 'Chaparral', 'Coello', 'Coyaima', 'Cunday', 'Dolores', 'Espinal', 'Falan', 'Flandes', 'Fresno', 'Guamo', 'Herveo', 'Honda', 'Icononzo', 'Lérida', 'Líbano', 'Mariquita', 'Melgar', 'Murillo', 'Natagaima', 'Ortega', 'Palocabildo', 'Piedras', 'Planadas', 'Prado', 'Purificación', 'Rioblanco', 'Roncesvalles', 'Rovira', 'Saldaña', 'San Antonio', 'San Luis', 'Santa Isabel', 'Suárez', 'Valle de San José', 'Venadillo', 'Villahermosa', 'Villarrica'],
   'Valle del Cauca': ['Cali', 'Alcalá', 'Andalucía', 'Ansermanuevo', 'Argelia', 'Bolívar', 'Buenaventura', 'Buga', 'Bugalagrande', 'Caicedonia', 'Calima', 'Candelaria', 'Cartago', 'Dagua', 'El Águila', 'El Cairo', 'El Cerrito', 'El Dovio', 'Florida', 'Ginebra', 'Guacarí', 'Guadalajara de Buga', 'Jamundí', 'La Cumbre', 'La Unión', 'La Victoria', 'Obando', 'Palmira', 'Pradera', 'Restrepo', 'Riofrío', 'Roldanillo', 'San Pedro', 'Sevilla', 'Toro', 'Trujillo', 'Tuluá', 'Ulloa', 'Versalles', 'Vijes', 'Yotoco', 'Yumbo', 'Zarzal'],
   'Vaupés': ['Mitú', 'Carurú', 'Pacoa', 'Papunaua', 'Taraira', 'Yavaraté'],
   'Vichada': ['Puerto Carreño', 'Cumaribo', 'La Primavera', 'Santa Rosalía'],
@@ -120,9 +120,7 @@ async function loadProducts() {
 // ── ESTADO GLOBAL ────────────────────────────────────
 let products = defaultProducts;
 let cart = [], activeCat = 'all', currentProduct = null, detailQty = 1, selectedSize = null;
-
-// Código promocional aplicado en el pedido actual (null si no hay ninguno válido)
-let appliedPromo = null; // { code: 'ABC123' }
+let appliedPromo = null;
 
 // ── PERSISTENCIA DEL CARRITO ─────────────────────────
 function saveCart() {
@@ -290,9 +288,7 @@ function clampCartToStock() {
     return newItem;
   }).filter(Boolean);
   saveCart();
-  if (stockChanged) {
-    showToast('Algunas cantidades se ajustaron por disponibilidad de stock');
-  }
+  if (stockChanged) showToast('Algunas cantidades se ajustaron por disponibilidad de stock');
 }
 
 function updateCartUI() {
@@ -369,7 +365,6 @@ function onDeptChange() {
   recalcularTotales();
 }
 
-// Recalcula envío + total teniendo en cuenta el código promocional aplicado
 function recalcularTotales() {
   const dept = document.getElementById('omDepartamento').value;
   if (!dept) return;
@@ -377,7 +372,6 @@ function recalcularTotales() {
   const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
   const costoEnvio = appliedPromo ? 0 : info.costo;
   const total = subtotal + costoEnvio;
-
   document.getElementById('envioZona').textContent = info.label;
   document.getElementById('envioDetalle').textContent = appliedPromo ? info.detalle + ' — envío gratis por código promocional' : info.detalle;
   document.getElementById('envioPrice').textContent = appliedPromo ? 'Gratis' : fmt(info.costo);
@@ -397,23 +391,15 @@ async function checkPromoCode() {
   const nombreCliente = document.getElementById('omNombre').value.trim();
   appliedPromo = null;
   hint.style.color = '';
-
-  if (!code) {
-    hint.textContent = '';
-    recalcularTotales();
-    return;
-  }
-
+  if (!code) { hint.textContent = ''; recalcularTotales(); return; }
   if (!nombreCliente) {
     hint.textContent = 'Escribe primero tu nombre completo arriba para validar el código';
     hint.style.color = '#c0392b';
     recalcularTotales();
     return;
   }
-
   const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
   hint.textContent = 'Verificando código...';
-
   try {
     const res = await fetch(PROMO_API, {
       method: 'POST',
@@ -442,14 +428,10 @@ async function checkPromoCode() {
   recalcularTotales();
 }
 
-// Si la clienta cambia su nombre después de haber validado un código, se vuelve a validar
 function recheckPromoOnNameChange() {
   const promoInput = document.getElementById('omPromoCode');
-  if (promoInput && promoInput.value.trim()) {
-    checkPromoCode();
-  }
+  if (promoInput && promoInput.value.trim()) checkPromoCode();
 }
-
 
 // ── FORMULARIO DE PEDIDO ─────────────────────────────
 function openOrderForm() {
@@ -491,7 +473,6 @@ function validarTelefono(tel) {
   const limpio = tel.replace(/\s/g, '');
   return /^3\d{9}$/.test(limpio);
 }
-
 function validarCorreo(correo) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo);
 }
@@ -504,52 +485,27 @@ async function submitOrder() {
   const dept = document.getElementById('omDepartamento').value;
   const ciudad = document.getElementById('omCiudad').value.trim();
   const direccion = document.getElementById('omDireccion').value.trim();
-
   let hasError = false;
   const obligatorios = [
-    { id: 'omNombre', v: nombre },
-    { id: 'omCedula', v: cedula },
-    { id: 'omDepartamento', v: dept },
-    { id: 'omCiudad', v: ciudad },
-    { id: 'omDireccion', v: direccion },
+    { id: 'omNombre', v: nombre }, { id: 'omCedula', v: cedula },
+    { id: 'omDepartamento', v: dept }, { id: 'omCiudad', v: ciudad }, { id: 'omDireccion', v: direccion },
   ];
   obligatorios.forEach(f => {
     const el = document.getElementById(f.id);
     if (el) el.style.borderColor = f.v ? '' : '#c0392b';
     if (!f.v) hasError = true;
   });
-
   const telEl = document.getElementById('omTelefono');
-  if (!telefono) {
-    telEl.style.borderColor = '#c0392b';
-    hasError = true;
-  } else if (!validarTelefono(telefono)) {
-    telEl.style.borderColor = '#c0392b';
-    showToast('Ingresa un número colombiano válido (ej: 3001234567)');
-    return;
-  } else {
-    telEl.style.borderColor = '';
-  }
-
+  if (!telefono) { telEl.style.borderColor = '#c0392b'; hasError = true; }
+  else if (!validarTelefono(telefono)) { telEl.style.borderColor = '#c0392b'; showToast('Ingresa un número colombiano válido (ej: 3001234567)'); return; }
+  else telEl.style.borderColor = '';
   if (correo) {
     const correoEl = document.getElementById('omCorreo');
-    if (!validarCorreo(correo)) {
-      correoEl.style.borderColor = '#c0392b';
-      showToast('Ingresa un correo electrónico válido');
-      return;
-    } else {
-      correoEl.style.borderColor = '';
-    }
+    if (!validarCorreo(correo)) { correoEl.style.borderColor = '#c0392b'; showToast('Ingresa un correo electrónico válido'); return; }
+    else correoEl.style.borderColor = '';
   }
-
-  if (hasError) {
-    showToast('Completa los campos obligatorios *');
-    return;
-  }
-
+  if (hasError) { showToast('Completa los campos obligatorios *'); return; }
   const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
-
-  // Si hay un código promocional aplicado, intentar canjearlo justo antes de enviar
   if (appliedPromo) {
     const submitBtn = document.querySelector('.om-submit');
     if (submitBtn) submitBtn.disabled = true;
@@ -566,7 +522,7 @@ async function submitOrder() {
         recalcularTotales();
         const msg = data.error === 'name_mismatch'
           ? 'El código promocional no corresponde al nombre ingresado.'
-          : 'El código promocional ya no es válido (puede que ya se haya usado). Revisa el total e intenta de nuevo.';
+          : 'El código promocional ya no es válido. Revisa el total e intenta de nuevo.';
         showToast(msg);
         return;
       }
@@ -576,7 +532,6 @@ async function submitOrder() {
       return;
     }
   }
-
   const envioInfo = ENVIO[dept] || ENVIO.default;
   const costoEnvio = appliedPromo ? 0 : envioInfo.costo;
   const total = subtotal + costoEnvio;
@@ -593,11 +548,8 @@ async function submitOrder() {
       + ' ×' + i.qty + ' = ' + encodeURIComponent(fmt(i.price * i.qty)) + '%0A';
   });
   msg += '%0A🚚 *Envío*%0A';
-  if (appliedPromo) {
-    msg += 'Envío gratis (código promocional ' + encodeURIComponent(appliedPromo.code) + ')%0A';
-  } else {
-    msg += encodeURIComponent(envioInfo.label) + ': ' + encodeURIComponent(fmt(envioInfo.costo)) + '%0A';
-  }
+  if (appliedPromo) msg += 'Envío gratis (código promocional ' + encodeURIComponent(appliedPromo.code) + ')%0A';
+  else msg += encodeURIComponent(envioInfo.label) + ': ' + encodeURIComponent(fmt(envioInfo.costo)) + '%0A';
   msg += 'Dirección: ' + encodeURIComponent(direccion) + '%0A';
   msg += 'Ciudad: ' + encodeURIComponent(ciudad) + ' – ' + encodeURIComponent(dept) + '%0A';
   msg += '%0A💰 *Total a pagar: ' + encodeURIComponent(fmt(total)) + '*%0A';
@@ -616,23 +568,18 @@ function openDetail(id) {
   currentProduct = p;
   detailQty = 1;
   selectedSize = p.sizes && p.sizes.length > 0 ? p.sizes[0].label : null;
-
   document.getElementById('detailNavTitle').textContent = p.name;
   document.getElementById('mainImgBox').classList.remove('is-zoomed');
   document.getElementById('dBrand').textContent = p.brand || '';
   document.getElementById('dName').textContent = p.name;
   document.getElementById('dDesc').textContent = p.desc || '';
-
   const cb = document.getElementById('dCatBadge');
   cb.textContent = tagNames[p.cat] || p.cat;
   cb.className = 'd-cat-badge ' + (tagClasses[p.cat] || 't-otro');
-
   const firstImg = (p.sizes && p.sizes.length > 0 && p.sizes[0].img) ? p.sizes[0].img : p.img;
   setDetailImage(firstImg);
-
   const firstPrice = getUnitPrice(p, selectedSize, detailQty);
   renderDetailPrice(firstPrice, p.wasPrice);
-
   const ds = document.getElementById('dSizes');
   if (p.sizes && p.sizes.length > 1) {
     ds.innerHTML = '<span class="d-label">Presentación</span><div class="size-opts">'
@@ -654,29 +601,40 @@ function openDetail(id) {
     ds.style.display = 'none';
     ds.innerHTML = '';
   }
-
   document.getElementById('dQty').textContent = '1';
   const ab = document.getElementById('detailAddBtn');
   const firstSizeInstock = selectedSize ? getSizeInstock(p, selectedSize) : p.instock;
   ab.disabled = !firstSizeInstock;
   ab.textContent = firstSizeInstock ? 'Añadir al carrito' : 'Sin stock';
 
+  // ── BOTÓN WHATSAPP: ocultar si el producto está agotado ──
+  updateWaBtn(p, selectedSize);
+
   renderSimilar(p);
   document.getElementById('detailPage').classList.add('open');
   window.scrollTo(0, 0);
+}
+
+// Controla visibilidad y texto del botón de WhatsApp en el detalle
+function updateWaBtn(p, sizeLabel) {
+  const waBtn = document.getElementById('detailWaBtn');
+  if (!waBtn) return;
+  const instock = sizeLabel ? getSizeInstock(p, sizeLabel) : p.instock;
+  if (instock) {
+    waBtn.style.display = '';
+    waBtn.disabled = false;
+  } else {
+    waBtn.style.display = 'none';
+    waBtn.disabled = true;
+  }
 }
 
 function setDetailImage(src) {
   const mainImg = document.getElementById('dMainImg');
   mainImg.src = src;
   const p = currentProduct;
-  const thumbs = [];
-  thumbs.push({ src: p.img, label: '' });
-  if (p.sizes) {
-    p.sizes.forEach(s => {
-      if (s.img && s.img !== p.img) thumbs.push({ src: s.img, label: s.label });
-    });
-  }
+  const thumbs = [{ src: p.img, label: '' }];
+  if (p.sizes) p.sizes.forEach(s => { if (s.img && s.img !== p.img) thumbs.push({ src: s.img, label: s.label }); });
   document.getElementById('dThumbs').innerHTML = thumbs.map((t, i) =>
     '<div class="thumb' + (t.src === src ? ' active' : '') + '" onclick="thumbClick(this,\'' + t.src + '\')">'
     + '<img src="' + t.src + '" alt="' + t.label + '" onerror="this.parentElement.style.display=\'none\'">'
@@ -722,13 +680,14 @@ function selectSize(btn, idx) {
   btn.classList.add('sel');
   renderDetailPrice(s.price, p.wasPrice);
   if (s.img) setDetailImage(s.img);
-
   const sInstock = getSizeInstock(p, s.label);
   const ab = document.getElementById('detailAddBtn');
   ab.disabled = !sInstock;
   ab.textContent = sInstock ? 'Añadir al carrito' : 'Sin stock';
   detailQty = 1;
   document.getElementById('dQty').textContent = '1';
+  // Actualizar botón WA al cambiar talla
+  updateWaBtn(p, s.label);
 }
 
 function changeDetailQty(d) {
@@ -742,9 +701,7 @@ function changeDetailQty(d) {
   }
   detailQty = newQty;
   document.getElementById('dQty').textContent = detailQty;
-  if (p) {
-    renderDetailPrice(getUnitPrice(p, selectedSize, detailQty), p.wasPrice);
-  }
+  if (p) renderDetailPrice(getUnitPrice(p, selectedSize, detailQty), p.wasPrice);
 }
 
 function addFromDetail() {
@@ -752,11 +709,9 @@ function addFromDetail() {
   const p = currentProduct;
   const sInstock = selectedSize ? getSizeInstock(p, selectedSize) : p.instock;
   if (!sInstock) return;
-
   const key = p.id + (selectedSize || '');
   const available = getSizeAvailableStock(p, selectedSize);
   const inCart = getCartQtyForProduct(key);
-
   if (available !== Infinity && inCart + detailQty > available) {
     const remaining = available - inCart;
     if (remaining <= 0) {
@@ -774,6 +729,12 @@ function addFromDetail() {
 function waFromDetail() {
   if (!currentProduct) return;
   const p = currentProduct;
+  // ── BLOQUEO: no permitir pedir por WA si está agotado ──
+  const instock = selectedSize ? getSizeInstock(p, selectedSize) : p.instock;
+  if (!instock) {
+    showToast('Este producto está agotado');
+    return;
+  }
   const price = getUnitPrice(p, selectedSize, detailQty);
   const total = price * detailQty;
   const msg = '%C2%A1Hola! Me interesa este producto:%0A%0A• *' + encodeURIComponent(p.name) + '*'
