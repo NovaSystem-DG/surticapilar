@@ -4,7 +4,6 @@ const BASE = 'https://surticapilar.com/wp-content/uploads/';
 const PROMO_API = '/api/promo';
 const PROMO_MIN_COMPRA = 150000;
 
-// ── COSTOS DE ENVÍO ──────────────────────────────────
 const ENVIO = {
   'Antioquia-Medellín': { label: 'Medellín', detalle: 'Entrega en Medellín', costo: 10000 },
   'Antioquia-Otro': { label: 'Otro municipio de Antioquia', detalle: 'Envío a municipios de Antioquia', costo: 13000 },
@@ -12,7 +11,6 @@ const ENVIO = {
   default: { label: 'Flete nacional', detalle: 'Envío a todo el país', costo: 15000 },
 };
 
-// ── CIUDADES POR DEPARTAMENTO ─────────────────────────
 const CIUDADES = {
   'Antioquia-Medellín': ['Medellín'],
   'Antioquia-Otro': ['Abejorral', 'Abriaquí', 'Alejandría', 'Amagá', 'Amalfi', 'Andes', 'Angelópolis', 'Angostura', 'Anorí', 'Anzá', 'Apartadó', 'Arboletes', 'Argelia', 'Armenia', 'Barbosa', 'Bello', 'Betania', 'Betulia', 'Briceño', 'Buriticá', 'Cáceres', 'Caicedo', 'Caldas', 'Campamento', 'Cañasgordas', 'Caracolí', 'Caramanta', 'Carepa', 'Carolina del Príncipe', 'Caucasia', 'Chigorodó', 'Cisneros', 'Ciudad Bolívar', 'Cocorná', 'Concepción', 'Concordia', 'Copacabana', 'Dabeiba', 'Donmatías', 'Ebéjico', 'El Bagre', 'El Carmen de Viboral', 'El Santuario', 'Entrerríos', 'Envigado', 'Fredonia', 'Frontino', 'Giraldo', 'Girardota', 'Gómez Plata', 'Granada', 'Guadalupe', 'Guarne', 'Guatapé', 'Heliconia', 'Hispania', 'Itagüí', 'Ituango', 'Jardín', 'Jericó', 'La Ceja', 'La Estrella', 'La Pintada', 'La Unión', 'Liborina', 'Maceo', 'Marinilla', 'Montebello', 'Murindó', 'Mutatá', 'Nariño', 'Nechí', 'Necoclí', 'Olaya', 'Peñol', 'Peque', 'Pueblorrico', 'Puerto Berrío', 'Puerto Nare', 'Puerto Triunfo', 'Remedios', 'Retiro', 'Rionegro', 'Sabanalarga', 'Sabaneta', 'Salgar', 'San Andrés de Cuerquia', 'San Carlos', 'San Francisco', 'San Jerónimo', 'San José de la Montaña', 'San Juan de Urabá', 'San Luis', 'San Pedro de Antioquia', 'San Pedro de los Milagros', 'San Rafael', 'San Roque', 'San Vicente Ferrer', 'Santa Bárbara', 'Santa Fe de Antioquia', 'Santa Rosa de Osos', 'Santo Domingo', 'Segovia', 'Sonsón', 'Sopetrán', 'Tarazá', 'Tarso', 'Titiribí', 'Toledo', 'Turbo', 'Uramita', 'Urrao', 'Valdivia', 'Valparaíso', 'Vegachí', 'Venecia', 'Vigía del Fuerte', 'Yalí', 'Yarumal', 'Yolombó', 'Yondó', 'Zaragoza'],
@@ -43,13 +41,12 @@ const CIUDADES = {
   'San Andrés y Providencia': ['San Andrés', 'Providencia'],
   'Santander': ['Bucaramanga', 'Aguada', 'Albania', 'Aratoca', 'Barbosa', 'Barichara', 'Barrancabermeja', 'Betulia', 'Bolívar', 'Cabrera', 'California', 'Cepitá', 'Cerrito', 'Charalá', 'Charta', 'Chima', 'Chipatá', 'Cimitarra', 'Concepción', 'Confines', 'Contratación', 'Coromoro', 'Curití', 'El Carmen de Chucurí', 'El Guacamayo', 'El Peñón', 'El Playón', 'Encino', 'Enciso', 'Florián', 'Floridablanca', 'Galán', 'Gámbita', 'Girón', 'Guaca', 'Guadalupe', 'Guapotá', 'Guavatá', 'Güepsa', 'Hato', 'Jesús María', 'Jordán', 'La Belleza', 'Landázuri', 'La Paz', 'Lebríja', 'Los Santos', 'Macaravita', 'Málaga', 'Matanza', 'Mogotes', 'Molagavita', 'Ocamonte', 'Oiba', 'Onzaga', 'Palmar', 'Palmas del Socorro', 'Páramo', 'Piedecuesta', 'Pinchote', 'Puente Nacional', 'Puerto Parra', 'Puerto Wilches', 'Rionegro', 'Sabana de Torres', 'San Andrés', 'San Benito', 'San Gil', 'San Joaquín', 'San José de Miranda', 'San Miguel', 'San Vicente de Chucurí', 'Santa Bárbara', 'Santa Helena del Opón', 'Simacota', 'Socorro', 'Suaita', 'Sucre', 'Suratá', 'Tona', 'Valle de San José', 'Vélez', 'Vetas', 'Villanueva', 'Zapatoca'],
   'Sucre': ['Sincelejo', 'Buenavista', 'Caimito', 'Chalán', 'Colosó', 'Corozal', 'Coveñas', 'El Roble', 'Galeras', 'Guaranda', 'La Unión', 'Los Palmitos', 'Majagual', 'Morroa', 'Ovejas', 'Palmito', 'Sampués', 'San Benito Abad', 'San Juan de Betulia', 'San Luis de Sincé', 'San Marcos', 'San Onofre', 'San Pedro', 'Sucre', 'Tolú', 'Tolú Viejo'],
-  'Tolima': ['Ibagué', 'Alpujarra', 'Alvarado', 'Ambalema', 'Anzoátegui', 'Armero-Guayabal', 'Ataco', 'Cajamarca', 'Carmen de Apicalá', 'Casabianca', 'Chaparral', 'Coello', 'Coyaima', 'Cunday', 'Dolores', 'Espinal', 'Falan', 'Flandes', 'Fresno', 'Guamo', 'Herveo', 'Honda', 'Icononzo', 'Lérida', 'Líbano', 'Mariquita', 'Melgar', 'Murillo', 'Natagaima', 'Ortega', 'Palocabildo', 'Piedras', 'Planadas', 'Prado', 'Purificación', 'Rioblanco', 'Roncesvalles', 'Rovira', 'Saldaña', 'San Antonio', 'San Luis', 'Santa Isabel', 'Suárez', 'Valle de San José', 'Venadillo', 'Villahermosa', 'Villarrica'],
+  'Tolima': ['Ibagué', 'Alpujarra', 'Alvarado', 'Ambalema', 'Anzoátegui', 'Armero-Guayabal', 'Ataco', 'Cajamarca', 'Carmen de Apicalá', 'Casabianca', 'Chaparral', 'Coello', 'Coyaima', 'Cunday', 'Dolores', 'Espinal', 'Falan', 'Flandes', 'Fresno', 'Guamo', 'Herveo', 'Honda', 'Icononzo', 'Lérida', 'Líbano', 'Mariquita', 'Melgar', 'Murillo', 'Natagaima', 'Ortega', 'Palocabildo', 'Piedras', 'Planadas', 'Prado', 'Purificación', 'Rioblanco', 'Roncesvalles', 'Rovira', 'Saldaña', 'San Antonio', 'San Luis', 'Santa Isabel', 'Suárez', 'Valle de San Juan', 'Venadillo', 'Villahermosa', 'Villarrica'],
   'Valle del Cauca': ['Cali', 'Alcalá', 'Andalucía', 'Ansermanuevo', 'Argelia', 'Bolívar', 'Buenaventura', 'Buga', 'Bugalagrande', 'Caicedonia', 'Calima', 'Candelaria', 'Cartago', 'Dagua', 'El Águila', 'El Cairo', 'El Cerrito', 'El Dovio', 'Florida', 'Ginebra', 'Guacarí', 'Guadalajara de Buga', 'Jamundí', 'La Cumbre', 'La Unión', 'La Victoria', 'Obando', 'Palmira', 'Pradera', 'Restrepo', 'Riofrío', 'Roldanillo', 'San Pedro', 'Sevilla', 'Toro', 'Trujillo', 'Tuluá', 'Ulloa', 'Versalles', 'Vijes', 'Yotoco', 'Yumbo', 'Zarzal'],
   'Vaupés': ['Mitú', 'Carurú', 'Pacoa', 'Papunaua', 'Taraira', 'Yavaraté'],
   'Vichada': ['Puerto Carreño', 'Cumaribo', 'La Primavera', 'Santa Rosalía'],
 };
 
-// ── PRODUCTOS POR DEFECTO ────────────────────────────
 const defaultProducts = [
   { id: 1, name: 'Flash Mask Mantenimiento de Color x300ml', price: 77800, cat: 'mascarilla', img: BASE + '2026/05/Copia-de-Copia-de-pagina-web-1-300x300.png', instock: true, brand: 'Hair Lab', desc: 'Mascarilla de mantenimiento de color para cabello tratado.' },
   { id: 2, name: 'Acondicionador Glow x500ml', price: 64900, cat: 'acondicionador', img: BASE + '2026/05/Copia-de-Copia-de-pagina-web-2-300x300.png', instock: true, brand: 'Yellow', desc: 'Acondicionador con efecto brillo intenso.' },
@@ -100,58 +97,36 @@ const defaultProducts = [
   { id: 47, name: 'Rulos Extra Grande 3 Pulgadas x6', price: 27900, cat: 'accesorio', img: BASE + '2025/05/RULOS-EXTRA-GRANDE-3-PULGADAS-300x300.png', instock: false, brand: 'Accesorios', desc: 'Set de 6 rulos extra grandes 3 pulgadas.' },
 ];
 
-// ── CARGA JSONBIN ────────────────────────────────────
 async function loadProducts() {
   try {
-    const res = await fetch('https://api.jsonbin.io/v3/b/' + BIN_ID + '/latest', {
-      headers: { 'X-Bin-Meta': 'false' }
-    });
+    const res = await fetch('https://api.jsonbin.io/v3/b/' + BIN_ID + '/latest', { headers: { 'X-Bin-Meta': 'false' } });
     if (!res.ok) throw new Error('fetch failed');
     const data = await res.json();
     const prods = data.record ? data.record.products : data.products;
     if (prods && prods.length > 0) return prods;
     return defaultProducts;
-  } catch (e) {
-    console.warn('JSONBin no disponible, usando productos por defecto');
-    return defaultProducts;
-  }
+  } catch (e) { return defaultProducts; }
 }
 
-// ── ESTADO GLOBAL ────────────────────────────────────
 let products = defaultProducts;
 let cart = [], activeCat = 'all', currentProduct = null, detailQty = 1, selectedSize = null;
 let appliedPromo = null;
 
-// ── PERSISTENCIA DEL CARRITO ─────────────────────────
-function saveCart() {
-  try { localStorage.setItem('sc_cart', JSON.stringify(cart)); } catch (e) { }
-}
-function loadCart() {
-  try {
-    const raw = localStorage.getItem('sc_cart');
-    if (raw) cart = JSON.parse(raw);
-  } catch (e) { cart = []; }
-}
+function saveCart() { try { localStorage.setItem('sc_cart', JSON.stringify(cart)); } catch (e) { } }
+function loadCart() { try { const r = localStorage.getItem('sc_cart'); if (r) cart = JSON.parse(r); } catch (e) { cart = []; } }
 
 const tagClasses = { shampoo: 't-shampoo', acondicionador: 't-acondicionador', mascarilla: 't-mascarilla', Termoprotector: 't-Termoprotector', leavein: 't-leavein', oleo: 't-oleo', alisadora: 't-alisadora', accesorio: 't-accesorio', tinte: 't-tinte' };
 const tagNames = { shampoo: 'Shampoo', acondicionador: 'Acondicionador', mascarilla: 'Mascarilla', Termoprotector: 'Termoprotector', leavein: 'Leave-In', oleo: 'Oleo', alisadora: 'Alisadora', accesorio: 'Accesorio', tinte: 'Tinte' };
 
-// ── BANNER ───────────────────────────────────────────
 function buildBanner() {
   const avail = products.filter(p => p.instock);
   const bg = document.getElementById('bannerBg');
-  if (bg) bg.innerHTML = avail.slice(0, 24).map(p =>
-    '<img src="' + p.img + '" alt="" loading="lazy" onerror="this.style.display=\'none\'">'
-  ).join('');
-  ['bf1', 'bf2', 'bf3', 'bf4', 'bf5', 'bf6', 'bf7'].forEach((id, i) => {
-    const el = document.getElementById(id);
-    if (el && avail[i]) el.src = avail[i].img;
-  });
+  if (bg) bg.innerHTML = avail.slice(0, 24).map(p => '<img src="' + p.img + '" alt="" loading="lazy" onerror="this.style.display=\'none\'">').join('');
+  ['bf1', 'bf2', 'bf3', 'bf4', 'bf5', 'bf6', 'bf7'].forEach((id, i) => { const el = document.getElementById(id); if (el && avail[i]) el.src = avail[i].img; });
 }
 
 function fmt(n) { return '$' + Math.round(n).toLocaleString('es-CO'); }
 
-// ── FILTRO + RENDER ──────────────────────────────────
 function filterCat(cat, btn) {
   activeCat = cat;
   document.querySelectorAll('.cat').forEach(b => b.classList.remove('on'));
@@ -163,8 +138,7 @@ function renderProducts() {
   const q = document.getElementById('srchInput').value.toLowerCase().trim();
   const list = products.filter(p => {
     const mc = activeCat === 'all' || p.cat === activeCat;
-    const mq = !q || p.name.toLowerCase().includes(q) ||
-      (p.desc || '').toLowerCase().includes(q) || (p.brand || '').toLowerCase().includes(q);
+    const mq = !q || p.name.toLowerCase().includes(q) || (p.desc || '').toLowerCase().includes(q) || (p.brand || '').toLowerCase().includes(q);
     return mc && mq;
   });
   const g = document.getElementById('grid');
@@ -174,9 +148,7 @@ function renderProducts() {
 
 function renderCard(p) {
   const b = p.badge ? '<span class="card-badge' + (p.badge === 'Oferta' ? ' sale' : '') + '">' + p.badge + '</span>' : '';
-  const effectiveInstock = p.sizes && p.sizes.length > 1
-    ? p.sizes.some(s => getSizeInstock(p, s.label))
-    : p.instock;
+  const effectiveInstock = p.sizes && p.sizes.length > 1 ? p.sizes.some(s => getSizeInstock(p, s.label)) : p.instock;
   return '<div class="card" onclick="openDetail(' + p.id + ')">'
     + '<div class="card-img-wrap">'
     + '<img class="card-img" src="' + p.img + '" alt="' + p.name + '" loading="lazy" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">'
@@ -193,13 +165,13 @@ function renderCard(p) {
     + '</div></div>';
 }
 
-// ── HELPERS DE STOCK POR TALLA ────────────────────────
+// ── STOCK HELPERS ─────────────────────────────────────
 function getSizeAvailableStock(p, sizeLabel) {
   if (p.sizes && p.sizes.length > 1 && sizeLabel) {
-    const sizeObj = p.sizes.find(s => s.label === sizeLabel);
-    if (!sizeObj) return Infinity;
-    if (sizeObj.stockQty === null || sizeObj.stockQty === undefined || sizeObj.stockQty === '') return Infinity;
-    return parseInt(sizeObj.stockQty) || 0;
+    const s = p.sizes.find(x => x.label === sizeLabel);
+    if (!s) return Infinity;
+    if (s.stockQty === null || s.stockQty === undefined || s.stockQty === '') return Infinity;
+    return parseInt(s.stockQty) || 0;
   }
   if (p.stockQty === null || p.stockQty === undefined || p.stockQty === '') return Infinity;
   return parseInt(p.stockQty) || 0;
@@ -207,51 +179,43 @@ function getSizeAvailableStock(p, sizeLabel) {
 
 function getSizeInstock(p, sizeLabel) {
   if (p.sizes && p.sizes.length > 1 && sizeLabel) {
-    const sizeObj = p.sizes.find(s => s.label === sizeLabel);
-    if (!sizeObj) return false;
-    if (typeof sizeObj.instock === 'boolean') return sizeObj.instock;
-    if (sizeObj.stockQty !== undefined && sizeObj.stockQty !== null && parseInt(sizeObj.stockQty) <= 0) return false;
+    const s = p.sizes.find(x => x.label === sizeLabel);
+    if (!s) return false;
+    if (typeof s.instock === 'boolean') return s.instock;
+    if (s.stockQty !== undefined && s.stockQty !== null && parseInt(s.stockQty) <= 0) return false;
     return p.instock;
   }
   return p.instock;
 }
 
-function getAvailableStock(p) {
-  if (p.stockQty === null || p.stockQty === undefined || p.stockQty === '') return Infinity;
-  return parseInt(p.stockQty) || 0;
-}
-
-function getCartQtyForProduct(key) {
-  const item = cart.find(x => x.key === key);
-  return item ? item.qty : 0;
-}
+function getCartQtyForProduct(key) { const i = cart.find(x => x.key === key); return i ? i.qty : 0; }
 
 function getUnitPrice(p, sizeLabel, qty) {
-  let price = (p.sizes && sizeLabel)
-    ? (p.sizes.find(s => s.label === sizeLabel)?.price ?? p.price)
-    : p.price;
-  if (p.bulkPrice && p.bulkPrice.minQty && qty >= p.bulkPrice.minQty) {
-    price = p.bulkPrice.price;
-  }
+  let price = (p.sizes && sizeLabel) ? (p.sizes.find(s => s.label === sizeLabel)?.price ?? p.price) : p.price;
+  if (p.bulkPrice && p.bulkPrice.minQty && qty >= p.bulkPrice.minQty) price = p.bulkPrice.price;
   return price;
+}
+
+// ── HELPER: sincronizar estado del botón WA ───────────
+function syncWaBtn(isAvailable) {
+  const waBtn = document.getElementById('detailWaBtn');
+  if (!waBtn) return;
+  waBtn.disabled = !isAvailable;
+  waBtn.style.opacity = isAvailable ? '' : '0.45';
+  waBtn.style.cursor = isAvailable ? '' : 'not-allowed';
+  waBtn.title = isAvailable ? '' : 'Este producto está agotado';
 }
 
 // ── CARRITO ──────────────────────────────────────────
 function quickAdd(id) {
   const p = products.find(x => x.id === id);
   if (!p) return;
-  if (p.sizes && p.sizes.length > 1) {
-    openDetail(id);
-    return;
-  }
+  if (p.sizes && p.sizes.length > 1) { openDetail(id); return; }
   if (!p.instock) return;
   const key = String(p.id);
   const available = getSizeAvailableStock(p, null);
   const inCart = getCartQtyForProduct(key);
-  if (available !== Infinity && inCart >= available) {
-    showToast(available === 1 ? 'Solo queda 1 unidad disponible' : 'Solo quedan ' + available + ' unidades disponibles');
-    return;
-  }
+  if (available !== Infinity && inCart >= available) { showToast(available === 1 ? 'Solo queda 1 unidad disponible' : 'Solo quedan ' + available + ' unidades disponibles'); return; }
   addToCart(p, 1, null);
   showToast('Producto añadido al carrito');
 }
@@ -277,15 +241,15 @@ function clampCartToStock() {
     const p = products.find(x => x.id === item.id);
     if (!p) return item;
     const available = getSizeAvailableStock(p, item.sizeLabel);
-    let newItem = item;
+    let ni = item;
     if (available !== Infinity && item.qty > available) {
       stockChanged = true;
       if (available <= 0) return null;
-      newItem = { ...item, qty: available };
+      ni = { ...item, qty: available };
     }
-    const recomputedPrice = getUnitPrice(p, newItem.sizeLabel, newItem.qty);
-    if (recomputedPrice !== newItem.price) newItem = { ...newItem, price: recomputedPrice };
-    return newItem;
+    const rp = getUnitPrice(p, ni.sizeLabel, ni.qty);
+    if (rp !== ni.price) ni = { ...ni, price: rp };
+    return ni;
   }).filter(Boolean);
   saveCart();
   if (stockChanged) showToast('Algunas cantidades se ajustaron por disponibilidad de stock');
@@ -326,43 +290,36 @@ function cqChange(key, d) {
   const p = products.find(x => x.id === i.id);
   if (d > 0) {
     const available = p ? getSizeAvailableStock(p, i.sizeLabel) : Infinity;
-    if (available !== Infinity && i.qty >= available) {
-      showToast(available === 1 ? 'Solo queda 1 unidad disponible' : 'Solo quedan ' + available + ' unidades disponibles');
-      return;
-    }
+    if (available !== Infinity && i.qty >= available) { showToast(available === 1 ? 'Solo queda 1 unidad disponible' : 'Solo quedan ' + available + ' unidades disponibles'); return; }
   }
   i.qty += d;
-  if (i.qty <= 0) {
-    cart = cart.filter(x => x.key !== key);
-  } else if (p) {
-    i.price = getUnitPrice(p, i.sizeLabel, i.qty);
-  }
-  saveCart();
-  updateCartUI();
+  if (i.qty <= 0) cart = cart.filter(x => x.key !== key);
+  else if (p) i.price = getUnitPrice(p, i.sizeLabel, i.qty);
+  saveCart(); updateCartUI();
 }
 function cRemove(key) { cart = cart.filter(x => x.key !== key); saveCart(); updateCartUI(); }
 function openCart() { document.getElementById('cartOverlay').classList.add('open'); document.getElementById('cartPanel').classList.add('open'); }
 function closeCart() { document.getElementById('cartOverlay').classList.remove('open'); document.getElementById('cartPanel').classList.remove('open'); }
 
-// ── CIUDADES DINÁMICAS ────────────────────────────────
+// ── CIUDADES ──────────────────────────────────────────
 function onDeptChange() {
   const dept = document.getElementById('omDepartamento').value;
   const ciudadSel = document.getElementById('omCiudad');
   ciudadSel.innerHTML = '<option value="">— Selecciona tu ciudad —</option>';
-  if (!dept) {
-    document.getElementById('envioBox').style.display = 'none';
-    document.getElementById('omTotalRow').style.display = 'none';
-    return;
-  }
+  if (!dept) { document.getElementById('envioBox').style.display = 'none'; document.getElementById('omTotalRow').style.display = 'none'; return; }
   const ciudades = CIUDADES[dept] || [];
-  ciudades.forEach(c => {
-    const opt = document.createElement('option');
-    opt.value = c;
-    opt.textContent = c;
-    ciudadSel.appendChild(opt);
-  });
+  ciudades.forEach(c => { const o = document.createElement('option'); o.value = c; o.textContent = c; ciudadSel.appendChild(o); });
   if (ciudades.length === 1) ciudadSel.value = ciudades[0];
   recalcularTotales();
+}
+
+// Devuelve true si el carrito tiene ≥12 unidades de productos con bulkPrice
+// (pedido mayorista que requiere cotización de flete por peso)
+function esPedidoMayorista() {
+  return cart.some(item => {
+    const p = products.find(x => x.id === item.id);
+    return p && p.bulkPrice && p.bulkPrice.minQty && item.qty >= p.bulkPrice.minQty;
+  });
 }
 
 function recalcularTotales() {
@@ -370,17 +327,30 @@ function recalcularTotales() {
   if (!dept) return;
   const info = ENVIO[dept] || ENVIO.default;
   const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
-  const costoEnvio = appliedPromo ? 0 : info.costo;
-  const total = subtotal + costoEnvio;
+  const mayorista = esPedidoMayorista();
+
   document.getElementById('envioZona').textContent = info.label;
-  document.getElementById('envioDetalle').textContent = appliedPromo ? info.detalle + ' — envío gratis por código promocional' : info.detalle;
-  document.getElementById('envioPrice').textContent = appliedPromo ? 'Gratis' : fmt(info.costo);
   document.getElementById('envioBox').style.display = 'flex';
-  document.getElementById('omTotalDetail').textContent = appliedPromo
-    ? fmt(subtotal) + ' productos + envío gratis (código aplicado)'
-    : fmt(subtotal) + ' productos + ' + fmt(info.costo) + ' envío';
-  document.getElementById('omTotalVal').textContent = fmt(total);
   document.getElementById('omTotalRow').style.display = 'flex';
+
+  if (mayorista) {
+    // Envío a cotizar — no se suma al total
+    document.getElementById('envioDetalle').textContent = 'Pedido mayorista — flete sujeto a peso y destino';
+    document.getElementById('envioPrice').innerHTML = '<span style="color:#804a10;font-weight:700">A convenir</span>';
+    document.getElementById('omTotalDetail').textContent = fmt(subtotal) + ' productos + flete a confirmar';
+    document.getElementById('omTotalVal').innerHTML = fmt(subtotal) + ' <small style="font-size:.72rem;color:#804a10;font-weight:600">+ flete</small>';
+  } else if (appliedPromo) {
+    document.getElementById('envioDetalle').textContent = info.detalle + ' — envío gratis por código';
+    document.getElementById('envioPrice').textContent = 'Gratis';
+    document.getElementById('omTotalDetail').textContent = fmt(subtotal) + ' productos + envío gratis';
+    document.getElementById('omTotalVal').textContent = fmt(subtotal);
+  } else {
+    const total = subtotal + info.costo;
+    document.getElementById('envioDetalle').textContent = info.detalle;
+    document.getElementById('envioPrice').textContent = fmt(info.costo);
+    document.getElementById('omTotalDetail').textContent = fmt(subtotal) + ' productos + ' + fmt(info.costo) + ' envío';
+    document.getElementById('omTotalVal').textContent = fmt(total);
+  }
 }
 
 // ── CÓDIGO PROMOCIONAL ────────────────────────────────
@@ -392,39 +362,25 @@ async function checkPromoCode() {
   appliedPromo = null;
   hint.style.color = '';
   if (!code) { hint.textContent = ''; recalcularTotales(); return; }
-  if (!nombreCliente) {
-    hint.textContent = 'Escribe primero tu nombre completo arriba para validar el código';
-    hint.style.color = '#c0392b';
-    recalcularTotales();
-    return;
-  }
+  if (!nombreCliente) { hint.textContent = 'Escribe primero tu nombre completo para validar el código'; hint.style.color = '#c0392b'; recalcularTotales(); return; }
   const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
   hint.textContent = 'Verificando código...';
   try {
-    const res = await fetch(PROMO_API, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'check', code, subtotal, nombreCliente })
-    });
+    const res = await fetch(PROMO_API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'check', code, subtotal, nombreCliente }) });
     const data = await res.json();
     if (data.ok) {
       appliedPromo = { code };
       hint.textContent = '✓ Código válido — envío gratis aplicado';
       hint.style.color = '#155a2a';
     } else {
-      appliedPromo = null;
       if (data.error === 'used') hint.textContent = 'Este código ya fue utilizado';
-      else if (data.error === 'min_purchase') hint.textContent = 'Este código aplica solo para compras superiores a ' + fmt(PROMO_MIN_COMPRA);
+      else if (data.error === 'min_purchase') hint.textContent = 'Aplica solo para compras superiores a ' + fmt(PROMO_MIN_COMPRA);
       else if (data.error === 'not_found') hint.textContent = 'Código no válido';
       else if (data.error === 'name_mismatch') hint.textContent = 'Este código no corresponde al nombre ingresado';
       else hint.textContent = 'No se pudo verificar el código, intenta de nuevo';
       hint.style.color = '#c0392b';
     }
-  } catch (e) {
-    appliedPromo = null;
-    hint.textContent = 'No se pudo verificar el código, intenta de nuevo';
-    hint.style.color = '#c0392b';
-  }
+  } catch (e) { hint.textContent = 'No se pudo verificar el código, intenta de nuevo'; hint.style.color = '#c0392b'; }
   recalcularTotales();
 }
 
@@ -438,23 +394,14 @@ function openOrderForm() {
   if (!cart.length) return;
   const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
   document.getElementById('omResumen').innerHTML = cart.map(i =>
-    '<div class="om-item">'
-    + '<span class="om-item-name">' + i.name + (i.sizeLabel ? ' <small>(' + i.sizeLabel + ')</small>' : '') + ' ×' + i.qty + '</span>'
-    + '<span class="om-item-price">' + fmt(i.price * i.qty) + '</span>'
-    + '</div>'
+    '<div class="om-item"><span class="om-item-name">' + i.name + (i.sizeLabel ? ' <small>(' + i.sizeLabel + ')</small>' : '') + ' ×' + i.qty + '</span><span class="om-item-price">' + fmt(i.price * i.qty) + '</span></div>'
   ).join('') + '<div class="om-item om-subtotal"><span>Subtotal productos</span><span>' + fmt(subtotal) + '</span></div>';
-  ['omNombre', 'omCedula', 'omTelefono', 'omCorreo'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.value = '';
-  });
+  ['omNombre', 'omCedula', 'omTelefono', 'omCorreo'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
   document.getElementById('omDepartamento').value = '';
-  const ciudadSel = document.getElementById('omCiudad');
-  ciudadSel.innerHTML = '<option value="">— Selecciona tu ciudad —</option>';
+  document.getElementById('omCiudad').innerHTML = '<option value="">— Selecciona tu ciudad —</option>';
   document.getElementById('omDireccion').value = '';
-  const promoInput = document.getElementById('omPromoCode');
-  if (promoInput) promoInput.value = '';
-  const promoHint = document.getElementById('omPromoHint');
-  if (promoHint) promoHint.textContent = '';
+  const pi = document.getElementById('omPromoCode'); if (pi) pi.value = '';
+  const ph = document.getElementById('omPromoHint'); if (ph) ph.textContent = '';
   appliedPromo = null;
   document.getElementById('envioBox').style.display = 'none';
   document.getElementById('omTotalRow').style.display = 'none';
@@ -463,19 +410,10 @@ function openOrderForm() {
   document.body.style.overflow = 'hidden';
 }
 
-function closeOrderForm() {
-  document.getElementById('orderOverlay').classList.remove('open');
-  document.body.style.overflow = '';
-}
+function closeOrderForm() { document.getElementById('orderOverlay').classList.remove('open'); document.body.style.overflow = ''; }
 
-// ── VALIDACIONES ──────────────────────────────────────
-function validarTelefono(tel) {
-  const limpio = tel.replace(/\s/g, '');
-  return /^3\d{9}$/.test(limpio);
-}
-function validarCorreo(correo) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo);
-}
+function validarTelefono(tel) { return /^3\d{9}$/.test(tel.replace(/\s/g, '')); }
+function validarCorreo(correo) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo); }
 
 async function submitOrder() {
   const nombre = document.getElementById('omNombre').value.trim();
@@ -486,54 +424,28 @@ async function submitOrder() {
   const ciudad = document.getElementById('omCiudad').value.trim();
   const direccion = document.getElementById('omDireccion').value.trim();
   let hasError = false;
-  const obligatorios = [
-    { id: 'omNombre', v: nombre }, { id: 'omCedula', v: cedula },
-    { id: 'omDepartamento', v: dept }, { id: 'omCiudad', v: ciudad }, { id: 'omDireccion', v: direccion },
-  ];
-  obligatorios.forEach(f => {
-    const el = document.getElementById(f.id);
-    if (el) el.style.borderColor = f.v ? '' : '#c0392b';
-    if (!f.v) hasError = true;
+  [{ id: 'omNombre', v: nombre }, { id: 'omCedula', v: cedula }, { id: 'omDepartamento', v: dept }, { id: 'omCiudad', v: ciudad }, { id: 'omDireccion', v: direccion }].forEach(f => {
+    const el = document.getElementById(f.id); if (el) el.style.borderColor = f.v ? '' : '#c0392b'; if (!f.v) hasError = true;
   });
   const telEl = document.getElementById('omTelefono');
   if (!telefono) { telEl.style.borderColor = '#c0392b'; hasError = true; }
   else if (!validarTelefono(telefono)) { telEl.style.borderColor = '#c0392b'; showToast('Ingresa un número colombiano válido (ej: 3001234567)'); return; }
   else telEl.style.borderColor = '';
-  if (correo) {
-    const correoEl = document.getElementById('omCorreo');
-    if (!validarCorreo(correo)) { correoEl.style.borderColor = '#c0392b'; showToast('Ingresa un correo electrónico válido'); return; }
-    else correoEl.style.borderColor = '';
-  }
+  if (correo) { const cEl = document.getElementById('omCorreo'); if (!validarCorreo(correo)) { cEl.style.borderColor = '#c0392b'; showToast('Ingresa un correo electrónico válido'); return; } else cEl.style.borderColor = ''; }
   if (hasError) { showToast('Completa los campos obligatorios *'); return; }
   const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
   if (appliedPromo) {
-    const submitBtn = document.querySelector('.om-submit');
-    if (submitBtn) submitBtn.disabled = true;
+    const btn = document.querySelector('.om-submit'); if (btn) btn.disabled = true;
     try {
-      const res = await fetch(PROMO_API, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'redeem', code: appliedPromo.code, subtotal, cliente: nombre + ' (' + telefono + ')', nombreCliente: nombre })
-      });
+      const res = await fetch(PROMO_API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'redeem', code: appliedPromo.code, subtotal, cliente: nombre + ' (' + telefono + ')', nombreCliente: nombre }) });
       const data = await res.json();
-      if (submitBtn) submitBtn.disabled = false;
-      if (!data.ok) {
-        appliedPromo = null;
-        recalcularTotales();
-        const msg = data.error === 'name_mismatch'
-          ? 'El código promocional no corresponde al nombre ingresado.'
-          : 'El código promocional ya no es válido. Revisa el total e intenta de nuevo.';
-        showToast(msg);
-        return;
-      }
-    } catch (e) {
-      if (submitBtn) submitBtn.disabled = false;
-      showToast('No se pudo validar el código promocional, intenta de nuevo');
-      return;
-    }
+      if (btn) btn.disabled = false;
+      if (!data.ok) { appliedPromo = null; recalcularTotales(); showToast(data.error === 'name_mismatch' ? 'El código no corresponde al nombre ingresado.' : 'El código ya no es válido. Revisa el total e intenta de nuevo.'); return; }
+    } catch (e) { if (btn) btn.disabled = false; showToast('No se pudo validar el código, intenta de nuevo'); return; }
   }
   const envioInfo = ENVIO[dept] || ENVIO.default;
-  const costoEnvio = appliedPromo ? 0 : envioInfo.costo;
+  const mayorista = esPedidoMayorista();
+  const costoEnvio = mayorista ? 0 : (appliedPromo ? 0 : envioInfo.costo);
   const total = subtotal + costoEnvio;
   let msg = '%C2%A1Hola! Tengo un nuevo pedido desde la tienda:%0A%0A';
   msg += '👤 *Datos del cliente*%0A';
@@ -542,23 +454,24 @@ async function submitOrder() {
   msg += 'Teléfono: ' + encodeURIComponent(telefono) + '%0A';
   if (correo) msg += 'Correo: ' + encodeURIComponent(correo) + '%0A';
   msg += '%0A📦 *Productos*%0A';
-  cart.forEach(i => {
-    msg += '• ' + encodeURIComponent(i.name)
-      + (i.sizeLabel ? ' (' + encodeURIComponent(i.sizeLabel) + ')' : '')
-      + ' ×' + i.qty + ' = ' + encodeURIComponent(fmt(i.price * i.qty)) + '%0A';
-  });
+  cart.forEach(i => { msg += '• ' + encodeURIComponent(i.name) + (i.sizeLabel ? ' (' + encodeURIComponent(i.sizeLabel) + ')' : '') + ' ×' + i.qty + ' = ' + encodeURIComponent(fmt(i.price * i.qty)) + '%0A'; });
   msg += '%0A🚚 *Envío*%0A';
-  if (appliedPromo) msg += 'Envío gratis (código promocional ' + encodeURIComponent(appliedPromo.code) + ')%0A';
+  if (mayorista) msg += '⚠️ Flete mayorista — precio a convenir según peso y destino%0A';
+  else if (appliedPromo) msg += 'Envío gratis (código ' + encodeURIComponent(appliedPromo.code) + ')%0A';
   else msg += encodeURIComponent(envioInfo.label) + ': ' + encodeURIComponent(fmt(envioInfo.costo)) + '%0A';
   msg += 'Dirección: ' + encodeURIComponent(direccion) + '%0A';
   msg += 'Ciudad: ' + encodeURIComponent(ciudad) + ' – ' + encodeURIComponent(dept) + '%0A';
-  msg += '%0A💰 *Total a pagar: ' + encodeURIComponent(fmt(total)) + '*%0A';
-  msg += '%0APor favor confirmar disponibilidad y método de pago.';
+  if (mayorista) {
+    msg += '%0A💰 *Subtotal productos: ' + encodeURIComponent(fmt(subtotal)) + '*%0A';
+    msg += '🚛 *Flete: pendiente de cotización (pedido mayorista)*%0A';
+    msg += '%0APor favor cotizar el flete y confirmar disponibilidad.';
+  } else {
+    msg += '%0A💰 *Total a pagar: ' + encodeURIComponent(fmt(total)) + '*%0A';
+    msg += '%0APor favor confirmar disponibilidad y método de pago.';
+  }
   window.open('https://wa.me/' + WA + '?text=' + msg, '_blank');
   closeOrderForm();
-  cart = [];
-  saveCart();
-  updateCartUI();
+  cart = []; saveCart(); updateCartUI();
 }
 
 // ── DETALLE ──────────────────────────────────────────
@@ -578,64 +491,43 @@ function openDetail(id) {
   cb.className = 'd-cat-badge ' + (tagClasses[p.cat] || 't-otro');
   const firstImg = (p.sizes && p.sizes.length > 0 && p.sizes[0].img) ? p.sizes[0].img : p.img;
   setDetailImage(firstImg);
-  const firstPrice = getUnitPrice(p, selectedSize, detailQty);
-  renderDetailPrice(firstPrice, p.wasPrice);
+  renderDetailPrice(getUnitPrice(p, selectedSize, detailQty), p.wasPrice);
   const ds = document.getElementById('dSizes');
   if (p.sizes && p.sizes.length > 1) {
     ds.innerHTML = '<span class="d-label">Presentación</span><div class="size-opts">'
       + p.sizes.map((s, i) => {
         const sInstock = getSizeInstock(p, s.label);
         const sStock = getSizeAvailableStock(p, s.label);
-        const stockInfo = sStock !== Infinity ? ' (' + sStock + ' uds.)' : '';
         return '<button class="size-opt' + (i === 0 ? ' sel' : '') + (sInstock ? '' : ' size-out') + '" '
           + 'onclick="selectSize(this,' + i + ')" '
           + (sInstock ? '' : 'disabled ')
-          + 'title="' + s.label + (sInstock ? stockInfo : ' – Agotado') + '">'
+          + 'title="' + s.label + (sInstock ? '' : ' – Agotado') + '">'
           + s.label
           + (sInstock ? (sStock !== Infinity ? '<small class="size-stock-hint">' + sStock + ' uds.</small>' : '') : '<small class="size-stock-hint">Agotado</small>')
           + '</button>';
-      }).join('')
-      + '</div>';
+      }).join('') + '</div>';
     ds.style.display = 'block';
   } else {
-    ds.style.display = 'none';
-    ds.innerHTML = '';
+    ds.style.display = 'none'; ds.innerHTML = '';
   }
   document.getElementById('dQty').textContent = '1';
-  const ab = document.getElementById('detailAddBtn');
   const firstSizeInstock = selectedSize ? getSizeInstock(p, selectedSize) : p.instock;
+  const ab = document.getElementById('detailAddBtn');
   ab.disabled = !firstSizeInstock;
   ab.textContent = firstSizeInstock ? 'Añadir al carrito' : 'Sin stock';
-
-  // ── BOTÓN WHATSAPP: ocultar si el producto está agotado ──
-  updateWaBtn(p, selectedSize);
-
+  // ← NUEVO: sincronizar botón de WhatsApp
+  syncWaBtn(firstSizeInstock);
   renderSimilar(p);
   document.getElementById('detailPage').classList.add('open');
   window.scrollTo(0, 0);
 }
 
-// Controla visibilidad y texto del botón de WhatsApp en el detalle
-function updateWaBtn(p, sizeLabel) {
-  const waBtn = document.getElementById('detailWaBtn');
-  if (!waBtn) return;
-  const instock = sizeLabel ? getSizeInstock(p, sizeLabel) : p.instock;
-  if (instock) {
-    waBtn.style.display = '';
-    waBtn.disabled = false;
-  } else {
-    waBtn.style.display = 'none';
-    waBtn.disabled = true;
-  }
-}
-
 function setDetailImage(src) {
-  const mainImg = document.getElementById('dMainImg');
-  mainImg.src = src;
+  document.getElementById('dMainImg').src = src;
   const p = currentProduct;
   const thumbs = [{ src: p.img, label: '' }];
   if (p.sizes) p.sizes.forEach(s => { if (s.img && s.img !== p.img) thumbs.push({ src: s.img, label: s.label }); });
-  document.getElementById('dThumbs').innerHTML = thumbs.map((t, i) =>
+  document.getElementById('dThumbs').innerHTML = thumbs.map(t =>
     '<div class="thumb' + (t.src === src ? ' active' : '') + '" onclick="thumbClick(this,\'' + t.src + '\')">'
     + '<img src="' + t.src + '" alt="' + t.label + '" onerror="this.parentElement.style.display=\'none\'">'
     + '</div>'
@@ -653,10 +545,7 @@ function thumbClick(el, src) {
 function renderDetailPrice(price, wasPrice) {
   const pw = document.getElementById('dPriceWrap');
   if (wasPrice && wasPrice > price) {
-    pw.innerHTML = '<div style="display:flex;align-items:baseline;gap:10px">'
-      + '<span class="d-price">' + fmt(price) + '</span>'
-      + '<span style="text-decoration:line-through;color:#bbb;font-size:.95rem">' + fmt(wasPrice) + '</span>'
-      + '</div>';
+    pw.innerHTML = '<div style="display:flex;align-items:baseline;gap:10px"><span class="d-price">' + fmt(price) + '</span><span style="text-decoration:line-through;color:#bbb;font-size:.95rem">' + fmt(wasPrice) + '</span></div>';
   } else {
     pw.innerHTML = '<span class="d-price">' + fmt(price) + '</span>';
   }
@@ -666,9 +555,7 @@ function closeDetail() { document.getElementById('detailPage').classList.remove(
 
 function renderSimilar(p) {
   const sim = products.filter(x => x.id !== p.id && (x.cat === p.cat || x.brand === p.brand)).slice(0, 8);
-  document.getElementById('similarGrid').innerHTML = sim.length
-    ? sim.map(s => renderCard(s)).join('')
-    : '<p style="color:#aaa;font-size:.85rem">No hay productos similares.</p>';
+  document.getElementById('similarGrid').innerHTML = sim.length ? sim.map(s => renderCard(s)).join('') : '<p style="color:#aaa;font-size:.85rem">No hay productos similares.</p>';
 }
 
 function selectSize(btn, idx) {
@@ -684,10 +571,10 @@ function selectSize(btn, idx) {
   const ab = document.getElementById('detailAddBtn');
   ab.disabled = !sInstock;
   ab.textContent = sInstock ? 'Añadir al carrito' : 'Sin stock';
+  // ← NUEVO: sincronizar botón de WhatsApp
+  syncWaBtn(sInstock);
   detailQty = 1;
   document.getElementById('dQty').textContent = '1';
-  // Actualizar botón WA al cambiar talla
-  updateWaBtn(p, s.label);
 }
 
 function changeDetailQty(d) {
@@ -695,10 +582,7 @@ function changeDetailQty(d) {
   const available = p ? getSizeAvailableStock(p, selectedSize) : Infinity;
   const newQty = detailQty + d;
   if (newQty < 1) return;
-  if (available !== Infinity && newQty > available) {
-    showToast(available === 1 ? 'Solo queda 1 unidad disponible' : 'Solo quedan ' + available + ' unidades disponibles');
-    return;
-  }
+  if (available !== Infinity && newQty > available) { showToast(available === 1 ? 'Solo queda 1 unidad disponible' : 'Solo quedan ' + available + ' unidades disponibles'); return; }
   detailQty = newQty;
   document.getElementById('dQty').textContent = detailQty;
   if (p) renderDetailPrice(getUnitPrice(p, selectedSize, detailQty), p.wasPrice);
@@ -714,10 +598,7 @@ function addFromDetail() {
   const inCart = getCartQtyForProduct(key);
   if (available !== Infinity && inCart + detailQty > available) {
     const remaining = available - inCart;
-    if (remaining <= 0) {
-      showToast(available === 1 ? 'Solo queda 1 unidad disponible' : 'Solo quedan ' + available + ' unidades disponibles');
-      return;
-    }
+    if (remaining <= 0) { showToast(available === 1 ? 'Solo queda 1 unidad disponible' : 'Solo quedan ' + available + ' unidades disponibles'); return; }
     addToCart(p, remaining, selectedSize);
     showToast('Se añadieron ' + remaining + ' unidades (máximo disponible)');
     return;
@@ -728,13 +609,10 @@ function addFromDetail() {
 
 function waFromDetail() {
   if (!currentProduct) return;
+  // ← NUEVO: bloquear si está agotado
+  const sInstock = selectedSize ? getSizeInstock(currentProduct, selectedSize) : currentProduct.instock;
+  if (!sInstock) { showToast('Este producto está agotado y no está disponible'); return; }
   const p = currentProduct;
-  // ── BLOQUEO: no permitir pedir por WA si está agotado ──
-  const instock = selectedSize ? getSizeInstock(p, selectedSize) : p.instock;
-  if (!instock) {
-    showToast('Este producto está agotado');
-    return;
-  }
   const price = getUnitPrice(p, selectedSize, detailQty);
   const total = price * detailQty;
   const msg = '%C2%A1Hola! Me interesa este producto:%0A%0A• *' + encodeURIComponent(p.name) + '*'
@@ -744,7 +622,6 @@ function waFromDetail() {
   window.open('https://wa.me/' + WA + '?text=' + msg, '_blank');
 }
 
-// ── ZOOM ─────────────────────────────────────────────
 function handleZoom(e) {
   const box = document.getElementById('mainImgBox');
   const img = document.getElementById('dMainImg');
@@ -757,20 +634,16 @@ function handleZoom(e) {
 }
 function handleZoomTouch(e) { e.preventDefault(); const t = e.touches[0]; handleZoom({ clientX: t.clientX, clientY: t.clientY }); }
 function resetZoom() {
-  const img = document.getElementById('dMainImg');
-  if (img) img.style.transform = 'scale(1)';
-  const box = document.getElementById('mainImgBox');
-  if (box) box.classList.remove('is-zoomed');
+  const img = document.getElementById('dMainImg'); if (img) img.style.transform = 'scale(1)';
+  const box = document.getElementById('mainImgBox'); if (box) box.classList.remove('is-zoomed');
 }
 
-// ── TOAST ─────────────────────────────────────────────
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2200);
 }
 
-// ── INIT ──────────────────────────────────────────────
 (async () => {
   loadCart();
   products = await loadProducts();
