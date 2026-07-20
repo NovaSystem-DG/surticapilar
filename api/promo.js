@@ -1,7 +1,15 @@
 // ═══════════════════════════════════════════════════════
 // /api/promo.js — Función serverless de Vercel
-// Valida y canjea códigos promocionales sin exponer la
+// Valida y "canjea" códigos promocionales sin exponer la
 // Master Key de JSONBin al navegador del cliente.
+//
+// CAMBIO: los códigos ya NO son de un solo uso. Un código
+// sigue funcionando siempre que:
+//   1) el nombre escrito coincida con el nombre registrado, y
+//   2) la compra supere el mínimo ($150.000)
+// Cada vez que se usa, se actualiza "usadoPor"/"usadoFecha"
+// solo como historial informativo (última clienta que lo usó),
+// pero eso YA NO bloquea usos futuros.
 //
 // Usa las variables de entorno que ya tienes en Vercel:
 //   JSONBIN_API_KEY → tu Master Key
@@ -59,7 +67,9 @@ export default async function handler(req, res) {
     if (idx === -1) return res.status(200).json({ ok: false, error: 'not_found' });
 
     const promo = promoCodes[idx];
-    if (promo.usado) return res.status(200).json({ ok: false, error: 'used' });
+
+    // ── Ya NO se bloquea por "usado". El código es de uso ilimitado. ──
+    // (se eliminó el chequeo: if (promo.usado) return ... 'used')
 
     // El nombre que escribe la clienta debe coincidir con el nombre registrado
     // para ese código (sin importar mayúsculas, tildes o espacios extra)
@@ -75,9 +85,12 @@ export default async function handler(req, res) {
     }
 
     // action === 'redeem'
+    // Se guarda como historial (última vez usado / contador), pero
+    // "usado" se mantiene en false para que el código nunca quede bloqueado.
     promoCodes[idx] = {
       ...promo,
-      usado: true,
+      usado: false,
+      usosTotales: (promo.usosTotales || 0) + 1,
       usadoPor: (cliente || 'Cliente').toString().slice(0, 120),
       usadoFecha: new Date().toISOString().slice(0, 10)
     };
