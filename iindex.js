@@ -2,6 +2,7 @@ const WA = '573226747868';
 const BIN_ID = '6a21c113da38895dfe88176d';
 const BASE = 'https://surticapilar.com/wp-content/uploads/';
 const PROMO_API = '/api/promo';
+const ORDER_API = '/api/order';
 const PROMO_MIN_COMPRA = 150000;
 
 const ENVIO = {
@@ -415,6 +416,22 @@ function closeOrderForm() { document.getElementById('orderOverlay').classList.re
 function validarTelefono(tel) { return /^3\d{9}$/.test(tel.replace(/\s/g, '')); }
 function validarCorreo(correo) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo); }
 
+// Envía al servidor la lista de productos comprados para que descuente
+// el stock automáticamente. Nunca bloquea el pedido si falla.
+async function descontarStock() {
+  try {
+    const items = cart.map(i => ({ id: i.id, sizeLabel: i.sizeLabel || null, qty: i.qty }));
+    await fetch(ORDER_API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ items })
+    });
+  } catch (e) {
+    // Silencioso: si falla, el pedido igual se envía por WhatsApp.
+    // El stock simplemente no se habrá descontado automáticamente esta vez.
+  }
+}
+
 async function submitOrder() {
   const nombre = document.getElementById('omNombre').value.trim();
   const cedula = document.getElementById('omCedula').value.trim();
@@ -447,6 +464,10 @@ async function submitOrder() {
   const mayorista = esPedidoMayorista();
   const costoEnvio = mayorista ? 0 : (appliedPromo ? 0 : envioInfo.costo);
   const total = subtotal + costoEnvio;
+
+  // Descontar el stock comprado antes de abrir WhatsApp (no bloquea el pedido si falla)
+  await descontarStock();
+
   let msg = '%C2%A1Hola! Tengo un nuevo pedido desde la tienda:%0A%0A';
   msg += '👤 *Datos del cliente*%0A';
   msg += 'Nombre: ' + encodeURIComponent(nombre) + '%0A';
