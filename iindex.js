@@ -2,7 +2,6 @@ const WA = '573226747868';
 const BIN_ID = '6a21c113da38895dfe88176d';
 const BASE = 'https://surticapilar.com/wp-content/uploads/';
 const PROMO_API = '/api/promo';
-const ORDER_API = '/api/order';
 const PROMO_MIN_COMPRA = 150000;
 
 const ENVIO = {
@@ -362,26 +361,64 @@ async function checkPromoCode() {
   const nombreCliente = document.getElementById('omNombre').value.trim();
   appliedPromo = null;
   hint.style.color = '';
+
   if (!code) { hint.textContent = ''; recalcularTotales(); return; }
-  if (!nombreCliente) { hint.textContent = 'Escribe primero tu nombre completo para validar el código'; hint.style.color = '#c0392b'; recalcularTotales(); return; }
+  if (!nombreCliente) {
+    hint.textContent = 'Escribe primero tu nombre completo para validar el código';
+    hint.style.color = '#c0392b';
+    recalcularTotales();
+    return;
+  }
+
   const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  if (subtotal < PROMO_MIN_COMPRA) {
+    hint.textContent = 'Este código aplica solo para compras superiores a ' + fmt(PROMO_MIN_COMPRA);
+    hint.style.color = '#c0392b';
+    recalcularTotales();
+    return;
+  }
+
   hint.textContent = 'Verificando código...';
+
   try {
-    const res = await fetch(PROMO_API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'check', code, subtotal, nombreCliente }) });
+    const res = await fetch('https://api.jsonbin.io/v3/b/' + BIN_ID + '/latest', {
+      headers: { 'X-Bin-Meta': 'false' }
+    });
+    if (!res.ok) throw new Error('fetch failed');
     const data = await res.json();
-    if (data.ok) {
-      appliedPromo = { code };
-      hint.textContent = '✓ Código válido — envío gratis aplicado';
-      hint.style.color = '#155a2a';
-    } else {
-      if (data.error === 'used') hint.textContent = 'Este código ya fue utilizado';
-      else if (data.error === 'min_purchase') hint.textContent = 'Aplica solo para compras superiores a ' + fmt(PROMO_MIN_COMPRA);
-      else if (data.error === 'not_found') hint.textContent = 'Código no válido';
-      else if (data.error === 'name_mismatch') hint.textContent = 'Este código no corresponde al nombre ingresado';
-      else hint.textContent = 'No se pudo verificar el código, intenta de nuevo';
+    const d = data.record ? data.record : data;
+    const codigos = d.promoCodes || [];
+    const match = codigos.find(c => c.code.toUpperCase() === code);
+
+    if (!match) {
+      hint.textContent = 'Código no válido';
       hint.style.color = '#c0392b';
+      recalcularTotales();
+      return;
     }
-  } catch (e) { hint.textContent = 'No se pudo verificar el código, intenta de nuevo'; hint.style.color = '#c0392b'; }
+
+    // Verificar nombre (flexible: ignorar mayúsculas y espacios extra)
+    const nombreGuardado = (match.nombre || '').toLowerCase().trim();
+    const nombreIngresado = nombreCliente.toLowerCase().trim();
+    const nombreOk = !nombreGuardado
+      || nombreIngresado.includes(nombreGuardado.split(' ')[0]) // al menos el primer nombre coincide
+      || nombreGuardado.includes(nombreIngresado.split(' ')[0]);
+
+    if (!nombreOk) {
+      hint.textContent = 'Este código no corresponde al nombre ingresado';
+      hint.style.color = '#c0392b';
+      recalcularTotales();
+      return;
+    }
+
+    // Código válido — de uso múltiple, no importa si está marcado como usado
+    appliedPromo = { code };
+    hint.textContent = '✓ Código válido — envío gratis aplicado';
+    hint.style.color = '#155a2a';
+  } catch (e) {
+    hint.textContent = 'No se pudo verificar el código, intenta de nuevo';
+    hint.style.color = '#c0392b';
+  }
   recalcularTotales();
 }
 
@@ -416,22 +453,6 @@ function closeOrderForm() { document.getElementById('orderOverlay').classList.re
 function validarTelefono(tel) { return /^3\d{9}$/.test(tel.replace(/\s/g, '')); }
 function validarCorreo(correo) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo); }
 
-// Envía al servidor la lista de productos comprados para que descuente
-// el stock automáticamente. Nunca bloquea el pedido si falla.
-async function descontarStock() {
-  try {
-    const items = cart.map(i => ({ id: i.id, sizeLabel: i.sizeLabel || null, qty: i.qty }));
-    await fetch(ORDER_API, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ items })
-    });
-  } catch (e) {
-    // Silencioso: si falla, el pedido igual se envía por WhatsApp.
-    // El stock simplemente no se habrá descontado automáticamente esta vez.
-  }
-}
-
 async function submitOrder() {
   const nombre = document.getElementById('omNombre').value.trim();
   const cedula = document.getElementById('omCedula').value.trim();
@@ -451,23 +472,24 @@ async function submitOrder() {
   if (correo) { const cEl = document.getElementById('omCorreo'); if (!validarCorreo(correo)) { cEl.style.borderColor = '#c0392b'; showToast('Ingresa un correo electrónico válido'); return; } else cEl.style.borderColor = ''; }
   if (hasError) { showToast('Completa los campos obligatorios *'); return; }
   const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
-  if (appliedPromo) {
-    const btn = document.querySelector('.om-submit'); if (btn) btn.disabled = true;
-    try {
-      const res = await fetch(PROMO_API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'redeem', code: appliedPromo.code, subtotal, cliente: nombre + ' (' + telefono + ')', nombreCliente: nombre }) });
-      const data = await res.json();
-      if (btn) btn.disabled = false;
-      if (!data.ok) { appliedPromo = null; recalcularTotales(); showToast(data.error === 'name_mismatch' ? 'El código no corresponde al nombre ingresado.' : 'El código ya no es válido. Revisa el total e intenta de nuevo.'); return; }
-    } catch (e) { if (btn) btn.disabled = false; showToast('No se pudo validar el código, intenta de nuevo'); return; }
+
+  // Si hay código escrito pero no fue validado aún, validarlo ahora
+  const promoInput = document.getElementById('omPromoCode');
+  const codigoEscrito = promoInput ? promoInput.value.trim().toUpperCase() : '';
+  if (codigoEscrito && !appliedPromo) {
+    await checkPromoCode();
+    // Si después de validar sigue sin aplicarse (código inválido), preguntar si continuar
+    if (!appliedPromo) {
+      const hint = document.getElementById('omPromoHint');
+      const hintMsg = hint ? hint.textContent : '';
+      showToast(hintMsg || 'El código no es válido — el pedido se enviará sin descuento');
+      // Continuar igual sin el descuento
+    }
   }
   const envioInfo = ENVIO[dept] || ENVIO.default;
   const mayorista = esPedidoMayorista();
   const costoEnvio = mayorista ? 0 : (appliedPromo ? 0 : envioInfo.costo);
   const total = subtotal + costoEnvio;
-
-  // Descontar el stock comprado antes de abrir WhatsApp (no bloquea el pedido si falla)
-  await descontarStock();
-
   let msg = '%C2%A1Hola! Tengo un nuevo pedido desde la tienda:%0A%0A';
   msg += '👤 *Datos del cliente*%0A';
   msg += 'Nombre: ' + encodeURIComponent(nombre) + '%0A';
